@@ -167,6 +167,12 @@ public:
                                 escape = false;
                             }
                             break;
+                        case SCAN_SEPARATOR_MODE:
+                            if (symbol == ',') {
+                                this->mode = OBJECT_ATTRIBUTE_MODE;
+                                this->appendCurrentLexeme(symbol);
+                                endOfToken = true;
+                            }
                     }
 
                     if (this->prevMode != TEXT_MODE) {
