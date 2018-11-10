@@ -35,7 +35,7 @@ public:
 
     Token* get_next_token()
     {
-        if (this->eof) {
+        if (this->eof && this->currentPosition == this->posCurrent) {
             // достигнут конец
             return NULL;
         }
@@ -157,7 +157,7 @@ public:
                         }
                         break;
                     case JSON_LEXER_DIGIT_MODE:
-                        if (symbol == ',') {
+                        if (symbol == ',' || symbol == '}') {
                             endOfToken = true;
                             this->mode = JSON_LEXER_PLAIN_MODE;
                             this->prevMode = JSON_LEXER_PLAIN_MODE;
