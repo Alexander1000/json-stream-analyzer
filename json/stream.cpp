@@ -56,56 +56,61 @@ public:
             }
         }
 
+        bool endOfToken = false;
         this->eof = eof;
+        this->lexemeWriter = NULL;
 
-        // если текущий указатель перешел в forward-буфер
-        if (this->currentPosition >= STREAM_BUFFER_SIZE && this->currentPosition < 2 * STREAM_BUFFER_SIZE) {
-            // очищаем буфер со старыми данными
-            memset(this->currentBuffer, 0, STREAM_BUFFER_SIZE * sizeof(char));
-            // копируем данные из forward buffer в current
-            memcpy(this->currentBuffer, this->forwardBuffer, STREAM_BUFFER_SIZE);
-            // копируме конечную позицию в буфере из forward в current
-            this->posCurrent = this->posForward;
-            // смещаем текущую позицию
-            this->currentPosition -= STREAM_BUFFER_SIZE;
-            // подготавливаем память для заливки новых данных
-            memset(this->forwardBuffer, 0, STREAM_BUFFER_SIZE * sizeof(char));
+        while (!endOfToken) {
+            // если текущий указатель перешел в forward-буфер
+            if (this->currentPosition >= STREAM_BUFFER_SIZE && this->currentPosition < 2 * STREAM_BUFFER_SIZE) {
+                // очищаем буфер со старыми данными
+                memset(this->currentBuffer, 0, STREAM_BUFFER_SIZE * sizeof(char));
+                // копируем данные из forward buffer в current
+                memcpy(this->currentBuffer, this->forwardBuffer, STREAM_BUFFER_SIZE);
+                // копируме конечную позицию в буфере из forward в current
+                this->posCurrent = this->posForward;
+                // смещаем текущую позицию
+                this->currentPosition -= STREAM_BUFFER_SIZE;
+                // подготавливаем память для заливки новых данных
+                memset(this->forwardBuffer, 0, STREAM_BUFFER_SIZE * sizeof(char));
 
-            if (!eof) {
-                // если не был достигнут конец файла, читаем новый forward-буфер
-                this->posForward = this->reader->read(this->forwardBuffer, STREAM_BUFFER_SIZE);
+                if (!eof) {
+                    // если не был достигнут конец файла, читаем новый forward-буфер
+                    this->posForward = this->reader->read(this->forwardBuffer, STREAM_BUFFER_SIZE);
 
-                if (this->posForward < STREAM_BUFFER_SIZE) {
-                    eof = true;
-                }
-            } else {
-                // если конец файла, то освобождаем память от forward-буфера
-                this->posForward = 0;
-            }
-        }
-
-        if (this->currentPosition >= 0 && this->currentPosition < STREAM_BUFFER_SIZE) {
-            // текущий указатель находится внутри первого буфера
-            while (this->currentPosition < this->posCurrent) {
-                // продвигаемся по буферу вперед
-                char symbol = this->currentBuffer[this->currentPosition];
-                // this->proceedSymbol(symbol);
-
-                // координаты токена
-                if (symbol == 0x0A) {
-                    this->currentColumn = 0;
-                    ++this->currentLine;
+                    if (this->posForward < STREAM_BUFFER_SIZE) {
+                        eof = true;
+                    }
                 } else {
-                    ++this->currentColumn;
+                    // если конец файла, то освобождаем память от forward-буфера
+                    this->posForward = 0;
                 }
-
-                ++this->currentPosition;
             }
-        }
 
-        if (this->currentPosition < 0 || this->currentPosition >= 2 * LEXER_BUFFER_SIZE) {
-            // невалидная позиция - выход из цыкла
-            this->eof = true;
+            if (this->currentPosition >= 0 && this->currentPosition < STREAM_BUFFER_SIZE) {
+                // текущий указатель находится внутри первого буфера
+                while (this->currentPosition < this->posCurrent) {
+                    // продвигаемся по буферу вперед
+                    char symbol = this->currentBuffer[this->currentPosition];
+                    // this->proceedSymbol(symbol);
+
+                    // координаты токена
+                    if (symbol == 0x0A) {
+                        this->currentColumn = 0;
+                        ++this->currentLine;
+                    } else {
+                        ++this->currentColumn;
+                    }
+
+                    ++this->currentPosition;
+                }
+            }
+
+            if (this->currentPosition < 0 || this->currentPosition >= 2 * LEXER_BUFFER_SIZE) {
+                // невалидная позиция - выход из цыкла
+                this->eof = true;
+                endOfToken = true;
+            }
         }
     }
 
@@ -131,4 +136,15 @@ private:
     // координаты токена в документе
     int currentLine;
     int currentColumn;
+
+    IOMemoryBuffer* lexemeWriter;
+
+    void appendCurrentLexeme(char symbol)
+    {
+        if (this->lexemeWriter == NULL) {
+            this->lexemeWriter = new IOMemoryBuffer;
+        }
+
+        this->lexemeWriter->write(&symbol, 1);
+    }
 };
