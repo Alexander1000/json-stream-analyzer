@@ -65,6 +65,7 @@ int main(int argc, char* argv[])
         IOFileReader* file_buffer = new IOFileReader(inputPath);
         Stream* json_stream = new Stream(file_buffer);
         Pretty* json_pretty = new Pretty(json_stream);
+        json_pretty->pretty();
     } else {
         return ERROR_STAT_INVALID_MODE;
     }

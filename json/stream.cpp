@@ -24,6 +24,7 @@ public:
         this->currentColumn = 0;
 
         this->mode = JSON_LEXER_PLAIN_MODE;
+        this->prevMode = JSON_LEXER_PLAIN_MODE;
     }
 
     ~Stream()
