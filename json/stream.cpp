@@ -132,11 +132,11 @@ public:
                                 break;
                         }
 
-                        if (this->is_digit(symbol)) {
+                        if (!endOfToken && this->is_digit(symbol)) {
                             this->mode = JSON_LEXER_DIGIT_MODE;
                             this->prevMode = JSON_LEXER_PLAIN_MODE;
                             move_position = false;
-                        } else if (this->is_word(symbol)) {
+                        } else if (!endOfToken && this->is_word(symbol)) {
                             this->mode = JSON_LEXER_WORD_MODE;
                             this->prevMode = JSON_LEXER_PLAIN_MODE;
                         }
@@ -160,7 +160,7 @@ public:
                     case JSON_LEXER_DIGIT_MODE:
                         if (!this->is_digit(symbol) && symbol != '.') {
                             endOfToken = true;
-                            this->mode = JSON_LEXER_PLAIN_MODE;
+                            this->mode = this->prevMode;
                             this->prevMode = JSON_LEXER_PLAIN_MODE;
                             move_position = false;
                         } else {
@@ -170,7 +170,7 @@ public:
                     case JSON_LEXER_WORD_MODE:
                         if (!this->is_word(symbol)) {
                             endOfToken = true;
-                            this->mode = JSON_LEXER_PLAIN_MODE;
+                            this->mode = this->prevMode;
                             this->prevMode = JSON_LEXER_WORD_MODE;
                             move_position = false;
                         } else {
@@ -200,6 +200,7 @@ public:
 
         if (this->lexemeWriter != NULL) {
             TokenLexemeWord* token = new TokenLexemeWord(this->currentLine, this->currentColumn, this->lexemeWriter);
+            this->lexemeWriter = NULL;
             return token;
         }
 
