@@ -136,7 +136,11 @@ public:
                             this->mode = JSON_LEXER_DIGIT_MODE;
                             this->prevMode = JSON_LEXER_PLAIN_MODE;
                             move_position = false;
+                        } else if (this->is_word(symbol)) {
+                            this->mode = JSON_LEXER_WORD_MODE;
+                            this->prevMode = JSON_LEXER_PLAIN_MODE;
                         }
+
                         break;
                     case JSON_LEXER_TEXT_MODE:
                         if (symbol == '\\' && !escape) {
@@ -158,6 +162,16 @@ public:
                             endOfToken = true;
                             this->mode = JSON_LEXER_PLAIN_MODE;
                             this->prevMode = JSON_LEXER_PLAIN_MODE;
+                            move_position = false;
+                        } else {
+                            this->appendCurrentLexeme(symbol);
+                        }
+                        break;
+                    case JSON_LEXER_WORD_MODE:
+                        if (!this->is_word(symbol)) {
+                            endOfToken = true;
+                            this->mode = JSON_LEXER_PLAIN_MODE;
+                            this->prevMode = JSON_LEXER_WORD_MODE;
                             move_position = false;
                         } else {
                             this->appendCurrentLexeme(symbol);
@@ -223,6 +237,11 @@ private:
     bool is_digit(char symbol)
     {
         return symbol >= '0' && symbol <= '9';
+    }
+
+    bool is_word(char symbol)
+    {
+        return symbol >= 'a' && symbol <= 'z';
     }
 
     void appendCurrentLexeme(char symbol)
