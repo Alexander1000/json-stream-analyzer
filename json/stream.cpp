@@ -19,6 +19,9 @@ public:
         this->posCurrent = 0;
         this->posForward = 0;
         this->read_size = 0;
+
+        this->currentLine = 0;
+        this->currentColumn = 0;
     }
 
     ~Stream()
@@ -89,14 +92,14 @@ public:
                 // this->proceedSymbol(symbol);
 
                 // координаты токена
-//                if (symbol == 0x0A) {
-//                    this->currentColumn = 0;
-//                    ++this->currentLine;
-//                } else {
-//                    ++this->currentColumn;
-//                }
-//
-//                ++this->currentPosition;
+                if (symbol == 0x0A) {
+                    this->currentColumn = 0;
+                    ++this->currentLine;
+                } else {
+                    ++this->currentColumn;
+                }
+
+                ++this->currentPosition;
             }
         }
 
@@ -124,4 +127,8 @@ private:
     bool eof;
 
     int read_size;
+
+    // координаты токена в документе
+    int currentLine;
+    int currentColumn;
 };
