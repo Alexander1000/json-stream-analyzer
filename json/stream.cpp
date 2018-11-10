@@ -132,7 +132,7 @@ public:
                                 break;
                         }
 
-                        if (symbol >= '0' && symbol <= '9') {
+                        if (this->is_digit(symbol)) {
                             this->mode = JSON_LEXER_DIGIT_MODE;
                             this->prevMode = JSON_LEXER_PLAIN_MODE;
                             move_position = false;
@@ -154,7 +154,7 @@ public:
                         }
                         break;
                     case JSON_LEXER_DIGIT_MODE:
-                        if (symbol == ',' || symbol == '}') {
+                        if (!this->is_digit(symbol) && symbol != '.') {
                             endOfToken = true;
                             this->mode = JSON_LEXER_PLAIN_MODE;
                             this->prevMode = JSON_LEXER_PLAIN_MODE;
@@ -219,6 +219,11 @@ private:
 
     int mode;
     int prevMode;
+
+    bool is_digit(char symbol)
+    {
+        return symbol >= '0' && symbol <= '9';
+    }
 
     void appendCurrentLexeme(char symbol)
     {
