@@ -12,6 +12,12 @@ public:
         memset(this->forwardBuffer, 0, STREAM_BUFFER_SIZE * sizeof(char));
     }
 
+    ~Stream()
+    {
+        delete this->currentBuffer;
+        delete this->forwardBuffer;
+    }
+
 private:
     IOReader* reader;
 
