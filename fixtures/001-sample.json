@@ -1,5 +1,7 @@
 {
   "someObject": 12,
+  "test": 43.24,
+  "fifif": "fdasfd",
   "another": [
     {
       "tst": "fsdf",

@@ -100,33 +100,39 @@ public:
                             case '{':
                                 this->appendCurrentLexeme(symbol);
                                 endOfToken = true;
+                                this->prevMode = JSON_LEXER_PLAIN_MODE;
                                 break;
                             case '}':
                                 this->appendCurrentLexeme(symbol);
                                 endOfToken = true;
+                                this->prevMode = JSON_LEXER_PLAIN_MODE;
                                 break;
                             case '[':
                                 this->appendCurrentLexeme(symbol);
                                 endOfToken = true;
+                                this->prevMode = JSON_LEXER_PLAIN_MODE;
                                 break;
                             case ']':
                                 this->appendCurrentLexeme(symbol);
                                 endOfToken = true;
+                                this->prevMode = JSON_LEXER_PLAIN_MODE;
                                 break;
                             case ':':
                                 this->appendCurrentLexeme(symbol);
                                 endOfToken = true;
+                                this->prevMode = JSON_LEXER_PLAIN_MODE;
                                 break;
                             case ',':
                                 this->appendCurrentLexeme(symbol);
                                 endOfToken = true;
+                                this->prevMode = JSON_LEXER_PLAIN_MODE;
                                 break;
                             case '"':
                                 this->appendCurrentLexeme(symbol);
                                 endOfToken = true;
+                                this->prevMode = JSON_LEXER_PLAIN_MODE;
                                 if (this->prevMode != JSON_LEXER_TEXT_MODE) {
                                     this->mode = JSON_LEXER_TEXT_MODE;
-                                    this->prevMode = JSON_LEXER_PLAIN_MODE;
                                     escape = false;
                                 }
                                 break;
