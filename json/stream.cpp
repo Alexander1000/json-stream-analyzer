@@ -138,18 +138,18 @@ public:
                                 break;
                         }
 
-                        if (!endOfToken && (symbol == ' ' || symbol == 0x0A)) {
-                            this->mode = JSON_LEXER_PLAIN_MODE;
-                            this->prevMode = JSON_LEXER_PLAIN_MODE;
-                        }
-
-                        if (!endOfToken && this->is_digit(symbol)) {
-                            this->mode = JSON_LEXER_DIGIT_MODE;
-                            this->prevMode = JSON_LEXER_PLAIN_MODE;
-                            move_position = false;
-                        } else if (!endOfToken && this->is_word(symbol)) {
-                            this->mode = JSON_LEXER_WORD_MODE;
-                            this->prevMode = JSON_LEXER_PLAIN_MODE;
+                        if (!endOfToken) {
+                            if (symbol == ' ' || symbol == 0x0A) {
+                                this->mode = JSON_LEXER_PLAIN_MODE;
+                                this->prevMode = JSON_LEXER_PLAIN_MODE;
+                            } else if (this->is_digit(symbol)) {
+                                this->mode = JSON_LEXER_DIGIT_MODE;
+                                this->prevMode = JSON_LEXER_PLAIN_MODE;
+                                move_position = false;
+                            } else if (this->is_word(symbol)) {
+                                this->mode = JSON_LEXER_WORD_MODE;
+                                this->prevMode = JSON_LEXER_PLAIN_MODE;
+                            }
                         }
 
                         break;
