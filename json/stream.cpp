@@ -40,8 +40,6 @@ public:
             return NULL;
         }
 
-        bool eof = false;
-
         if (this->currentPosition == 0 && this->read_size == 0) {
             // первый раз тут, читаем данные
             this->read_size = this->reader->read(this->currentBuffer, STREAM_BUFFER_SIZE);
@@ -50,17 +48,16 @@ public:
             this->posForward = 0;
 
             if (this->read_size < STREAM_BUFFER_SIZE) {
-                eof = true;
+                this->eof = true;
             } else {
                 this->posForward = this->reader->read(this->forwardBuffer, STREAM_BUFFER_SIZE);
                 if (this->posForward < STREAM_BUFFER_SIZE) {
-                    eof = true;
+                    this->eof = true;
                 }
             }
         }
 
         bool endOfToken = false;
-        this->eof = eof;
         this->lexemeWriter = NULL;
         bool escape = false;
 
@@ -78,12 +75,12 @@ public:
                 // подготавливаем память для заливки новых данных
                 memset(this->forwardBuffer, 0, STREAM_BUFFER_SIZE * sizeof(char));
 
-                if (!eof) {
+                if (!this->eof) {
                     // если не был достигнут конец файла, читаем новый forward-буфер
                     this->posForward = this->reader->read(this->forwardBuffer, STREAM_BUFFER_SIZE);
 
                     if (this->posForward < STREAM_BUFFER_SIZE) {
-                        eof = true;
+                        this->eof = true;
                     }
                 } else {
                     // если конец файла, то освобождаем память от forward-буфера
@@ -91,7 +88,7 @@ public:
                 }
             }
 
-            if (this->currentPosition >= 0 && this->currentPosition < STREAM_BUFFER_SIZE) {
+            if (this->currentPosition >= 0 && this->currentPosition < STREAM_BUFFER_SIZE && this->currentPosition < this->posCurrent) {
                 // текущий указатель находится внутри первого буфера
                 bool move_position = true;
                 // продвигаемся по буферу вперед
@@ -183,8 +180,7 @@ public:
 
             if (this->currentPosition < 0 || this->currentPosition >= 2 * STREAM_BUFFER_SIZE) {
                 // невалидная позиция - выход из цыкла
-                this->eof = true;
-                endOfToken = true;
+                return NULL;
             }
         }
 
