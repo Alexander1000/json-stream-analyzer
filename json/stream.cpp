@@ -127,8 +127,11 @@ public:
                                 case '"':
                                     this->appendCurrentLexeme(symbol);
                                     endOfToken = true;
-                                    this->mode = JSON_LEXER_TEXT_MODE;
-                                    escape = false;
+                                    if (this->prevMode != JSON_LEXER_TEXT_MODE) {
+                                        this->mode = JSON_LEXER_TEXT_MODE;
+                                        this->prevMode = JSON_LEXER_PLAIN_MODE;
+                                        escape = false;
+                                    }
                                     break;
                             }
                             break;
@@ -138,6 +141,8 @@ public:
                             } else {
                                 if (symbol == '"' && !escape) {
                                     move_position = false;
+                                    endOfToken = true;
+                                    this->prevMode = JSON_LEXER_TEXT_MODE;
                                 } else {
                                     this->appendCurrentLexeme(symbol);
                                 }
