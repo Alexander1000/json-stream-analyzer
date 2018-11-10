@@ -61,6 +61,7 @@ public:
         bool endOfToken = false;
         this->eof = eof;
         this->lexemeWriter = NULL;
+        bool escape = false;
 
         while (!endOfToken) {
             // если текущий указатель перешел в forward-буфер
@@ -101,6 +102,29 @@ public:
                             this->appendCurrentLexeme(symbol);
                             endOfToken = true;
                             this->mode = OBJECT_MODE;
+                        }
+                    }
+
+                    if (this->mode == OBJECT_MODE) {
+                        if (symbol == '"') {
+                            this->appendCurrentLexeme(symbol);
+                            endOfToken = true;
+                            this->mode = TEXT_MODE;
+                            escape = false;
+                        }
+                    }
+
+                    if (this->mode == TEXT_MODE) {
+                        if (symbol == '\\' && !escape) {
+                            escape = true;
+                        } else {
+                            if (symbol == '"' && !escape) {
+                                endOfToken = true;
+                                this->mode = OBJECT_MODE;
+                            } else {
+                                this->appendCurrentLexeme(symbol);
+                            }
+                            escape = false;
                         }
                     }
 
