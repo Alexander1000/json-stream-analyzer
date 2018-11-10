@@ -93,10 +93,58 @@ public:
             if (this->currentPosition >= 0 && this->currentPosition < STREAM_BUFFER_SIZE) {
                 // текущий указатель находится внутри первого буфера
                 while (this->currentPosition < this->posCurrent) {
+                    bool move_position = true;
                     // продвигаемся по буферу вперед
                     char symbol = this->currentBuffer[this->currentPosition];
 
                     switch (this->mode) {
+                        case JSON_LEXER_PLAIN_MODE:
+                            switch (symbol) {
+                                case '{':
+                                    this->appendCurrentLexeme(symbol);
+                                    endOfToken = true;
+                                    break;
+                                case '}':
+                                    this->appendCurrentLexeme(symbol);
+                                    endOfToken = true;
+                                    break;
+                                case '[':
+                                    this->appendCurrentLexeme(symbol);
+                                    endOfToken = true;
+                                    break;
+                                case ']':
+                                    this->appendCurrentLexeme(symbol);
+                                    endOfToken = true;
+                                    break;
+                                case ':':
+                                    this->appendCurrentLexeme(symbol);
+                                    endOfToken = true;
+                                    break;
+                                case ',':
+                                    this->appendCurrentLexeme(symbol);
+                                    endOfToken = true;
+                                    break;
+                                case '"':
+                                    this->appendCurrentLexeme(symbol);
+                                    endOfToken = true;
+                                    this->mode = JSON_LEXER_TEXT_MODE;
+                                    escape = false;
+                                    break;
+                            }
+                            break;
+                        case JSON_LEXER_TEXT_MODE:
+                            if (symbol == '\\' && !escape) {
+                                escape = true;
+                            } else {
+                                if (symbol == '"' && !escape) {
+                                    move_position = false;
+                                } else {
+                                    this->appendCurrentLexeme(symbol);
+                                }
+                                escape = false;
+                            }
+                            break;
+
                         case PLAIN_MODE:
                             if (symbol == '{') {
                                 this->appendCurrentLexeme(symbol);
@@ -175,7 +223,7 @@ public:
                             }
                     }
 
-                    if (this->prevMode != TEXT_MODE) {
+                    if (move_position) {
                         // координаты токена
                         if (symbol == 0x0A) {
                             this->currentColumn = 0;
