@@ -33,11 +33,11 @@ public:
         delete this->forwardBuffer;
     }
 
-    void get_next_token()
+    Token* get_next_token()
     {
         if (this->eof) {
             // достигнут конец
-            return;
+            return NULL;
         }
 
         bool eof = false;
@@ -189,6 +189,13 @@ public:
                 endOfToken = true;
             }
         }
+
+        if (this->lexemeWriter != NULL) {
+            TokenLexemeWord* token = new TokenLexemeWord(this->currentLine, this->currentColumn, this->lexemeWriter);
+            return token;
+        }
+
+        return NULL;
     }
 
 private:

@@ -4,5 +4,7 @@
 #define JSON_LEXER_TEXT_MODE 1
 #define JSON_LEXER_DIGIT_MODE 2
 
+#include "tokens/token.h"
+
 #include "stream.cpp"
 #include "pretty.cpp"
