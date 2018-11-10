@@ -134,6 +134,12 @@ public:
                                     }
                                     break;
                             }
+
+                            if (symbol >= '0' && symbol <= '9') {
+                                this->mode = JSON_LEXER_DIGIT_MODE;
+                                this->prevMode = JSON_LEXER_PLAIN_MODE;
+                                move_position = false;
+                            }
                             break;
                         case JSON_LEXER_TEXT_MODE:
                             if (symbol == '\\' && !escape) {
@@ -142,11 +148,22 @@ public:
                                 if (symbol == '"' && !escape) {
                                     move_position = false;
                                     endOfToken = true;
+                                    this->mode = JSON_LEXER_PLAIN_MODE;
                                     this->prevMode = JSON_LEXER_TEXT_MODE;
                                 } else {
                                     this->appendCurrentLexeme(symbol);
                                 }
                                 escape = false;
+                            }
+                            break;
+                        case JSON_LEXER_PLAIN_MODE:
+                            if (symbol == ',') {
+                                endOfToken = true;
+                                this->mode = JSON_LEXER_PLAIN_MODE;
+                                this->prevMode = JSON_LEXER_PLAIN_MODE;
+                                move_position = false;
+                            } else {
+                                this->appendCurrentLexeme(symbol);
                             }
                             break;
                     }
