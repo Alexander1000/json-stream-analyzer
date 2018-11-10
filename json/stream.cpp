@@ -23,7 +23,7 @@ public:
         this->currentLine = 0;
         this->currentColumn = 0;
 
-        this->mode = PLAIN_MODE;
+        this->mode = JSON_LEXER_PLAIN_MODE;
     }
 
     ~Stream()
@@ -144,83 +144,6 @@ public:
                                 escape = false;
                             }
                             break;
-
-                        case PLAIN_MODE:
-                            if (symbol == '{') {
-                                this->appendCurrentLexeme(symbol);
-                                endOfToken = true;
-                                this->mode = OBJECT_ATTRIBUTE_MODE;
-                            }
-                            break;
-                        case SCAN_COMMA_MODE:
-                            if (symbol == ':') {
-                                this->appendCurrentLexeme(symbol);
-                                endOfToken = true;
-                                this->prevMode = SCAN_COMMA_MODE;
-                                this->mode = OBJECT_ATTRIBUTE_VALUE_MODE;
-                            }
-                            break;
-                        case OBJECT_ATTRIBUTE_MODE:
-                            if (symbol == '"') {
-                                if (this->prevMode != TEXT_MODE) {
-                                    this->appendCurrentLexeme(symbol);
-                                    endOfToken = true;
-                                    this->mode = TEXT_MODE;
-                                    this->prevMode = OBJECT_ATTRIBUTE_MODE;
-                                    escape = false;
-                                } else {
-                                    endOfToken = true;
-                                    this->mode = SCAN_COMMA_MODE;
-                                    this->prevMode = OBJECT_ATTRIBUTE_MODE;
-                                }
-                            }
-                            break;
-                        case OBJECT_ATTRIBUTE_VALUE_MODE:
-                            if (symbol == '"') {
-                                if (this->prevMode != TEXT_MODE) {
-                                    this->appendCurrentLexeme(symbol);
-                                    endOfToken = true;
-                                    this->mode = TEXT_MODE;
-                                    this->prevMode = OBJECT_ATTRIBUTE_VALUE_MODE;
-                                    escape = false;
-                                } else {
-                                    endOfToken = true;
-                                    this->mode = SCAN_SEPARATOR_MODE;
-                                    this->prevMode = OBJECT_ATTRIBUTE_VALUE_MODE;
-                                }
-                            } else {
-                                if (symbol != ',') {
-                                    this->appendCurrentLexeme(symbol);
-                                } else {
-                                    endOfToken = true;
-                                    this->mode = SCAN_SEPARATOR_MODE;
-                                    this->prevMode = OBJECT_ATTRIBUTE_VALUE_MODE;
-                                }
-                            }
-                            break;
-
-                        case TEXT_MODE:
-                            if (symbol == '\\' && !escape) {
-                                escape = true;
-                            } else {
-                                if (symbol == '"' && !escape) {
-                                    endOfToken = true;
-                                    this->mode = this->prevMode;
-                                    this->prevMode = TEXT_MODE;
-                                    // прочитали лишний символ, откатимся на предыдущую позицию
-                                    this->currentPosition--;
-                                } else {
-                                    this->appendCurrentLexeme(symbol);
-                                }
-                                escape = false;
-                            }
-                            break;
-                        case SCAN_SEPARATOR_MODE:
-                            if (symbol == ',') {
-                                this->mode = OBJECT_ATTRIBUTE_MODE;
-                                this->appendCurrentLexeme(symbol);
-                                endOfToken = true;
-                            }
                     }
 
                     if (move_position) {
