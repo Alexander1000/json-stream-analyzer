@@ -130,16 +130,16 @@ public:
                             case '"':
                                 this->appendCurrentLexeme(symbol);
                                 endOfToken = true;
-                                this->prevMode = JSON_LEXER_PLAIN_MODE;
                                 if (this->prevMode != JSON_LEXER_TEXT_MODE) {
                                     this->mode = JSON_LEXER_TEXT_MODE;
                                     escape = false;
                                 }
+                                this->prevMode = JSON_LEXER_PLAIN_MODE;
                                 break;
                         }
 
                         if (!endOfToken) {
-                            if (symbol == ' ' || symbol == 0x0A) {
+                            if (symbol == ' ' || symbol == 0x0A || symbol == 0x0D) {
                                 this->mode = JSON_LEXER_PLAIN_MODE;
                                 this->prevMode = JSON_LEXER_PLAIN_MODE;
                             } else if (this->is_digit(symbol)) {
@@ -148,6 +148,9 @@ public:
                                 move_position = false;
                             } else if (this->is_word(symbol)) {
                                 this->mode = JSON_LEXER_WORD_MODE;
+                                this->prevMode = JSON_LEXER_PLAIN_MODE;
+                            } else {
+                                this->mode = JSON_LEXER_PLAIN_MODE;
                                 this->prevMode = JSON_LEXER_PLAIN_MODE;
                             }
                         }
