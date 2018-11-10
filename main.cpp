@@ -3,6 +3,9 @@
 #include <stdio.h>
 #include <sys/stat.h>
 
+#include "buffer/io_buffer.h"
+#include "json/stream.h"
+
 using namespace std;
 
 #define ERROR_MISSING_INPUT -1
@@ -58,7 +61,10 @@ int main(int argc, char* argv[])
         cout << "is a directory" << endl;
         return ERROR_NOT_IMPLEMENT;
     } else if(s.st_mode & S_IFREG) {
-        cout << "bingo" << endl;
+        cout << "starting analyze file" << endl;
+        IOFileReader* file_buffer = new IOFileReader(inputPath);
+        Stream* json_stream = new Stream(file_buffer);
+        Pretty* json_pretty = new Pretty(json_stream);
     } else {
         return ERROR_STAT_INVALID_MODE;
     }
