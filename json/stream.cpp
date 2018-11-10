@@ -149,6 +149,7 @@ public:
                             } else if (this->is_word(symbol)) {
                                 this->mode = JSON_LEXER_WORD_MODE;
                                 this->prevMode = JSON_LEXER_PLAIN_MODE;
+                                move_position = false;
                             } else {
                                 this->mode = JSON_LEXER_PLAIN_MODE;
                                 this->prevMode = JSON_LEXER_PLAIN_MODE;
