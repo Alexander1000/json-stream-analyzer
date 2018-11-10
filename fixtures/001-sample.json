@@ -1,3 +1,18 @@
 {
-  "someObject": 12
+  "someObject": 12,
+  "another": [
+    {
+      "tst": "fsdf",
+      "value": 342.34,
+      "test": false,
+      "aarr": {
+        "figator": "fas",
+        "invalid": true,
+        "ass": 45,
+        "adf": [34, 324, 43543.63],
+        "gadss": ["tet", "test", "sdfs"],
+        "someTest": "fdsdfs\"fdfs"
+      }
+    }
+  ]
 }
