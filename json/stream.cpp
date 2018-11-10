@@ -207,7 +207,7 @@ public:
                 }
             }
 
-            if (this->eof && this->currentPosition == this->posCurrent) {
+            if (this->eof && this->currentPosition == this->posCurrent && this->posForward == 0) {
                 break;
             }
 
