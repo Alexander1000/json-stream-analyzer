@@ -6,4 +6,5 @@
 #define PLAIN_MODE 0
 #define TEXT_MODE 1
 #define VALUE_MODE 2
-#define OBJECT_MODE 3
+#define OBJECT_ATTRIBUTE_MODE 3
+#define SCAN_COMMA_MODE 4

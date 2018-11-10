@@ -101,16 +101,23 @@ public:
                         if (symbol == '{') {
                             this->appendCurrentLexeme(symbol);
                             endOfToken = true;
-                            this->mode = OBJECT_MODE;
+                            this->mode = OBJECT_ATTRIBUTE_MODE;
                         }
                     }
 
-                    if (this->mode == OBJECT_MODE) {
+                    if (this->mode == OBJECT_ATTRIBUTE_MODE) {
                         if (symbol == '"') {
-                            this->appendCurrentLexeme(symbol);
-                            endOfToken = true;
-                            this->mode = TEXT_MODE;
-                            escape = false;
+                            if (this->prevMode != TEXT_MODE) {
+                                this->appendCurrentLexeme(symbol);
+                                endOfToken = true;
+                                this->mode = TEXT_MODE;
+                                this->prevMode = OBJECT_ATTRIBUTE_MODE;
+                                escape = false;
+                            } else {
+                                endOfToken = true;
+                                this->mode = SCAN_COMMA_MODE;
+                                this->prevMode = OBJECT_ATTRIBUTE_MODE;
+                            }
                         }
                     }
 
@@ -120,7 +127,10 @@ public:
                         } else {
                             if (symbol == '"' && !escape) {
                                 endOfToken = true;
-                                this->mode = OBJECT_MODE;
+                                this->mode = this->prevMode;
+                                this->prevMode = TEXT_MODE;
+                                // прочитали лишний символ, откатимся на предыдущую позицию
+                                this->currentPosition--;
                             } else {
                                 this->appendCurrentLexeme(symbol);
                             }
@@ -128,15 +138,17 @@ public:
                         }
                     }
 
-                    // координаты токена
-                    if (symbol == 0x0A) {
-                        this->currentColumn = 0;
-                        ++this->currentLine;
-                    } else {
-                        ++this->currentColumn;
-                    }
+                    if (this->prevMode != TEXT_MODE) {
+                        // координаты токена
+                        if (symbol == 0x0A) {
+                            this->currentColumn = 0;
+                            ++this->currentLine;
+                        } else {
+                            ++this->currentColumn;
+                        }
 
-                    ++this->currentPosition;
+                        ++this->currentPosition;
+                    }
                 }
             }
 
@@ -174,6 +186,7 @@ private:
     IOMemoryBuffer* lexemeWriter;
 
     int mode;
+    int prevMode;
 
     void appendCurrentLexeme(char symbol)
     {
