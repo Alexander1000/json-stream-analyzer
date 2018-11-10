@@ -103,6 +103,11 @@ public:
                                 endOfToken = true;
                                 this->mode = OBJECT_ATTRIBUTE_MODE;
                             }
+                            if (symbol == ':') {
+                                this->appendCurrentLexeme(symbol);
+                                endOfToken = true;
+                                this->mode = OBJECT_ATTRIBUTE_VALUE_MODE;
+                            }
                             break;
                         case OBJECT_ATTRIBUTE_MODE:
                             if (symbol == '"') {
@@ -114,7 +119,7 @@ public:
                                     escape = false;
                                 } else {
                                     endOfToken = true;
-                                    this->mode = SCAN_COMMA_MODE;
+                                    this->mode = PLAIN_MODE;
                                     this->prevMode = OBJECT_ATTRIBUTE_MODE;
                                 }
                             }
