@@ -95,47 +95,47 @@ public:
                 while (this->currentPosition < this->posCurrent) {
                     // продвигаемся по буферу вперед
                     char symbol = this->currentBuffer[this->currentPosition];
-                    // this->proceedSymbol(symbol);
 
-                    if (this->mode == PLAIN_MODE) {
-                        if (symbol == '{') {
-                            this->appendCurrentLexeme(symbol);
-                            endOfToken = true;
-                            this->mode = OBJECT_ATTRIBUTE_MODE;
-                        }
-                    }
-
-                    if (this->mode == OBJECT_ATTRIBUTE_MODE) {
-                        if (symbol == '"') {
-                            if (this->prevMode != TEXT_MODE) {
+                    switch (this->mode) {
+                        case PLAIN_MODE:
+                            if (symbol == '{') {
                                 this->appendCurrentLexeme(symbol);
                                 endOfToken = true;
-                                this->mode = TEXT_MODE;
-                                this->prevMode = OBJECT_ATTRIBUTE_MODE;
+                                this->mode = OBJECT_ATTRIBUTE_MODE;
+                            }
+                            break;
+                        case OBJECT_ATTRIBUTE_MODE:
+                            if (symbol == '"') {
+                                if (this->prevMode != TEXT_MODE) {
+                                    this->appendCurrentLexeme(symbol);
+                                    endOfToken = true;
+                                    this->mode = TEXT_MODE;
+                                    this->prevMode = OBJECT_ATTRIBUTE_MODE;
+                                    escape = false;
+                                } else {
+                                    endOfToken = true;
+                                    this->mode = SCAN_COMMA_MODE;
+                                    this->prevMode = OBJECT_ATTRIBUTE_MODE;
+                                }
+                            }
+                            break;
+
+                        case TEXT_MODE:
+                            if (symbol == '\\' && !escape) {
+                                escape = true;
+                            } else {
+                                if (symbol == '"' && !escape) {
+                                    endOfToken = true;
+                                    this->mode = this->prevMode;
+                                    this->prevMode = TEXT_MODE;
+                                    // прочитали лишний символ, откатимся на предыдущую позицию
+                                    this->currentPosition--;
+                                } else {
+                                    this->appendCurrentLexeme(symbol);
+                                }
                                 escape = false;
-                            } else {
-                                endOfToken = true;
-                                this->mode = SCAN_COMMA_MODE;
-                                this->prevMode = OBJECT_ATTRIBUTE_MODE;
                             }
-                        }
-                    }
-
-                    if (this->mode == TEXT_MODE) {
-                        if (symbol == '\\' && !escape) {
-                            escape = true;
-                        } else {
-                            if (symbol == '"' && !escape) {
-                                endOfToken = true;
-                                this->mode = this->prevMode;
-                                this->prevMode = TEXT_MODE;
-                                // прочитали лишний символ, откатимся на предыдущую позицию
-                                this->currentPosition--;
-                            } else {
-                                this->appendCurrentLexeme(symbol);
-                            }
-                            escape = false;
-                        }
+                            break;
                     }
 
                     if (this->prevMode != TEXT_MODE) {
