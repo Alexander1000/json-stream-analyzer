@@ -22,6 +22,8 @@ public:
 
         this->currentLine = 0;
         this->currentColumn = 0;
+
+        this->mode = PLAIN_MODE;
     }
 
     ~Stream()
@@ -94,6 +96,14 @@ public:
                     char symbol = this->currentBuffer[this->currentPosition];
                     // this->proceedSymbol(symbol);
 
+                    if (this->mode == PLAIN_MODE) {
+                        if (symbol == '{') {
+                            this->appendCurrentLexeme(symbol);
+                            endOfToken = true;
+                            this->mode = OBJECT_MODE;
+                        }
+                    }
+
                     // координаты токена
                     if (symbol == 0x0A) {
                         this->currentColumn = 0;
@@ -138,6 +148,8 @@ private:
     int currentColumn;
 
     IOMemoryBuffer* lexemeWriter;
+
+    int mode;
 
     void appendCurrentLexeme(char symbol)
     {
