@@ -128,6 +128,27 @@ public:
                             }
                             break;
                         case OBJECT_ATTRIBUTE_VALUE_MODE:
+                            if (symbol == '"') {
+                                if (this->prevMode != TEXT_MODE) {
+                                    this->appendCurrentLexeme(symbol);
+                                    endOfToken = true;
+                                    this->mode = TEXT_MODE;
+                                    this->prevMode = OBJECT_ATTRIBUTE_VALUE_MODE;
+                                    escape = false;
+                                } else {
+                                    endOfToken = true;
+                                    this->mode = SCAN_SEPARATOR_MODE;
+                                    this->prevMode = OBJECT_ATTRIBUTE_VALUE_MODE;
+                                }
+                            } else {
+                                if (symbol != ',') {
+                                    this->appendCurrentLexeme(symbol);
+                                } else {
+                                    endOfToken = true;
+                                    this->mode = SCAN_SEPARATOR_MODE;
+                                    this->prevMode = OBJECT_ATTRIBUTE_VALUE_MODE;
+                                }
+                            }
                             break;
 
                         case TEXT_MODE:
