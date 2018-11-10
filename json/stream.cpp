@@ -14,7 +14,7 @@ public:
         this->currentPosition = 0;
 
         // признак того что достигнут конец файла
-        bool eof = false;
+        this->eof = false;
         // позиция в буфере
         this->posCurrent = 0;
         this->posForward = 0;
@@ -157,7 +157,7 @@ public:
                                 escape = false;
                             }
                             break;
-                        case JSON_LEXER_PLAIN_MODE:
+                        case JSON_LEXER_DIGIT_MODE:
                             if (symbol == ',') {
                                 endOfToken = true;
                                 this->mode = JSON_LEXER_PLAIN_MODE;
@@ -183,7 +183,7 @@ public:
                 }
             }
 
-            if (this->currentPosition < 0 || this->currentPosition >= 2 * LEXER_BUFFER_SIZE) {
+            if (this->currentPosition < 0 || this->currentPosition >= 2 * STREAM_BUFFER_SIZE) {
                 // невалидная позиция - выход из цыкла
                 this->eof = true;
                 endOfToken = true;
