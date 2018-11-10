@@ -207,6 +207,10 @@ public:
                 }
             }
 
+            if (this->eof && this->currentPosition == this->posCurrent) {
+                break;
+            }
+
             if (this->currentPosition < 0 || this->currentPosition >= 2 * STREAM_BUFFER_SIZE) {
                 // невалидная позиция - выход из цыкла
                 return NULL;
