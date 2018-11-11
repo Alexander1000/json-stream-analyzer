@@ -1,10 +1,11 @@
 class Token
 {
 public:
-    Token(int line, int column)
+    Token(int line, int column, IOReader* reader)
     {
         this->line = line;
         this->column = column;
+        this->reader = reader;
     }
 
     int getLine()
@@ -17,7 +18,13 @@ public:
         return this->column;
     }
 
+    IOReader* getReader()
+    {
+        return this->reader;
+    }
+
 protected:
     int line;
     int column;
+    IOReader* reader;
 };
