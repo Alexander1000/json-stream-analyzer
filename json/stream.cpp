@@ -18,7 +18,6 @@ public:
         // позиция в буфере
         this->posCurrent = 0;
         this->posForward = 0;
-        this->read_size = 0;
 
         this->currentLine = 0;
         this->currentColumn = 0;
@@ -42,14 +41,13 @@ public:
             return NULL;
         }
 
-        if (this->currentPosition == 0 && this->read_size == 0) {
+        if (this->currentPosition == 0 && this->posCurrent == 0) {
             // первый раз тут, читаем данные
-            this->read_size = this->reader->read(this->currentBuffer, STREAM_BUFFER_SIZE);
             // позиция в буфере
-            this->posCurrent = this->read_size;
+            this->posCurrent = this->reader->read(this->currentBuffer, STREAM_BUFFER_SIZE);
             this->posForward = 0;
 
-            if (this->read_size < STREAM_BUFFER_SIZE) {
+            if (this->posCurrent < STREAM_BUFFER_SIZE) {
                 this->eof = true;
                 this->lastFrame = true;
             } else {
@@ -239,8 +237,6 @@ private:
 
     // признак конца потока
     bool eof;
-
-    int read_size;
 
     // координаты токена в документе
     int currentLine;
