@@ -10,4 +10,6 @@
 #include "token.cpp"
 
 #include "token_braces_open.cpp"
+#include "token_braces_close.cpp"
+#include "token_comma.cpp"
 #include "token_lexeme_word.cpp"
