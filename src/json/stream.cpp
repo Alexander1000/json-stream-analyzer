@@ -61,6 +61,7 @@ public:
         bool endOfToken = false;
         this->lexemeWriter = NULL;
         bool escape = false;
+        // Token* token;
 
         while (!endOfToken) {
             // если текущий указатель перешел в forward-буфер

@@ -7,6 +7,6 @@ public:
 
     int getType()
     {
-        return TOKEN_TYPE_WORD;
+        return TOKEN_TYPE_TEXT;
     }
 };
