@@ -61,7 +61,7 @@ public:
         bool endOfToken = false;
         this->lexemeWriter = NULL;
         bool escape = false;
-        // Token* token;
+        Token* token = NULL;
 
         while (!endOfToken) {
             // если текущий указатель перешел в forward-буфер
@@ -103,31 +103,37 @@ public:
                             this->appendCurrentLexeme(symbol);
                             endOfToken = true;
                             this->prevMode = JSON_LEXER_PLAIN_MODE;
+                            token = new TokenBracesOpen(this->currentLine, this->currentColumn, this->lexemeWriter);
                             break;
                         case '}':
                             this->appendCurrentLexeme(symbol);
                             endOfToken = true;
                             this->prevMode = JSON_LEXER_PLAIN_MODE;
+                            token = new TokenBracesClose(this->currentLine, this->currentColumn, this->lexemeWriter);
                             break;
                         case '[':
                             this->appendCurrentLexeme(symbol);
                             endOfToken = true;
                             this->prevMode = JSON_LEXER_PLAIN_MODE;
+                            token = new TokenArrayOpen(this->currentLine, this->currentColumn, this->lexemeWriter);
                             break;
                         case ']':
                             this->appendCurrentLexeme(symbol);
                             endOfToken = true;
                             this->prevMode = JSON_LEXER_PLAIN_MODE;
+                            token = new TokenArrayClose(this->currentLine, this->currentColumn, this->lexemeWriter);
                             break;
                         case ':':
                             this->appendCurrentLexeme(symbol);
                             endOfToken = true;
                             this->prevMode = JSON_LEXER_PLAIN_MODE;
+                            token = new TokenColon(this->currentLine, this->currentColumn, this->lexemeWriter);
                             break;
                         case ',':
                             this->appendCurrentLexeme(symbol);
                             endOfToken = true;
                             this->prevMode = JSON_LEXER_PLAIN_MODE;
+                            token = new TokenComma(this->currentLine, this->currentColumn, this->lexemeWriter);
                             break;
                         case '"':
                             this->appendCurrentLexeme(symbol);
@@ -137,6 +143,7 @@ public:
                                 escape = false;
                             }
                             this->prevMode = JSON_LEXER_PLAIN_MODE;
+                            token = new TokenLexemeWord(this->currentLine, this->currentColumn, this->lexemeWriter);
                             break;
                     }
 
@@ -168,6 +175,7 @@ public:
                             endOfToken = true;
                             this->mode = JSON_LEXER_PLAIN_MODE;
                             this->prevMode = JSON_LEXER_TEXT_MODE;
+                            token = new TokenLexemeWord(this->currentLine, this->currentColumn, this->lexemeWriter);
                         } else {
                             this->appendCurrentLexeme(symbol);
                         }
@@ -182,6 +190,7 @@ public:
                         this->mode = this->prevMode;
                         this->prevMode = JSON_LEXER_DIGIT_MODE;
                         move_position = false;
+                        token = new TokenLexemeWord(this->currentLine, this->currentColumn, this->lexemeWriter);
                     }
                     break;
                 case JSON_LEXER_WORD_MODE:
@@ -190,6 +199,7 @@ public:
                         this->mode = this->prevMode;
                         this->prevMode = JSON_LEXER_WORD_MODE;
                         move_position = false;
+                        token = new TokenLexemeWord(this->currentLine, this->currentColumn, this->lexemeWriter);
                     } else {
                         this->appendCurrentLexeme(symbol);
                     }
@@ -213,13 +223,7 @@ public:
             }
         }
 
-        if (this->lexemeWriter != NULL) {
-            TokenLexemeWord* token = new TokenLexemeWord(this->currentLine, this->currentColumn, this->lexemeWriter);
-            this->lexemeWriter = NULL;
-            return token;
-        }
-
-        return NULL;
+        return token;
     }
 
 private:
