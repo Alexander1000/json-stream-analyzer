@@ -25,6 +25,8 @@ public:
 
         this->mode = JSON_LEXER_PLAIN_MODE;
         this->prevMode = JSON_LEXER_PLAIN_MODE;
+
+        this->lastFrame = false;
     }
 
     ~Stream()
@@ -49,6 +51,7 @@ public:
 
             if (this->read_size < STREAM_BUFFER_SIZE) {
                 this->eof = true;
+                this->lastFrame = true;
             } else {
                 this->posForward = this->reader->read(this->forwardBuffer, STREAM_BUFFER_SIZE);
                 if (this->posForward < STREAM_BUFFER_SIZE) {
@@ -63,12 +66,12 @@ public:
 
         while (!endOfToken) {
             // если текущий указатель перешел в forward-буфер
-            if (this->currentPosition >= STREAM_BUFFER_SIZE && this->currentPosition < 2 * STREAM_BUFFER_SIZE) {
+            if (this->currentPosition >= STREAM_BUFFER_SIZE) {
                 // очищаем буфер со старыми данными
                 memset(this->currentBuffer, 0, STREAM_BUFFER_SIZE * sizeof(char));
                 // копируем данные из forward buffer в current
                 memcpy(this->currentBuffer, this->forwardBuffer, STREAM_BUFFER_SIZE);
-                // копируме конечную позицию в буфере из forward в current
+                // копируем конечную позицию в буфере из forward в current
                 this->posCurrent = this->posForward;
                 // смещаем текущую позицию
                 this->currentPosition -= STREAM_BUFFER_SIZE;
@@ -85,10 +88,11 @@ public:
                 } else {
                     // если конец файла, то освобождаем память от forward-буфера
                     this->posForward = 0;
+                    this->lastFrame = true;
                 }
             }
 
-            if (this->currentPosition >= 0 && this->currentPosition < STREAM_BUFFER_SIZE && this->currentPosition < this->posCurrent) {
+            if (this->currentPosition >= 0 && this->currentPosition < this->posCurrent) {
                 // текущий указатель находится внутри первого буфера
                 bool move_position = true;
                 // продвигаемся по буферу вперед
@@ -207,13 +211,8 @@ public:
                 }
             }
 
-            if (this->eof && this->currentPosition == this->posCurrent && this->posForward == 0) {
+            if (this->lastFrame && this->currentPosition == this->posCurrent) {
                 break;
-            }
-
-            if (this->currentPosition < 0 || this->currentPosition >= 2 * STREAM_BUFFER_SIZE) {
-                // невалидная позиция - выход из цыкла
-                return NULL;
             }
         }
 
@@ -253,6 +252,8 @@ private:
 
     int mode;
     int prevMode;
+
+    bool lastFrame;
 
     bool is_digit(char symbol)
     {
