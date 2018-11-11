@@ -1,6 +1,5 @@
 #include <iostream>
 #include "cl.cpp"
-#include <stdio.h>
 #include <sys/stat.h>
 
 #include "buffer/io_buffer.h"
@@ -8,12 +7,10 @@
 
 using namespace std;
 
-#define ERROR_MISSING_INPUT -1
-#define ERROR_STAT_INFO -2
-#define ERROR_STAT_INVALID_MODE -3
-#define ERROR_NOT_IMPLEMENT -4
-
-#define ERROR_INVALID -255
+#define ERROR_MISSING_INPUT (-1)
+#define ERROR_STAT_INFO (-2)
+#define ERROR_STAT_INVALID_MODE (-3)
+#define ERROR_NOT_IMPLEMENT (-4)
 
 void help()
 {
@@ -60,7 +57,9 @@ int main(int argc, char* argv[])
     if (s.st_mode & S_IFDIR) {
         cout << "is a directory" << endl;
         return ERROR_NOT_IMPLEMENT;
-    } else if(s.st_mode & S_IFREG) {
+    }
+
+    if(s.st_mode & S_IFREG) {
         cout << "starting analyze file" << endl;
         IOFileReader* file_buffer = new IOFileReader(inputPath);
         Stream* json_stream = new Stream(file_buffer);
