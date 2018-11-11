@@ -92,123 +92,121 @@ public:
                 }
             }
 
-            if (this->currentPosition >= 0 && this->currentPosition < this->posCurrent) {
-                // текущий указатель находится внутри первого буфера
-                bool move_position = true;
-                // продвигаемся по буферу вперед
-                char symbol = this->currentBuffer[this->currentPosition];
+            // текущий указатель находится внутри первого буфера
+            bool move_position = true;
+            // продвигаемся по буферу вперед
+            char symbol = this->currentBuffer[this->currentPosition];
 
-                switch (this->mode) {
-                    case JSON_LEXER_PLAIN_MODE:
-                        switch (symbol) {
-                            case '{':
-                                this->appendCurrentLexeme(symbol);
-                                endOfToken = true;
-                                this->prevMode = JSON_LEXER_PLAIN_MODE;
-                                break;
-                            case '}':
-                                this->appendCurrentLexeme(symbol);
-                                endOfToken = true;
-                                this->prevMode = JSON_LEXER_PLAIN_MODE;
-                                break;
-                            case '[':
-                                this->appendCurrentLexeme(symbol);
-                                endOfToken = true;
-                                this->prevMode = JSON_LEXER_PLAIN_MODE;
-                                break;
-                            case ']':
-                                this->appendCurrentLexeme(symbol);
-                                endOfToken = true;
-                                this->prevMode = JSON_LEXER_PLAIN_MODE;
-                                break;
-                            case ':':
-                                this->appendCurrentLexeme(symbol);
-                                endOfToken = true;
-                                this->prevMode = JSON_LEXER_PLAIN_MODE;
-                                break;
-                            case ',':
-                                this->appendCurrentLexeme(symbol);
-                                endOfToken = true;
-                                this->prevMode = JSON_LEXER_PLAIN_MODE;
-                                break;
-                            case '"':
-                                this->appendCurrentLexeme(symbol);
-                                endOfToken = true;
-                                if (this->prevMode != JSON_LEXER_TEXT_MODE) {
-                                    this->mode = JSON_LEXER_TEXT_MODE;
-                                    escape = false;
-                                }
-                                this->prevMode = JSON_LEXER_PLAIN_MODE;
-                                break;
-                        }
-
-                        if (!endOfToken) {
-                            if (symbol == ' ' || symbol == 0x0A || symbol == 0x0D) {
-                                this->mode = JSON_LEXER_PLAIN_MODE;
-                                this->prevMode = JSON_LEXER_PLAIN_MODE;
-                            } else if (this->is_digit(symbol)) {
-                                this->mode = JSON_LEXER_DIGIT_MODE;
-                                this->prevMode = JSON_LEXER_PLAIN_MODE;
-                                move_position = false;
-                            } else if (this->is_word(symbol)) {
-                                this->mode = JSON_LEXER_WORD_MODE;
-                                this->prevMode = JSON_LEXER_PLAIN_MODE;
-                                move_position = false;
-                            } else {
-                                this->mode = JSON_LEXER_PLAIN_MODE;
-                                this->prevMode = JSON_LEXER_PLAIN_MODE;
-                            }
-                        }
-
-                        break;
-                    case JSON_LEXER_TEXT_MODE:
-                        if (symbol == '\\' && !escape) {
-                            escape = true;
-                        } else {
-                            if (symbol == '"' && !escape) {
-                                move_position = false;
-                                endOfToken = true;
-                                this->mode = JSON_LEXER_PLAIN_MODE;
-                                this->prevMode = JSON_LEXER_TEXT_MODE;
-                            } else {
-                                this->appendCurrentLexeme(symbol);
-                            }
-                            escape = false;
-                        }
-                        break;
-                    case JSON_LEXER_DIGIT_MODE:
-                        if (this->is_digit(symbol) || symbol == '.') {
+            switch (this->mode) {
+                case JSON_LEXER_PLAIN_MODE:
+                    switch (symbol) {
+                        case '{':
                             this->appendCurrentLexeme(symbol);
-                        } else {
                             endOfToken = true;
-                            this->mode = this->prevMode;
-                            this->prevMode = JSON_LEXER_DIGIT_MODE;
-                            move_position = false;
-                        }
-                        break;
-                    case JSON_LEXER_WORD_MODE:
-                        if (!this->is_word(symbol)) {
-                            endOfToken = true;
-                            this->mode = this->prevMode;
-                            this->prevMode = JSON_LEXER_WORD_MODE;
-                            move_position = false;
-                        } else {
+                            this->prevMode = JSON_LEXER_PLAIN_MODE;
+                            break;
+                        case '}':
                             this->appendCurrentLexeme(symbol);
-                        }
-                        break;
-                }
-
-                if (move_position) {
-                    // координаты токена
-                    if (symbol == 0x0A) {
-                        this->currentColumn = 0;
-                        ++this->currentLine;
-                    } else {
-                        ++this->currentColumn;
+                            endOfToken = true;
+                            this->prevMode = JSON_LEXER_PLAIN_MODE;
+                            break;
+                        case '[':
+                            this->appendCurrentLexeme(symbol);
+                            endOfToken = true;
+                            this->prevMode = JSON_LEXER_PLAIN_MODE;
+                            break;
+                        case ']':
+                            this->appendCurrentLexeme(symbol);
+                            endOfToken = true;
+                            this->prevMode = JSON_LEXER_PLAIN_MODE;
+                            break;
+                        case ':':
+                            this->appendCurrentLexeme(symbol);
+                            endOfToken = true;
+                            this->prevMode = JSON_LEXER_PLAIN_MODE;
+                            break;
+                        case ',':
+                            this->appendCurrentLexeme(symbol);
+                            endOfToken = true;
+                            this->prevMode = JSON_LEXER_PLAIN_MODE;
+                            break;
+                        case '"':
+                            this->appendCurrentLexeme(symbol);
+                            endOfToken = true;
+                            if (this->prevMode != JSON_LEXER_TEXT_MODE) {
+                                this->mode = JSON_LEXER_TEXT_MODE;
+                                escape = false;
+                            }
+                            this->prevMode = JSON_LEXER_PLAIN_MODE;
+                            break;
                     }
 
-                    ++this->currentPosition;
+                    if (!endOfToken) {
+                        if (symbol == ' ' || symbol == 0x0A || symbol == 0x0D) {
+                            this->mode = JSON_LEXER_PLAIN_MODE;
+                            this->prevMode = JSON_LEXER_PLAIN_MODE;
+                        } else if (this->is_digit(symbol)) {
+                            this->mode = JSON_LEXER_DIGIT_MODE;
+                            this->prevMode = JSON_LEXER_PLAIN_MODE;
+                            move_position = false;
+                        } else if (this->is_word(symbol)) {
+                            this->mode = JSON_LEXER_WORD_MODE;
+                            this->prevMode = JSON_LEXER_PLAIN_MODE;
+                            move_position = false;
+                        } else {
+                            this->mode = JSON_LEXER_PLAIN_MODE;
+                            this->prevMode = JSON_LEXER_PLAIN_MODE;
+                        }
+                    }
+
+                    break;
+                case JSON_LEXER_TEXT_MODE:
+                    if (symbol == '\\' && !escape) {
+                        escape = true;
+                    } else {
+                        if (symbol == '"' && !escape) {
+                            move_position = false;
+                            endOfToken = true;
+                            this->mode = JSON_LEXER_PLAIN_MODE;
+                            this->prevMode = JSON_LEXER_TEXT_MODE;
+                        } else {
+                            this->appendCurrentLexeme(symbol);
+                        }
+                        escape = false;
+                    }
+                    break;
+                case JSON_LEXER_DIGIT_MODE:
+                    if (this->is_digit(symbol) || symbol == '.') {
+                        this->appendCurrentLexeme(symbol);
+                    } else {
+                        endOfToken = true;
+                        this->mode = this->prevMode;
+                        this->prevMode = JSON_LEXER_DIGIT_MODE;
+                        move_position = false;
+                    }
+                    break;
+                case JSON_LEXER_WORD_MODE:
+                    if (!this->is_word(symbol)) {
+                        endOfToken = true;
+                        this->mode = this->prevMode;
+                        this->prevMode = JSON_LEXER_WORD_MODE;
+                        move_position = false;
+                    } else {
+                        this->appendCurrentLexeme(symbol);
+                    }
+                    break;
+            }
+
+            if (move_position) {
+                // координаты токена
+                if (symbol == 0x0A) {
+                    this->currentColumn = 0;
+                    ++this->currentLine;
+                } else {
+                    ++this->currentColumn;
                 }
+
+                ++this->currentPosition;
             }
 
             if (this->lastFrame && this->currentPosition == this->posCurrent) {
