@@ -23,6 +23,8 @@ public:
         return this->reader;
     }
 
+    virtual int getType() = 0;
+
 protected:
     int line;
     int column;
