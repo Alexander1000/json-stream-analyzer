@@ -37,7 +37,7 @@ public:
 
     Token* get_next_token()
     {
-        if (this->eof && this->currentPosition == this->posCurrent) {
+        if (this->lastFrame && this->currentPosition == this->posCurrent) {
             // достигнут конец
             return NULL;
         }
