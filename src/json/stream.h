@@ -12,4 +12,6 @@
 
 #include "stream.cpp"
 #include "pretty.cpp"
+
+#include "object/object.h"
 #include "object.cpp"
