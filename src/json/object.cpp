@@ -1,11 +1,7 @@
 class Object
 {
 public:
-    Object(Stream *stream)
+    Object()
     {
-        this->stream = stream;
     }
-
-private:
-    Stream* stream;
 };

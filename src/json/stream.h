@@ -14,4 +14,5 @@
 #include "pretty.cpp"
 
 #include "object/object.h"
+#include "decoder.cpp"
 #include "object.cpp"
