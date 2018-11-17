@@ -8,15 +8,22 @@ public:
 
     Object* decode()
     {
+        return this->parse_object();
+    }
+
+private:
+    Stream* stream;
+
+    Object* parse_object()
+    {
         Object* obj = new Object();
         Token *token;
 
-        // begin // временное решение, json может начаться массивом
+        // json-объект
         token = this->stream->get_next_token();
         if (token->getType() != TOKEN_TYPE_BRACES_OPEN) {
             return NULL;
         }
-        // end //
 
         token = this->stream->get_next_token();
         while(token != NULL) {
@@ -25,7 +32,4 @@ public:
 
         return obj;
     }
-
-private:
-    Stream* stream;
 };
