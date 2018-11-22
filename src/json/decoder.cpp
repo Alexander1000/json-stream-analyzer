@@ -76,4 +76,53 @@ private:
 
         return obj;
     }
+
+    void parse_key_value_object()
+    {
+        Token* token = this->stream->get_next_token();
+        if (token == NULL) {
+            // invalid json
+            return;
+        }
+        if (token->getType() != TOKEN_TYPE_QUOTES) {
+            // invalid json
+            return;
+        }
+
+        token = this->stream->get_next_token();
+        if (token == NULL) {
+            // invalid json
+            return;
+        }
+        if (token->getToken() != TOKEN_TYPE_TEXT) {
+            // invalid json
+            return;
+        }
+
+        // todo make key
+
+        token = this->stream->get_next_token();
+        if (token == NULL) {
+            // invalid json
+            return;
+        }
+        if (token->getType() != TOKEN_TYPE_QUOTES) {
+            // invalid json
+            return;
+        }
+
+        token = this->stream->get_next_token();
+        if (token == NULL) {
+            // invalid json
+            return;
+        }
+        if (token->getType() != TOKEN_TYPE_COLON) {
+            // invalid json
+            return;
+        }
+
+        token = this->stream->get_next_token();
+
+        // todo тут развилка какой value будет
+    }
 };
