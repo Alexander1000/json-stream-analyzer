@@ -122,7 +122,19 @@ private:
         }
 
         token = this->stream->get_next_token();
-
-        // todo тут развилка какой value будет
+        switch (token->getType()) {
+            case TOKEN_TYPE_BRACES_OPEN:
+                // object
+                break;
+            case TOKEN_TYPE_QUOTES:
+                // text
+                break;
+            case TOKEN_TYPE_ARRAY_OPEN:
+                // array
+                break;
+            case TOKEN_TYPE_TEXT:
+                // boolean, digits (todo разделить)
+                break;
+        }
     }
 };
