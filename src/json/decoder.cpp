@@ -94,7 +94,7 @@ private:
             // invalid json
             return;
         }
-        if (token->getToken() != TOKEN_TYPE_TEXT) {
+        if (token->getType() != TOKEN_TYPE_TEXT) {
             // invalid json
             return;
         }
