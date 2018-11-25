@@ -4,6 +4,7 @@ public:
     Object()
     {
         this->map = NULL;
+        this->length = 0;
     }
 
     void setKeyValue(char* key, Value* value)
@@ -11,5 +12,6 @@ public:
     }
 
 private:
+    int length;
     DWORD* map;
 };
