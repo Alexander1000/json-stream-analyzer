@@ -190,7 +190,7 @@ public:
                         this->mode = this->prevMode;
                         this->prevMode = JSON_LEXER_DIGIT_MODE;
                         move_position = false;
-                        token = new TokenLexemeWord(this->currentLine, this->currentColumn, this->lexemeWriter);
+                        token = new TokenNumeric(this->currentLine, this->currentColumn, this->lexemeWriter);
                     }
                     break;
                 case JSON_LEXER_WORD_MODE:

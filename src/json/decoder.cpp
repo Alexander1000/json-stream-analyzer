@@ -133,7 +133,10 @@ private:
                 // array
                 break;
             case TOKEN_TYPE_TEXT:
-                // boolean, digits (todo разделить)
+                // boolean
+                break;
+            case TOKEN_TYPE_NUMERIC:
+                // digits
                 break;
         }
     }
