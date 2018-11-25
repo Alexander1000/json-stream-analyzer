@@ -77,7 +77,7 @@ private:
         return obj;
     }
 
-    void parse_key_value_object()
+    void parse_key_value_object(Object* obj)
     {
         Token* token = this->stream->get_next_token();
         if (token == NULL) {
