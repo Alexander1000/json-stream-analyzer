@@ -10,6 +10,8 @@
 #define QUOTE_COLON 5
 #define QUOTE_VAL_TEXT 6
 
+#define ELEMENT_TYPE_OBJECT 1
+
 class Decoder
 {
 public:
@@ -28,6 +30,11 @@ private:
 
     Element* parse()
     {
+        return this->parse_element();
+    }
+
+    Element* parse_element()
+    {
         Token* token = this->stream->get_next_token();
         if (token == NULL) {
             return NULL;
@@ -37,14 +44,57 @@ private:
             case TOKEN_TYPE_BRACES_OPEN:
                 // object
                 std::map<std::string, Element*>* obj;
-                Element element(1, (void*) obj);
+                Element element(ELEMENT_TYPE_OBJECT, (void*) obj);
+                // @todo: use malloc
                 return &element;
         }
 
         return NULL;
     }
 
-    Object* parse_object()
+    std::map<std::string, Element*>* parse_object()
+    {
+        std::map<std::string, Element*> object;
+
+        Token* token = this->stream->get_next_token();
+        if (token->getType() != TOKEN_TYPE_QUOTES) {
+            // unexpected, object property must be have quote
+            // @todo: throw exception
+            return NULL;
+        }
+
+        token = this->stream->get_next_token();
+        if (token->getType() != TOKEN_TYPE_TEXT) {
+            // unexpected
+            // @todo: throw exception
+            return NULL;
+        }
+
+        // @todo: optimize and reuse (memory managment)
+        char* property_name = (char*) malloc(sizeof(char*) * 1024);
+        token->getReader()->read(property_name, 1024);
+
+        token = this->stream->get_next_token();
+        if (token->getType() != TOKEN_TYPE_QUOTES) {
+            // @todo: throw exception
+            return NULL;
+        }
+
+        token = this->stream->get_next_token();
+        if (token->getType() != TOKEN_TYPE_COLON) {
+            // @todo: unexpected
+            return NULL;
+        }
+
+        Element* property_value = this->parse_element();
+
+        object[std::string(property_name)] = property_value;
+
+        // todo: allocate memory
+        return &object;
+    }
+
+    Object* _parse_object()
     {
         Object* obj = new Object();
         Token* token, keyToken, valToken;
