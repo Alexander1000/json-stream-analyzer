@@ -18,9 +18,9 @@ public:
         this->stream = stream;
     }
 
-    Object* decode()
+    Element* decode()
     {
-        return this->parse_object();
+        return this->parse();
     }
 
 private:
@@ -37,8 +37,8 @@ private:
             case TOKEN_TYPE_BRACES_OPEN:
                 // object
                 std::map<std::string, Element*>* obj;
-                Element* element(1, (void*) obj);
-                return element;
+                Element element(1, (void*) obj);
+                return &element;
         }
 
         return NULL;

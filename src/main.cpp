@@ -59,10 +59,10 @@ int main(int argc, char* argv[])
 
     if(s.st_mode & S_IFREG) {
         std::cout << "starting analyze file" << std::endl;
-        IOFileReader* file_buffer = new IOFileReader(inputPath);
-        Stream* json_stream = new Stream(file_buffer);
-        Pretty* json_pretty = new Pretty(json_stream);
-        json_pretty->pretty();
+        IOFileReader file_buffer(inputPath);
+        Stream json_stream(&file_buffer);
+        Decoder decoder(&json_stream);
+        decoder.decode();
     } else {
         return ERROR_STAT_INVALID_MODE;
     }
