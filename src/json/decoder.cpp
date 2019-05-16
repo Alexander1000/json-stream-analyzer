@@ -1,3 +1,6 @@
+#include <map>
+#include <string>
+
 #define QUOTE_UNDEFINED -1
 #define QUOTE_KEY_OPEN 0
 #define QUOTE_KEY_CLOSE 1
@@ -22,6 +25,24 @@ public:
 
 private:
     Stream* stream;
+
+    Element* parse()
+    {
+        Token* token = this->stream->get_next_token();
+        if (token == NULL) {
+            return NULL;
+        }
+
+        switch (token->getType()) {
+            case TOKEN_TYPE_BRACES_OPEN:
+                // object
+                std::map<std::string, Element*>* obj;
+                Element* element(1, (void*) obj);
+                return element;
+        }
+
+        return NULL;
+    }
 
     Object* parse_object()
     {

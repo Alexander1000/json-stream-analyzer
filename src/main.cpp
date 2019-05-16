@@ -5,8 +5,6 @@
 #include "buffer/io_buffer.h"
 #include "json/stream.h"
 
-using namespace std;
-
 #define ERROR_MISSING_INPUT (-1)
 #define ERROR_STAT_INFO (-2)
 #define ERROR_STAT_INVALID_MODE (-3)
@@ -14,9 +12,9 @@ using namespace std;
 
 void help()
 {
-    cout << "Help message for json-stream-analyzer:" << endl;
-    cout << "-i [--input] - file for analyze" << endl;
-    cout << "-h [--help] - this help message" << endl;
+    std::cout << "Help message for json-stream-analyzer:" << std::endl;
+    std::cout << "-i [--input] - file for analyze" << std::endl;
+    std::cout << "-h [--help] - this help message" << std::endl;
 }
 
 int main(int argc, char* argv[])
@@ -42,7 +40,7 @@ int main(int argc, char* argv[])
     }
 
     if (inputPath == NULL) {
-        cout << "Missing parameter value for -i [--input]" << endl;
+        std::cout << "Missing parameter value for -i [--input]" << std::endl;
         return ERROR_MISSING_INPUT;
     }
 
@@ -60,7 +58,7 @@ int main(int argc, char* argv[])
     }
 
     if(s.st_mode & S_IFREG) {
-        cout << "starting analyze file" << endl;
+        std::cout << "starting analyze file" << std::endl;
         IOFileReader* file_buffer = new IOFileReader(inputPath);
         Stream* json_stream = new Stream(file_buffer);
         Pretty* json_pretty = new Pretty(json_stream);
