@@ -11,6 +11,7 @@
 #define QUOTE_VAL_TEXT 6
 
 #define ELEMENT_TYPE_OBJECT 1
+#define ELEMENT_TYPE_TEXT 2
 
 class Decoder
 {
@@ -40,13 +41,19 @@ private:
             return NULL;
         }
 
+        Element* element;
+
         switch (token->getType()) {
             case TOKEN_TYPE_BRACES_OPEN:
                 // object
-                std::map<std::string, Element*>* obj;
-                Element element(ELEMENT_TYPE_OBJECT, (void*) obj);
-                // @todo: use malloc
-                return &element;
+                std::map<std::string, Element*>* obj = this->parse_object();
+                element = new Element(ELEMENT_TYPE_OBJECT, (void*) obj);
+                return element;
+            case TOKEN_TYPE_QUOTES:
+                // text
+                std::string* text = this->parse_text();
+                element = new Element(ELEMENT_TYPE_TEXT, (void*) text);
+                return element;
         }
 
         return NULL;
@@ -92,6 +99,26 @@ private:
 
         // todo: allocate memory
         return &object;
+    }
+
+    std::string* parse_text()
+    {
+        Token* token = this->stream->get_next_token();
+        if (token->getType() != TOKEN_TYPE_TEXT) {
+            return NULL;
+        }
+
+        char* text = (char*) malloc(sizeof(char*) * 1024);
+        token->getReader()->read(text, 1024);
+        std::string* val = new std::string(text);
+
+        token = this->stream->get_next_token();
+        if (token->getType() != TOKEN_TYPE_QUOTES) {
+            // todo: throw exception
+            return NULL;
+        }
+
+        return val;
     }
 
     Object* _parse_object()
