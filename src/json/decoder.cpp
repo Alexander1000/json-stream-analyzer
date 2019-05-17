@@ -5,6 +5,7 @@
 #define ELEMENT_TYPE_OBJECT 1
 #define ELEMENT_TYPE_TEXT 2
 #define ELEMENT_TYPE_NUMERIC 3
+#define ELEMENT_TYPE_ARRAY 4
 
 class Decoder
 {
@@ -38,7 +39,7 @@ private:
         std::map<std::string, Element*>* obj;
         std::string* text;
         std::string* digit;
-        std::list<Element*> array;
+        std::list<Element*>* array;
 
         switch (token->getType()) {
             case TOKEN_TYPE_BRACES_OPEN:
@@ -57,6 +58,8 @@ private:
                 element = new Element(ELEMENT_TYPE_NUMERIC, (void*) digit);
                 return element;
             case TOKEN_TYPE_ARRAY_OPEN:
+                array = this->parse_array();
+                element = new Element(ELEMENT_TYPE_ARRAY, (void*) array);
                 break;
         }
 
@@ -150,5 +153,10 @@ PARSE_OBJ_PROPERTY:
         token->getReader()->read(text, 1024);
         std::string* val = new std::string(text);
         return val;
+    }
+
+    std::list<Element*>* parse_array()
+    {
+        return NULL;
     }
 };
