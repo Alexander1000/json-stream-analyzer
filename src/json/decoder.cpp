@@ -61,7 +61,10 @@ private:
         std::map<std::string, Element*>* object;
         object = (std::map<std::string, Element*>*) malloc(sizeof(std::map<std::string, Element*>));
 
-        Token* token = this->stream->get_next_token();
+        Token* token;
+
+PARSE_OBJ_PROPERTY:
+        token = this->stream->get_next_token();
         if (token->getType() != TOKEN_TYPE_QUOTES) {
             // unexpected, object property must be have quote
             // @todo: throw exception
@@ -99,7 +102,8 @@ private:
         switch (token->getType()) {
             case TOKEN_TYPE_COMMA:
                 // parse next object property key-val
-                break;
+                // todo: fixme, refactor
+                goto PARSE_OBJ_PROPERTY;
             case TOKEN_TYPE_BRACES_CLOSE:
                 break;
         }
