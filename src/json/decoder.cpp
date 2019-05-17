@@ -58,9 +58,10 @@ private:
                 element = new Element(ELEMENT_TYPE_NUMERIC, (void*) digit);
                 return element;
             case TOKEN_TYPE_ARRAY_OPEN:
+                // array
                 array = this->parse_array();
                 element = new Element(ELEMENT_TYPE_ARRAY, (void*) array);
-                break;
+                return element;
         }
 
         return NULL;
