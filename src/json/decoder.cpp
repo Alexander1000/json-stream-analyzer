@@ -3,6 +3,7 @@
 
 #define ELEMENT_TYPE_OBJECT 1
 #define ELEMENT_TYPE_TEXT 2
+#define ELEMENT_TYPE_NUMERIC 3
 
 class Decoder
 {
@@ -44,6 +45,11 @@ private:
                 // text
                 std::string* text = this->parse_text();
                 element = new Element(ELEMENT_TYPE_TEXT, (void*) text);
+                return element;
+            case TOKEN_TYPE_NUMERIC:
+                // numeric
+                std::string* digit = this->parse_numeric();
+                element = new Element(ELEMENT_TYPE_NUMERIC, (void*) digit);
                 return element;
         }
 
@@ -109,6 +115,19 @@ private:
             return NULL;
         }
 
+        return val;
+    }
+
+    std::string* parse_numeric()
+    {
+        Token* token = this->stream->get_next_token();
+        if (token->getType() != TOKEN_TYPE_NUMERIC) {
+            return NULL;
+        }
+
+        char* text = (char*) malloc(sizeof(char*) * 1024);
+        token->getReader()->read(text, 1024);
+        std::string* val = new std::string(text);
         return val;
     }
 };
