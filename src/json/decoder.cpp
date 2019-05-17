@@ -1,5 +1,6 @@
 #include <map>
 #include <string>
+#include <list>
 
 #define ELEMENT_TYPE_OBJECT 1
 #define ELEMENT_TYPE_TEXT 2
@@ -34,23 +35,29 @@ private:
         }
 
         Element* element;
+        std::map<std::string, Element*>* obj;
+        std::string* text;
+        std::string* digit;
+        std::list<Element*> array;
 
         switch (token->getType()) {
             case TOKEN_TYPE_BRACES_OPEN:
                 // object
-                std::map<std::string, Element*>* obj = this->parse_object();
+                obj = this->parse_object();
                 element = new Element(ELEMENT_TYPE_OBJECT, (void*) obj);
                 return element;
             case TOKEN_TYPE_QUOTES:
                 // text
-                std::string* text = this->parse_text();
+                text = this->parse_text();
                 element = new Element(ELEMENT_TYPE_TEXT, (void*) text);
                 return element;
             case TOKEN_TYPE_NUMERIC:
                 // numeric
-                std::string* digit = this->parse_numeric();
+                digit = this->parse_numeric();
                 element = new Element(ELEMENT_TYPE_NUMERIC, (void*) digit);
                 return element;
+            case TOKEN_TYPE_ARRAY_OPEN:
+                break;
         }
 
         return NULL;
