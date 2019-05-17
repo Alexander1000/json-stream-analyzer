@@ -58,7 +58,8 @@ private:
 
     std::map<std::string, Element*>* parse_object()
     {
-        std::map<std::string, Element*> object;
+        std::map<std::string, Element*>* object;
+        object = (std::map<std::string, Element*>*) malloc(sizeof(std::map<std::string, Element*>));
 
         Token* token = this->stream->get_next_token();
         if (token->getType() != TOKEN_TYPE_QUOTES) {
@@ -92,10 +93,19 @@ private:
 
         Element* property_value = this->parse_element();
 
-        object[std::string(property_name)] = property_value;
+        (*object)[std::string(property_name)] = property_value;
+
+        token = this->stream->get_next_token();
+        switch (token->getType()) {
+            case TOKEN_TYPE_COMMA:
+                // parse next object property key-val
+                break;
+            case TOKEN_TYPE_BRACES_CLOSE:
+                break;
+        }
 
         // todo: allocate memory
-        return &object;
+        return object;
     }
 
     std::string* parse_text()
