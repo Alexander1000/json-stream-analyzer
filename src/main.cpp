@@ -2,8 +2,7 @@
 #include "cl.cpp"
 #include <sys/stat.h>
 
-#include "buffer/io_buffer.h"
-#include "json/stream.h"
+#include <json-stream-analyzer.h>
 
 #define ERROR_MISSING_INPUT (-1)
 #define ERROR_STAT_INFO (-2)

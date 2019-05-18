@@ -3,6 +3,7 @@
 
 #include <json-stream-analyzer/stream.h>
 #include <json-stream-analyzer/token.h>
+#include <json-stream-analyzer/decoder.h>
 #include <json-stream-analyzer/element.h>
 
 #endif /* JSON_STREAM_ANALYZER_INCLUDED */

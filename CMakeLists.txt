@@ -35,4 +35,17 @@ set_target_properties(json-stream-analyzer PROPERTIES PUBLIC_HEADER include/json
 target_include_directories(json-stream-analyzer PRIVATE include)
 target_include_directories(json-stream-analyzer PRIVATE src)
 
-# add_executable(json-analyzer src/main.cpp)
+#project(json-analyzer)
+#
+#include_directories(
+#    include
+#)
+#
+#find_library(JSON_STREAM_ANALYZER libjson-stream-analyzer.dylib PATHS . NO_DEFAULT_PATH)
+#message(STATUS "Found json-stream-analyzer library: ${JSON_STREAM_ANALYZER}")
+#
+#add_executable(json-analyzer src/main.cpp)
+#
+#target_link_libraries(json-analyzer
+#    ${JSON_STREAM_ANALYZER}
+#)

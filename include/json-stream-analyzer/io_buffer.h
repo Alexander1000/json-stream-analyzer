@@ -40,9 +40,10 @@ public:
     int length();
 };
 
-class IOFileReader
+class IOFileReader : public IOReader
 {
 public:
+    IOFileReader(char* fileName);
     int read(char* buffer, int length);
 };
 
