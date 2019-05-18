@@ -2,3 +2,8 @@
 cmake-build-debug
 bin/json-analyzer
 bin/*.o
+CMakeCache.txt
+CMakeFiles
+cmake_install.cmake
+Makefile
+json-stream-analyzer.cbp

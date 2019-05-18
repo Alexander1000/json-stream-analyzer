@@ -143,7 +143,7 @@ public:
                                 escape = false;
                             }
                             this->prevMode = JSON_LEXER_PLAIN_MODE;
-                            token = new TokenLexemeWord(this->currentLine, this->currentColumn, this->lexemeWriter);
+                            token = new TokenQuotes(this->currentLine, this->currentColumn, this->lexemeWriter);
                             break;
                     }
 
