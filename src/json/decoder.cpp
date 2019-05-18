@@ -158,6 +158,25 @@ PARSE_OBJ_PROPERTY:
 
     std::list<Element*>* parse_array()
     {
-        return NULL;
+        std::list<Element*>* list;
+        list = new std::list<Element*>;
+        Element* element;
+
+PARSE_ARRAY:
+        element = this->parse_element();
+        list->push_back(element);
+
+        Token* token = this->stream->get_next_token();
+        if (token->getType() == TOKEN_TYPE_COMMA) {
+            // repeat
+            goto PARSE_ARRAY;
+        }
+
+        if (token->getType() != TOKEN_TYPE_ARRAY_CLOSE) {
+            // throw exception
+            return NULL;
+        }
+        
+        return list;
     }
 };
