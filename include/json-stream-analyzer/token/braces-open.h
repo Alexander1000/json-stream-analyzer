@@ -1,0 +1,14 @@
+#ifndef TOKEN_ARRAY_OPEN_INCLUDED
+#define TOKEN_ARRAY_OPEN_INCLUDED
+
+#include <json-stream-analyzer/token.h>
+#include <json-stream-analyzer/io_buffer.h>
+
+class TokenBracesOpen : public Token
+{
+public:
+    TokenBracesOpen(int line, int column, IOReader* reader);
+    int getType();
+};
+
+#endif
