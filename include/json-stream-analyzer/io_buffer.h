@@ -1,3 +1,6 @@
+#ifndef IOBUFFER_INCLUDED
+#define IOBUFFER_INCLUDED
+
 #define IO_MEMORY_BLOCK_SIZE 512
 
 class IOWriter
@@ -32,3 +35,11 @@ public:
     void setPosition(int position);
     int length();
 };
+
+class IOFileReader
+{
+public:
+    int read(char* buffer, int length);
+};
+
+#endif /* IOBUFFER_INCLUDED */

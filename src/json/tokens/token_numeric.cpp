@@ -1,3 +1,5 @@
+#include <json-stream-analyzer/token.h>
+
 class TokenNumeric : public Token
 {
 public:

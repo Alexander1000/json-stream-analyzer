@@ -1,3 +1,17 @@
+#include <json-stream-analyzer/token.h>
+
+#include <json-stream-analyzer/token/array-close.h>
+#include <json-stream-analyzer/token/array-open.h>
+
+#include <memory>
+
+#define STREAM_BUFFER_SIZE 4096
+
+#define JSON_LEXER_PLAIN_MODE 0
+#define JSON_LEXER_TEXT_MODE 1
+#define JSON_LEXER_DIGIT_MODE 2
+#define JSON_LEXER_WORD_MODE  3
+
 class Stream
 {
 public:

@@ -1,4 +1,4 @@
-#include <json-stream-analyzer.h>
+#include <json-stream-analyzer/io_buffer.h>
 
 class Token
 {

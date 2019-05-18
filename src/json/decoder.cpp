@@ -3,6 +3,10 @@
 #include <list>
 #include <iostream>
 
+#include <json-stream-analyzer/element.h>
+#include <json-stream-analyzer/stream.h>
+#include <json-stream-analyzer/token.h>
+
 class Decoder
 {
 public:
