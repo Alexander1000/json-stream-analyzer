@@ -1,5 +1,5 @@
-#ifndef TOKEN_ARRAY_OPEN_INCLUDED
-#define TOKEN_ARRAY_OPEN_INCLUDED
+#ifndef TOKEN_BRACES_OPEN_INCLUDED
+#define TOKEN_BRACES_OPEN_INCLUDED
 
 #include <json-stream-analyzer/token.h>
 #include <json-stream-analyzer/io_buffer.h>

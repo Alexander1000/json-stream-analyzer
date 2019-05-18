@@ -6,6 +6,9 @@
 #include <json-stream-analyzer/token/array-open.h>
 #include <json-stream-analyzer/token/braces-close.h>
 #include <json-stream-analyzer/token/braces-open.h>
+#include <json-stream-analyzer/token/comma.h>
+#include <json-stream-analyzer/token/colon.h>
+#include <json-stream-analyzer/token/quotes.h>
 
 #include <memory>
 
