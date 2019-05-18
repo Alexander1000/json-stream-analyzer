@@ -140,9 +140,15 @@ PARSE_OBJ_PROPERTY:
             return NULL;
         }
 
-        char* text = (char*) malloc(sizeof(char*) * 1024);
-        token->getReader()->read(text, 1024);
-        std::string* val = new std::string(text);
+        std::string* val;
+        if (token->getReader() == NULL) {
+            // empty token
+            val = new std::string("");
+        } else {
+            char *text = (char *) malloc(sizeof(char *) * 1024);
+            token->getReader()->read(text, 1024);
+            val = new std::string(text);
+        }
 
         token = this->stream->get_next_token();
         if (token->getType() != TOKEN_TYPE_QUOTES) {
