@@ -44,25 +44,21 @@ private:
 
         switch (token->getType()) {
             case TOKEN_TYPE_BRACES_OPEN:
-                std::cout << "token object" << std::endl;
                 // object
                 obj = this->parse_object();
                 element = new Element(ELEMENT_TYPE_OBJECT, (void*) obj);
                 return element;
             case TOKEN_TYPE_QUOTES:
-                std::cout << "token text" << std::endl;
                 // text
                 text = this->parse_text();
                 element = new Element(ELEMENT_TYPE_TEXT, (void*) text);
                 return element;
             case TOKEN_TYPE_NUMERIC:
-                std::cout << "token numeric" << std::endl;
                 // numeric
                 digit = this->parse_numeric();
                 element = new Element(ELEMENT_TYPE_NUMERIC, (void*) digit);
                 return element;
             case TOKEN_TYPE_ARRAY_OPEN:
-                std::cout << "token array" << std::endl;
                 // array
                 array = this->parse_array();
                 element = new Element(ELEMENT_TYPE_ARRAY, (void*) array);
@@ -98,18 +94,14 @@ PARSE_OBJ_PROPERTY:
         char* property_name = (char*) malloc(sizeof(char*) * 1024);
         token->getReader()->read(property_name, 1024);
 
-        std::cout << "property_name: " << property_name << std::endl;
-
         token = this->stream->get_next_token();
         if (token->getType() != TOKEN_TYPE_QUOTES) {
             // @todo: throw exception
-            // std::cout << "given: " << token->getType() << std::endl;
             return NULL;
         }
 
         token = this->stream->get_next_token();
         if (token->getType() != TOKEN_TYPE_COLON) {
-            // std::cout << "given: " << token->getType() << std::endl;
             // @todo: unexpected
             return NULL;
         }
@@ -121,7 +113,6 @@ PARSE_OBJ_PROPERTY:
         token = this->stream->get_next_token();
         switch (token->getType()) {
             case TOKEN_TYPE_COMMA:
-                std::cout << "next property" << std::endl;
                 // parse next object property key-val
                 // todo: fixme, refactor
                 goto PARSE_OBJ_PROPERTY;
