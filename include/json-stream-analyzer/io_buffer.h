@@ -27,7 +27,11 @@ public:
     virtual int read(char* buffer, int length) = 0;
 };
 
-class IOMemoryBuffer
+class IOBuffer : public IOReader, public IOWriter
+{
+};
+
+class IOMemoryBuffer : public IOBuffer
 {
 public:
     int write(char *buffer, int length);
