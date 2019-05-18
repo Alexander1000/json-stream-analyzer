@@ -31,20 +31,4 @@ class IOBuffer : public IOReader, public IOWriter
 {
 };
 
-class IOMemoryBuffer : public IOBuffer
-{
-public:
-    int write(char *buffer, int length);
-    int read(char *buffer, int length);
-    void setPosition(int position);
-    int length();
-};
-
-class IOFileReader : public IOReader
-{
-public:
-    IOFileReader(char* fileName);
-    int read(char* buffer, int length);
-};
-
 #endif /* IOBUFFER_INCLUDED */

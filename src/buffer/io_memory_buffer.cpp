@@ -1,4 +1,5 @@
 #include <vector>
+#include <json-stream-analyzer/io_buffer.h>
 
 class IOMemoryBuffer : public IOBuffer {
 public:

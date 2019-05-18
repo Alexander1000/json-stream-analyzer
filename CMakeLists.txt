@@ -24,6 +24,9 @@ add_library(json-stream-analyzer SHARED
     src/json/tokens/token_quotes.cpp
     src/json/decoder.cpp
     src/json/stream.cpp
+    src/buffer/io_buffer.cpp
+    src/buffer/io_file_reader.cpp
+    src/buffer/io_memory_buffer.cpp
 )
 
 set_target_properties(json-stream-analyzer PROPERTIES VERSION ${PROJECT_VERSION})

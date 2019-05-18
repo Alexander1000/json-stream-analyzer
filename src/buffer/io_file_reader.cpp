@@ -1,3 +1,6 @@
+#include <json-stream-analyzer/io_buffer.h>
+#include <iostream>
+
 class IOFileReader : public IOReader
 {
 public:
