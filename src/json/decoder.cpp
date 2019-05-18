@@ -75,7 +75,7 @@ private:
     std::map<std::string, Element*>* parse_object()
     {
         std::map<std::string, Element*>* object;
-        object = (std::map<std::string, Element*>*) malloc(sizeof(std::map<std::string, Element*>));
+        object = new std::map<std::string, Element*>;
 
         Token* token;
 
@@ -114,7 +114,6 @@ PARSE_OBJ_PROPERTY:
             return NULL;
         }
 
-        std::cout << "parse value for property" << std::endl;
         Element* property_value = this->parse_element();
 
         (*object)[std::string(property_name)] = property_value;
@@ -122,6 +121,7 @@ PARSE_OBJ_PROPERTY:
         token = this->stream->get_next_token();
         switch (token->getType()) {
             case TOKEN_TYPE_COMMA:
+                std::cout << "next property" << std::endl;
                 // parse next object property key-val
                 // todo: fixme, refactor
                 goto PARSE_OBJ_PROPERTY;
