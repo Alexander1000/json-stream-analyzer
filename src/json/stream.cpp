@@ -9,6 +9,8 @@
 #include <json-stream-analyzer/token/comma.h>
 #include <json-stream-analyzer/token/colon.h>
 #include <json-stream-analyzer/token/quotes.h>
+#include <json-stream-analyzer/token/text.h>
+#include <json-stream-analyzer/token/numeric.h>
 
 #include <memory>
 
