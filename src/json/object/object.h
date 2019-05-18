@@ -1,6 +1,6 @@
-#define J_VALUE_TYPE_INTEGER 0
-#define J_VALUE_TYPE_STRING 1
-#define J_VALUE_TYPE_ARRAY 2
+#define ELEMENT_TYPE_OBJECT 1
+#define ELEMENT_TYPE_TEXT 2
+#define ELEMENT_TYPE_NUMERIC 3
+#define ELEMENT_TYPE_ARRAY 4
 
-#include "value.cpp"
 #include "element.cpp"
