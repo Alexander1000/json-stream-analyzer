@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.7)
 
 # compiler options
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 project(json-analyzer)
