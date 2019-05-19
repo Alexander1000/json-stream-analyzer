@@ -4,11 +4,12 @@
 #include <json-stream-analyzer/token.h>
 #include <json-stream-analyzer/io_buffer.h>
 
-class TokenArrayClose : public Token
-{
-public:
-    TokenArrayClose(int line, int column, IOReader* reader);
-    int getType();
-};
+namespace JsonStreamAnalyzer::Token {
+    class TokenArrayClose : public Token {
+    public:
+        TokenArrayClose(int line, int column, IOReader *reader);
+        int getType();
+    };
+}
 
 #endif

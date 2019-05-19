@@ -1,55 +1,58 @@
 #include <json-stream-analyzer/io_buffer.h>
 #include <iostream>
 
-class IOFileReader : public IOReader
-{
-public:
-    IOFileReader(char* fileName) : IOReader()
-    {
-        this->fileName = fileName;
-        this->hFile = NULL;
-    }
+namespace JsonStreamAnalyzer {
 
-    ~IOFileReader()
-    {
-        if (this->hFile != NULL) {
-            fclose(this->hFile);
-        }
-    }
+    namespace Buffer {
 
-    /**
-     * Чтение из файла
-     * @param buffer
-     * @param length
-     * @return
-     */
-    int read(char* buffer, int length)
-    {
-        hFile = this->getHandler();
+        class IOFileReader : public IOReader {
+        public:
+            IOFileReader(char *fileName) : IOReader() {
+                this->fileName = fileName;
+                this->hFile = NULL;
+            }
 
-        if (hFile == NULL) {
-            return -1;
-        }
+            ~IOFileReader() {
+                if (this->hFile != NULL) {
+                    fclose(this->hFile);
+                }
+            }
 
-        size_t size = fread(buffer, sizeof(char), length, hFile);
-        return (int) size;
-    }
+            /**
+             * Чтение из файла
+             * @param buffer
+             * @param length
+             * @return
+             */
+            int read(char *buffer, int length) {
+                hFile = this->getHandler();
 
-private:
-    char* fileName;
+                if (hFile == NULL) {
+                    return -1;
+                }
 
-    FILE* hFile;
+                size_t size = fread(buffer, sizeof(char), length, hFile);
+                return (int) size;
+            }
 
-    /**
-     * @return
-     */
-    FILE* getHandler()
-    {
-        if (this->hFile != NULL) {
-            return this->hFile;
-        }
+        private:
+            char *fileName;
 
-        this->hFile = fopen(this->fileName, "r");
-        return this->hFile;
-    }
-};
+            FILE *hFile;
+
+            /**
+             * @return
+             */
+            FILE *getHandler() {
+                if (this->hFile != NULL) {
+                    return this->hFile;
+                }
+
+                this->hFile = fopen(this->fileName, "r");
+                return this->hFile;
+            }
+        };
+
+    } // Buffer
+
+} // JsonStreamAnalyzer

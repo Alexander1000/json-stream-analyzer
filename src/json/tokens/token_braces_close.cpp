@@ -1,14 +1,13 @@
 #include <json-stream-analyzer/token.h>
 
-class TokenBracesClose : public Token
-{
-public:
-    TokenBracesClose(int line, int column, IOReader* reader) : Token(line, column, reader)
-    {
-    }
+namespace JsonStreamAnalyzer::Token {
+    class TokenBracesClose : public Token {
+    public:
+        TokenBracesClose(int line, int column, IOReader *reader) : Token(line, column, reader) {
+        }
 
-    int getType()
-    {
-        return TOKEN_TYPE_BRACES_CLOSE;
-    }
-};
+        int getType() {
+            return TOKEN_TYPE_BRACES_CLOSE;
+        }
+    };
+} // JsonStreamAnalyzer::Token

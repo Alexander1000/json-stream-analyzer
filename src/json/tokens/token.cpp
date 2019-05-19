@@ -1,34 +1,37 @@
 #include <json-stream-analyzer/io_buffer.h>
 
-class Token
-{
-public:
-    Token(int line, int column, IOReader* reader)
-    {
-        this->line = line;
-        this->column = column;
-        this->reader = reader;
-    }
+namespace JsonStreamAnalyzer {
 
-    int getLine()
-    {
-        return this->line;
-    }
+    namespace Token {
 
-    int getColumn()
-    {
-        return this->column;
-    }
+        class Token {
+        public:
+            Token(int line, int column, IOReader *reader) {
+                this->line = line;
+                this->column = column;
+                this->reader = reader;
+            }
 
-    IOReader* getReader()
-    {
-        return this->reader;
-    }
+            int getLine() {
+                return this->line;
+            }
 
-    virtual int getType() = 0;
+            int getColumn() {
+                return this->column;
+            }
 
-protected:
-    int line;
-    int column;
-    IOReader* reader;
-};
+            IOReader *getReader() {
+                return this->reader;
+            }
+
+            virtual int getType() = 0;
+
+        protected:
+            int line;
+            int column;
+            IOReader *reader;
+        };
+
+    } // Token
+
+} // JsonStreamAnalyzer

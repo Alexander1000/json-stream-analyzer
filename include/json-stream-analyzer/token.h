@@ -13,14 +13,21 @@
 
 #include <json-stream-analyzer/io_buffer.h>
 
-class Token
-{
-public:
-    Token(int line, int column, IOReader* reader);
-    int getLine();
-    int getColumn();
-    IOReader* getReader();
-    virtual int getType() = 0;
-};
+namespace JsonStreamAnalyzer::Token {
+
+    class Token {
+    public:
+        Token(int line, int column, IOReader *reader);
+
+        int getLine();
+
+        int getColumn();
+
+        IOReader *getReader();
+
+        virtual int getType() = 0;
+    };
+
+}
 
 #endif /* TOKEN_INCLUDED */

@@ -3,10 +3,12 @@
 
 #include <json-stream-analyzer/element.h>
 
-class Decoder {
-public:
-    Decoder(Stream *stream);
-    Element* decode();
-};
+namespace JsonStreamAnalyzer {
+    class Decoder {
+    public:
+        Decoder(Stream *stream);
+        Element *decode();
+    };
+}
 
 #endif /* DECODER_INCLUDED */

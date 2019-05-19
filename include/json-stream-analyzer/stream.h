@@ -10,11 +10,12 @@
 
 #include <json-stream-analyzer/token.h>
 
-class Stream
-{
-public:
-    Stream(IOReader *reader);
-    Token* get_next_token();
-};
+namespace JsonStreamAnalyzer {
+    class Stream {
+    public:
+        Stream(IOReader *reader);
+        Token::Token *get_next_token();
+    };
+}
 
 #endif /* JSON_STREAM_INCLUDED */

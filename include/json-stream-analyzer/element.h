@@ -6,10 +6,11 @@
 #define ELEMENT_TYPE_NUMERIC 3
 #define ELEMENT_TYPE_ARRAY 4
 
-class Element
-{
-public:
-    Element(int type, void* data);
-};
+namespace JsonStreamAnalyzer {
+    class Element {
+    public:
+        Element(int type, void *data);
+    };
+}
 
 #endif /* ELEMENT_INCLUDED */

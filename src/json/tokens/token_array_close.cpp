@@ -1,14 +1,16 @@
 #include <json-stream-analyzer/token.h>
 
-class TokenArrayClose : public Token
+namespace JsonStreamAnalyzer::Token
 {
+
+class TokenArrayClose : public Token {
 public:
-    TokenArrayClose(int line, int column, IOReader* reader) : Token(line, column, reader)
-    {
+    TokenArrayClose(int line, int column, IOReader *reader) : Token(line, column, reader) {
     }
 
-    int getType()
-    {
+    int getType() {
         return TOKEN_TYPE_ARRAY_CLOSE;
     }
 };
+
+} // JsonStreamAnalyzer::Token

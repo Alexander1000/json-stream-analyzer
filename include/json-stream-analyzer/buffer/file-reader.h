@@ -3,11 +3,12 @@
 
 #include <json-stream-analyzer/io_buffer.h>
 
-class IOFileReader : public IOReader
-{
-public:
-    IOFileReader(char* fileName);
-    int read(char* buffer, int length);
-};
+namespace JsonStreamAnalyzer::Buffer {
+    class IOFileReader : public IOReader {
+    public:
+        IOFileReader(char *fileName);
+        int read(char *buffer, int length);
+    };
+}
 
 #endif
