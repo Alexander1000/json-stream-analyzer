@@ -8,11 +8,11 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-project(json-analyzer)
+project(json-analyzer CXX)
 
 include_directories(../include)
 
-find_library(JSON_STREAM_ANALYZER libjson-stream-analyzer.dylib PATHS .. NO_DEFAULT_PATH)
+find_library(JSON_STREAM_ANALYZER libjson-stream-analyzer.a)
 message(STATUS "Found json-stream-analyzer library: ${JSON_STREAM_ANALYZER}")
 
 add_executable(json-analyzer main.cpp)

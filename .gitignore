@@ -11,3 +11,4 @@ libjson-stream-analyzer.*.dylib
 libjson-stream-analyzer.dylib
 libjson-stream-analyzer.a
 json-stream-analyzer-shared.cbp
+install_manifest.txt
