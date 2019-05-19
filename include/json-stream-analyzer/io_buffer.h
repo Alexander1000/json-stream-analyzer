@@ -1,7 +1,7 @@
 #ifndef IOBUFFER_INCLUDED
 #define IOBUFFER_INCLUDED
 
-namespace JsonStreamAnalyzer {
+namespace JsonStreamAnalyzer::Buffer {
     class IOWriter {
     public:
         /**
@@ -26,6 +26,6 @@ namespace JsonStreamAnalyzer {
 
     class IOBuffer : public IOReader, public IOWriter {
     };
-}
+} // JsonStreamAnalyzer::Buffer
 
 #endif /* IOBUFFER_INCLUDED */

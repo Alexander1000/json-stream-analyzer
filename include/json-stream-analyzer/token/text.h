@@ -7,7 +7,7 @@
 namespace JsonStreamAnalyzer::Token {
     class TokenLexemeWord : public Token {
     public:
-        TokenLexemeWord(int line, int column, IOReader *reader);
+        TokenLexemeWord(int line, int column, JsonStreamAnalyzer::Buffer::IOReader *reader);
 
         int getType();
     };

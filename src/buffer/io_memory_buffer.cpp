@@ -3,140 +3,136 @@
 
 #define IO_MEMORY_BLOCK_SIZE 512
 
-namespace JsonStreamAnalyzer {
+namespace JsonStreamAnalyzer::Buffer {
 
-    namespace Buffer {
+    class IOMemoryBuffer : public IOBuffer {
+    public:
+        IOMemoryBuffer() : IOBuffer() {
+            this->writePosition = 0;
+            this->readPosition = 0;
 
-        class IOMemoryBuffer : public IOBuffer {
-        public:
-            IOMemoryBuffer() : IOBuffer() {
-                this->writePosition = 0;
-                this->readPosition = 0;
+            this->ioMemoryBlockSize = IO_MEMORY_BLOCK_SIZE;
+            char *firstBlock = new char[this->ioMemoryBlockSize];
+            this->blocks.clear();
+            this->blocks.push_back(firstBlock);
+            this->currentBlockNumber = 0;
+        }
 
-                this->ioMemoryBlockSize = IO_MEMORY_BLOCK_SIZE;
-                char *firstBlock = new char[this->ioMemoryBlockSize];
-                this->blocks.clear();
-                this->blocks.push_back(firstBlock);
-                this->currentBlockNumber = 0;
+        IOMemoryBuffer(int ioMemoryBlockSize) : IOBuffer() {
+            this->writePosition = 0;
+            this->readPosition = 0;
+
+            this->ioMemoryBlockSize = ioMemoryBlockSize;
+            char *firstBlock = new char[this->ioMemoryBlockSize];
+            this->blocks.clear();
+            this->blocks.push_back(firstBlock);
+            this->currentBlockNumber = 0;
+        }
+
+        ~IOMemoryBuffer() {
+            char *buffer = NULL;
+            int size = this->blocks.size();
+
+            for (int i = 0; i < size; ++i) {
+                buffer = this->blocks.at(i);
+
+                if (buffer != NULL) {
+                    delete buffer;
+                }
             }
 
-            IOMemoryBuffer(int ioMemoryBlockSize) : IOBuffer() {
-                this->writePosition = 0;
-                this->readPosition = 0;
+            this->blocks.clear();
+        }
 
-                this->ioMemoryBlockSize = ioMemoryBlockSize;
-                char *firstBlock = new char[this->ioMemoryBlockSize];
-                this->blocks.clear();
-                this->blocks.push_back(firstBlock);
-                this->currentBlockNumber = 0;
-            }
+        int write(char *buffer, int length) {
+            int nearLimitBlock, localWriteIndex, leftSave, lengthForSave;
 
-            ~IOMemoryBuffer() {
-                char *buffer = NULL;
-                int size = this->blocks.size();
+            int savedLength = 0;
+            char *pBlock;
 
-                for (int i = 0; i < size; ++i) {
-                    buffer = this->blocks.at(i);
+            while (savedLength < length) {
+                // leftSave - осталось сохранить
+                leftSave = length - savedLength;
+                // lengthForSave - длина для сохранения
+                lengthForSave = leftSave;
 
-                    if (buffer != NULL) {
-                        delete buffer;
-                    }
+                nearLimitBlock = this->blocks.size() * IO_MEMORY_BLOCK_SIZE;
+                localWriteIndex = this->writePosition % IO_MEMORY_BLOCK_SIZE;
+
+                if (this->writePosition + leftSave > nearLimitBlock) {
+                    // осталось сохранить ещё больше лимита
+                    lengthForSave = nearLimitBlock - this->writePosition;
                 }
 
-                this->blocks.clear();
-            }
+                pBlock = this->blocks.at(this->currentBlockNumber);
+                memcpy(pBlock + localWriteIndex, buffer, lengthForSave);
+                this->writePosition += lengthForSave;
 
-            int write(char *buffer, int length) {
-                int nearLimitBlock, localWriteIndex, leftSave, lengthForSave;
-
-                int savedLength = 0;
-                char *pBlock;
-
-                while (savedLength < length) {
-                    // leftSave - осталось сохранить
-                    leftSave = length - savedLength;
-                    // lengthForSave - длина для сохранения
-                    lengthForSave = leftSave;
-
-                    nearLimitBlock = this->blocks.size() * IO_MEMORY_BLOCK_SIZE;
-                    localWriteIndex = this->writePosition % IO_MEMORY_BLOCK_SIZE;
-
-                    if (this->writePosition + leftSave > nearLimitBlock) {
-                        // осталось сохранить ещё больше лимита
-                        lengthForSave = nearLimitBlock - this->writePosition;
-                    }
-
-                    pBlock = this->blocks.at(this->currentBlockNumber);
-                    memcpy(pBlock + localWriteIndex, buffer, lengthForSave);
-                    this->writePosition += lengthForSave;
-
-                    if (this->writePosition % IO_MEMORY_BLOCK_SIZE == 0) {
-                        // если полностью заполнили блок, выделяем новый
-                        pBlock = new char[IO_MEMORY_BLOCK_SIZE];
-                        ++this->currentBlockNumber;
-                        this->blocks.push_back(pBlock);
-                    }
-
-                    savedLength += lengthForSave;
+                if (this->writePosition % IO_MEMORY_BLOCK_SIZE == 0) {
+                    // если полностью заполнили блок, выделяем новый
+                    pBlock = new char[IO_MEMORY_BLOCK_SIZE];
+                    ++this->currentBlockNumber;
+                    this->blocks.push_back(pBlock);
                 }
 
-                return savedLength;
+                savedLength += lengthForSave;
             }
 
-            int read(char *buffer, int length) {
-                // прочитано данных
-                int readLength = 0;
-                // осталось прочитать
-                int leftRead = 0;
-                int currentReadBlock = 0;
-                int lengthForRead = 0;
+            return savedLength;
+        }
 
-                int startCurrentBlock = 0, endCurrentBlock = 0;
+        int read(char *buffer, int length) {
+            // прочитано данных
+            int readLength = 0;
+            // осталось прочитать
+            int leftRead = 0;
+            int currentReadBlock = 0;
+            int lengthForRead = 0;
 
-                char *pBlock = NULL;
+            int startCurrentBlock = 0, endCurrentBlock = 0;
 
-                while (readLength < length && this->readPosition < this->writePosition) {
-                    leftRead = length - readPosition;
-                    lengthForRead = leftRead;
-                    currentReadBlock = this->readPosition / IO_MEMORY_BLOCK_SIZE;
-                    // границы текущего блока
-                    endCurrentBlock = (currentReadBlock + 1) * IO_MEMORY_BLOCK_SIZE;
-                    startCurrentBlock = currentReadBlock * IO_MEMORY_BLOCK_SIZE;
+            char *pBlock = NULL;
 
-                    // если осталось прочитать больше чем данных в текущем блоке
-                    if (leftRead > endCurrentBlock - startCurrentBlock) {
-                        lengthForRead = endCurrentBlock - this->readPosition;
-                    }
+            while (readLength < length && this->readPosition < this->writePosition) {
+                leftRead = length - readPosition;
+                lengthForRead = leftRead;
+                currentReadBlock = this->readPosition / IO_MEMORY_BLOCK_SIZE;
+                // границы текущего блока
+                endCurrentBlock = (currentReadBlock + 1) * IO_MEMORY_BLOCK_SIZE;
+                startCurrentBlock = currentReadBlock * IO_MEMORY_BLOCK_SIZE;
 
-                    // читаем страницу данных
-                    pBlock = this->blocks.at(currentReadBlock);
-                    // копируем в буфер прочитанные данные
-                    memcpy(buffer + readLength, pBlock + (this->readPosition % IO_MEMORY_BLOCK_SIZE), lengthForRead);
-
-                    this->readPosition += lengthForRead;
-                    readLength += lengthForRead;
+                // если осталось прочитать больше чем данных в текущем блоке
+                if (leftRead > endCurrentBlock - startCurrentBlock) {
+                    lengthForRead = endCurrentBlock - this->readPosition;
                 }
 
-                return 0;
+                // читаем страницу данных
+                pBlock = this->blocks.at(currentReadBlock);
+                // копируем в буфер прочитанные данные
+                memcpy(buffer + readLength, pBlock + (this->readPosition % IO_MEMORY_BLOCK_SIZE), lengthForRead);
+
+                this->readPosition += lengthForRead;
+                readLength += lengthForRead;
             }
 
-            void setPosition(int position) {
-                this->readPosition = position;
-            }
+            return 0;
+        }
 
-            int length() {
-                return this->writePosition;
-            }
+        void setPosition(int position) {
+            this->readPosition = position;
+        }
 
-        protected:
-            std::vector<char *> blocks;
+        int length() {
+            return this->writePosition;
+        }
 
-            int ioMemoryBlockSize;
-            int currentBlockNumber;
-            int writePosition;
-            int readPosition;
-        };
+    protected:
+        std::vector<char *> blocks;
 
-    } // Buffer
+        int ioMemoryBlockSize;
+        int currentBlockNumber;
+        int writePosition;
+        int readPosition;
+    };
 
-} // JsonStreamAnalyzer
+} // JsonStreamAnalyzer::Buffer

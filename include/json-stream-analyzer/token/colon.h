@@ -7,7 +7,7 @@
 namespace JsonStreamAnalyzer::Token {
     class TokenColon : public Token {
     public:
-        TokenColon(int line, int column, IOReader *reader);
+        TokenColon(int line, int column, JsonStreamAnalyzer::Buffer::IOReader *reader);
 
         int getType();
     };

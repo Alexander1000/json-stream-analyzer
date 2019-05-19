@@ -27,7 +27,7 @@ namespace JsonStreamAnalyzer {
 
     class Stream {
     public:
-        Stream(IOReader *reader) {
+        Stream(Buffer::IOReader *reader) {
             this->reader = reader;
 
             this->currentBuffer = new char[STREAM_BUFFER_SIZE];
@@ -251,7 +251,7 @@ namespace JsonStreamAnalyzer {
         }
 
     private:
-        IOReader *reader;
+        Buffer::IOReader *reader;
 
         char *currentBuffer;
         char *forwardBuffer;

@@ -13,7 +13,7 @@
 namespace JsonStreamAnalyzer {
     class Stream {
     public:
-        Stream(IOReader *reader);
+        Stream(Buffer::IOReader *reader);
         Token::Token *get_next_token();
     };
 }

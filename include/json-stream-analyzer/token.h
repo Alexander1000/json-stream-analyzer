@@ -17,13 +17,13 @@ namespace JsonStreamAnalyzer::Token {
 
     class Token {
     public:
-        Token(int line, int column, IOReader *reader);
+        Token(int line, int column, JsonStreamAnalyzer::Buffer::IOReader *reader);
 
         int getLine();
 
         int getColumn();
 
-        IOReader *getReader();
+        JsonStreamAnalyzer::Buffer::IOReader *getReader();
 
         virtual int getType() = 0;
     };

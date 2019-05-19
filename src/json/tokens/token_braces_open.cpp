@@ -3,7 +3,7 @@
 namespace JsonStreamAnalyzer::Token {
     class TokenBracesOpen : public Token {
     public:
-        TokenBracesOpen(int line, int column, IOReader *reader) : Token(line, column, reader) {
+        TokenBracesOpen(int line, int column, JsonStreamAnalyzer::Buffer::IOReader *reader) : Token(line, column, reader) {
         }
 
         int getType() {

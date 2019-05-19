@@ -5,7 +5,7 @@ namespace JsonStreamAnalyzer::Token
 
 class TokenArrayClose : public Token {
 public:
-    TokenArrayClose(int line, int column, IOReader *reader) : Token(line, column, reader) {
+    TokenArrayClose(int line, int column, JsonStreamAnalyzer::Buffer::IOReader *reader) : Token(line, column, reader) {
     }
 
     int getType() {

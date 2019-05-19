@@ -7,7 +7,7 @@
 namespace JsonStreamAnalyzer::Token {
     class TokenComma : public Token {
     public:
-        TokenComma(int line, int column, IOReader *reader);
+        TokenComma(int line, int column, JsonStreamAnalyzer::Buffer::IOReader *reader);
 
         int getType();
     };

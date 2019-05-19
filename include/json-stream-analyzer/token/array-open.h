@@ -7,7 +7,7 @@
 namespace JsonStreamAnalyzer::Token {
     class TokenArrayOpen : public Token {
     public:
-        TokenArrayOpen(int line, int column, IOReader *reader);
+        TokenArrayOpen(int line, int column, JsonStreamAnalyzer::Buffer::IOReader *reader);
 
         int getType();
     };

@@ -3,7 +3,7 @@
 namespace JsonStreamAnalyzer::Token {
     class TokenNumeric : public Token {
     public:
-        TokenNumeric(int line, int column, IOReader *reader) : Token(line, column, reader) {
+        TokenNumeric(int line, int column, JsonStreamAnalyzer::Buffer::IOReader *reader) : Token(line, column, reader) {
         }
 
         int getType() {

@@ -7,7 +7,7 @@
 namespace JsonStreamAnalyzer::Token {
     class TokenBracesClose : public Token {
     public:
-        TokenBracesClose(int line, int column, IOReader *reader);
+        TokenBracesClose(int line, int column, JsonStreamAnalyzer::Buffer::IOReader *reader);
 
         int getType();
     };
