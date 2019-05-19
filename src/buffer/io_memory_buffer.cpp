@@ -1,13 +1,27 @@
 #include <vector>
 #include <json-stream-analyzer/io_buffer.h>
 
+#define IO_MEMORY_BLOCK_SIZE 512
+
 class IOMemoryBuffer : public IOBuffer {
 public:
     IOMemoryBuffer() : IOBuffer() {
         this->writePosition = 0;
         this->readPosition = 0;
 
-        char *firstBlock = new char[IO_MEMORY_BLOCK_SIZE];
+        this->ioMemoryBlockSize = IO_MEMORY_BLOCK_SIZE;
+        char *firstBlock = new char[this->ioMemoryBlockSize];
+        this->blocks.clear();
+        this->blocks.push_back(firstBlock);
+        this->currentBlockNumber = 0;
+    }
+
+    IOMemoryBuffer(int ioMemoryBlockSize) : IOBuffer() {
+        this->writePosition = 0;
+        this->readPosition = 0;
+
+        this->ioMemoryBlockSize = ioMemoryBlockSize;
+        char *firstBlock = new char[this->ioMemoryBlockSize];
         this->blocks.clear();
         this->blocks.push_back(firstBlock);
         this->currentBlockNumber = 0;
@@ -115,6 +129,7 @@ public:
 protected:
     std::vector<char*> blocks;
 
+    int ioMemoryBlockSize;
     int currentBlockNumber;
     int writePosition;
     int readPosition;
