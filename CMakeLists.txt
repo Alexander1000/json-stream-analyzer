@@ -44,6 +44,12 @@ set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS -fPIC)
 target_include_directories(${PROJECT_NAME} PRIVATE include)
 target_include_directories(${PROJECT_NAME} PRIVATE src)
 
+install (TARGETS ${PROJECT_NAME}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    COMPONENT library
+)
+
 #--------------
 # Shared
 #--------------
@@ -60,17 +66,8 @@ set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "json-stream-analyz
 target_include_directories(${PROJECT_NAME} PRIVATE include)
 target_include_directories(${PROJECT_NAME} PRIVATE src)
 
-#project(json-analyzer)
-#
-#include_directories(
-#    include
-#)
-#
-#find_library(JSON_STREAM_ANALYZER libjson-stream-analyzer.dylib PATHS . NO_DEFAULT_PATH)
-#message(STATUS "Found json-stream-analyzer library: ${JSON_STREAM_ANALYZER}")
-#
-#add_executable(json-analyzer src/main.cpp)
-#
-#target_link_libraries(json-analyzer
-#    ${JSON_STREAM_ANALYZER}
-#)
+install (TARGETS ${PROJECT_NAME}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    COMPONENT library
+)
