@@ -10,8 +10,6 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 project(json-analyzer CXX)
 
-include_directories(../include)
-
 find_library(JSON_STREAM_ANALYZER libjson-stream-analyzer.a)
 message(STATUS "Found json-stream-analyzer library: ${JSON_STREAM_ANALYZER}")
 
