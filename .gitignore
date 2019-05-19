@@ -9,3 +9,4 @@ Makefile
 json-stream-analyzer.cbp
 libjson-stream-analyzer.*.dylib
 libjson-stream-analyzer.dylib
+libjson-stream-analyzer.a
