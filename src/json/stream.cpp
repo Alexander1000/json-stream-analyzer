@@ -34,8 +34,8 @@ namespace JsonStreamAnalyzer {
             this->currentBuffer = new char[STREAM_BUFFER_SIZE];
             this->forwardBuffer = new char[STREAM_BUFFER_SIZE];
 
-            std::memset(this->currentBuffer, 0, STREAM_BUFFER_SIZE * sizeof(char));
-            std::memset(this->forwardBuffer, 0, STREAM_BUFFER_SIZE * sizeof(char));
+            ::std::memset(this->currentBuffer, 0, STREAM_BUFFER_SIZE * sizeof(char));
+            ::std::memset(this->forwardBuffer, 0, STREAM_BUFFER_SIZE * sizeof(char));
 
             this->currentPosition = 0;
 
