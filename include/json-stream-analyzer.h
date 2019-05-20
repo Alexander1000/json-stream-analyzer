@@ -6,6 +6,8 @@
 #include <json-stream-analyzer/decoder.h>
 #include <json-stream-analyzer/element.h>
 
+#include <json-stream-analyzer/io_buffer.h>
+
 #include <json-stream-analyzer/buffer/memory-buffer.h>
 #include <json-stream-analyzer/buffer/file-reader.h>
 
