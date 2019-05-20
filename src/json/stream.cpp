@@ -14,7 +14,6 @@
 
 #include <json-stream-analyzer/buffer/memory-buffer.h>
 
-#include <string.h>
 #include <memory>
 
 #define STREAM_BUFFER_SIZE 4096
