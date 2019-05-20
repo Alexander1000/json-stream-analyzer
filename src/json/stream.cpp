@@ -33,8 +33,8 @@ namespace JsonStreamAnalyzer {
             this->currentBuffer = new char[STREAM_BUFFER_SIZE];
             this->forwardBuffer = new char[STREAM_BUFFER_SIZE];
 
-            memset(this->currentBuffer, 0, STREAM_BUFFER_SIZE * sizeof(char));
-            memset(this->forwardBuffer, 0, STREAM_BUFFER_SIZE * sizeof(char));
+            std::memset(this->currentBuffer, 0, STREAM_BUFFER_SIZE * sizeof(char));
+            std::memset(this->forwardBuffer, 0, STREAM_BUFFER_SIZE * sizeof(char));
 
             this->currentPosition = 0;
 
@@ -90,15 +90,15 @@ namespace JsonStreamAnalyzer {
                 // если текущий указатель перешел в forward-буфер
                 if (this->currentPosition >= STREAM_BUFFER_SIZE) {
                     // очищаем буфер со старыми данными
-                    memset(this->currentBuffer, 0, STREAM_BUFFER_SIZE * sizeof(char));
+                    std::memset(this->currentBuffer, 0, STREAM_BUFFER_SIZE * sizeof(char));
                     // копируем данные из forward buffer в current
-                    memcpy(this->currentBuffer, this->forwardBuffer, STREAM_BUFFER_SIZE);
+                    std::memcpy(this->currentBuffer, this->forwardBuffer, STREAM_BUFFER_SIZE);
                     // копируем конечную позицию в буфере из forward в current
                     this->posCurrent = this->posForward;
                     // смещаем текущую позицию
                     this->currentPosition -= STREAM_BUFFER_SIZE;
                     // подготавливаем память для заливки новых данных
-                    memset(this->forwardBuffer, 0, STREAM_BUFFER_SIZE * sizeof(char));
+                    std::memset(this->forwardBuffer, 0, STREAM_BUFFER_SIZE * sizeof(char));
 
                     if (!this->eof) {
                         // если не был достигнут конец файла, читаем новый forward-буфер
