@@ -8,7 +8,4 @@
 
 #include <json-stream-analyzer/io_buffer.h>
 
-#include <json-stream-analyzer/buffer/memory-buffer.h>
-#include <json-stream-analyzer/buffer/file-reader.h>
-
 #endif /* JSON_STREAM_ANALYZER_INCLUDED */
