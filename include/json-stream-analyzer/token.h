@@ -13,8 +13,15 @@
 
 #include <json-stream-analyzer/io_buffer.h>
 
-namespace JsonStreamAnalyzer::Token {
+#include <json-stream-analyzer/token/braces-close.h>
+#include <json-stream-analyzer/token/braces-open.h>
+#include <json-stream-analyzer/token/comma.h>
+#include <json-stream-analyzer/token/colon.h>
+#include <json-stream-analyzer/token/quotes.h>
+#include <json-stream-analyzer/token/text.h>
+#include <json-stream-analyzer/token/numeric.h>
 
+namespace JsonStreamAnalyzer::Token {
     class Token {
     public:
         Token(int line, int column, JsonStreamAnalyzer::Buffer::IOReader *reader);
@@ -26,8 +33,31 @@ namespace JsonStreamAnalyzer::Token {
         JsonStreamAnalyzer::Buffer::IOReader *getReader();
 
         virtual int getType() = 0;
+    protected:
+        int line;
+        int column;
+        JsonStreamAnalyzer::Buffer::IOReader *reader;
     };
 
+    // --------------------------
+    // --- Token: array close ---
+    // --------------------------
+
+    class TokenArrayClose : public Token {
+    public:
+        TokenArrayClose(int line, int column, JsonStreamAnalyzer::Buffer::IOReader *reader);
+        int getType();
+    };
+
+    // -------------------------
+    // --- Token: array open ---
+    // -------------------------
+
+    class TokenArrayOpen : public Token {
+    public:
+        TokenArrayOpen(int line, int column, JsonStreamAnalyzer::Buffer::IOReader *reader);
+        int getType();
+    };
 }
 
 #endif /* TOKEN_INCLUDED */

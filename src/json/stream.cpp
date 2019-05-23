@@ -1,16 +1,5 @@
 #include <json-stream-analyzer/token.h>
-
 #include <json-stream-analyzer/io_buffer.h>
-
-#include <json-stream-analyzer/token/array-close.h>
-#include <json-stream-analyzer/token/array-open.h>
-#include <json-stream-analyzer/token/braces-close.h>
-#include <json-stream-analyzer/token/braces-open.h>
-#include <json-stream-analyzer/token/comma.h>
-#include <json-stream-analyzer/token/colon.h>
-#include <json-stream-analyzer/token/quotes.h>
-#include <json-stream-analyzer/token/text.h>
-#include <json-stream-analyzer/token/numeric.h>
 
 #include <memory>
 
