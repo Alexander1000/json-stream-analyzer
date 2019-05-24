@@ -9,7 +9,7 @@ set(JSON_STREAM_ANALYZER_SOURCES
     src/json/tokens/token_array_close.cpp
     src/json/tokens/token_array_open.cpp
     src/json/tokens/token_braces_close.cpp
-    src/json/tokens/token_braces_close.cpp
+    src/json/tokens/token_braces_open.cpp
     src/json/tokens/token_colon.cpp
     src/json/tokens/token_comma.cpp
     src/json/tokens/token_lexeme_word.cpp

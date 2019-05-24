@@ -1,6 +1,7 @@
 #include <json-stream-analyzer/token.h>
 
-namespace JsonStreamAnalyzer::Token {
+namespace JsonStreamAnalyzer::Token
+{
     TokenArrayOpen::TokenArrayOpen(int line, int column, JsonStreamAnalyzer::Buffer::IOReader *reader) : Token(line, column, reader) {
     }
 

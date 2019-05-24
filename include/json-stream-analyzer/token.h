@@ -13,8 +13,6 @@
 
 #include <json-stream-analyzer/io_buffer.h>
 
-#include <json-stream-analyzer/token/braces-close.h>
-#include <json-stream-analyzer/token/braces-open.h>
 #include <json-stream-analyzer/token/comma.h>
 #include <json-stream-analyzer/token/colon.h>
 #include <json-stream-analyzer/token/quotes.h>
@@ -56,6 +54,26 @@ namespace JsonStreamAnalyzer::Token {
     class TokenArrayOpen : public Token {
     public:
         TokenArrayOpen(int line, int column, JsonStreamAnalyzer::Buffer::IOReader *reader);
+        int getType();
+    };
+
+    // ---------------------------
+    // --- Token: braces close ---
+    // ---------------------------
+
+    class TokenBracesClose : public Token {
+    public:
+        TokenBracesClose(int line, int column, JsonStreamAnalyzer::Buffer::IOReader *reader);
+        int getType();
+    };
+
+    // ---------------------------
+    // --- Token: braces open ---
+    // ---------------------------
+
+    class TokenBracesOpen : public Token {
+    public:
+        TokenBracesOpen(int line, int column, JsonStreamAnalyzer::Buffer::IOReader *reader);
         int getType();
     };
 }
