@@ -47,7 +47,7 @@ namespace JsonStreamAnalyzer {
                 return element;
             case TOKEN_TYPE_NUMERIC:
                 // numeric
-                digit = this->parse_numeric();
+                digit = this->parse_numeric(token);
                 element = new Element(ELEMENT_TYPE_NUMERIC, (void *) digit);
                 return element;
             case TOKEN_TYPE_ARRAY_OPEN:
@@ -102,6 +102,7 @@ namespace JsonStreamAnalyzer {
         (*object)[std::string(property_name)] = property_value;
 
         token = this->stream->get_next_token();
+
         switch (token->getType()) {
             case TOKEN_TYPE_COMMA:
                 // parse next object property key-val
@@ -140,12 +141,7 @@ namespace JsonStreamAnalyzer {
         return val;
     }
 
-    std::string* Decoder::parse_numeric() {
-        Token::Token *token = this->stream->get_next_token();
-        if (token->getType() != TOKEN_TYPE_NUMERIC) {
-            return NULL;
-        }
-
+    std::string* Decoder::parse_numeric(Token::Token *token) {
         char *text = (char *) malloc(sizeof(char *) * 1024);
         token->getReader()->read(text, 1024);
         std::string *val = new std::string(text);

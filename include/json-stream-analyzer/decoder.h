@@ -19,7 +19,7 @@ namespace JsonStreamAnalyzer
         Element *parse_element();
         std::map<std::string, Element *> *parse_object();
         std::string *parse_text();
-        std::string *parse_numeric();
+        std::string *parse_numeric(Token::Token* token);
         std::list<Element *> *parse_array();
     };
 }
