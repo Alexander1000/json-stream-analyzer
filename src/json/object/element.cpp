@@ -1,13 +1,8 @@
-namespace JsonStreamAnalyzer {
-    class Element {
-    public:
-        Element(int type, void *data) {
-            this->type = type;
-            this->data = data;
-        }
+#include <json-stream-analyzer/element.h>
 
-    private:
-        int type;
-        void *data;
-    };
+namespace JsonStreamAnalyzer {
+    Element::Element(int type, void *data) {
+        this->type = type;
+        this->data = data;
+    }
 } // JsonStreamAnalyzer

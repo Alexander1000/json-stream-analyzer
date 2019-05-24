@@ -10,6 +10,9 @@ namespace JsonStreamAnalyzer {
     class Element {
     public:
         Element(int type, void *data);
+    private:
+        int type;
+        void *data;
     };
 }
 
