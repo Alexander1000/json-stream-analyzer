@@ -1,12 +1,11 @@
-class TokenQuotes : public Token
+#include <json-stream-analyzer/token.h>
+
+namespace JsonStreamAnalyzer::Token
 {
-public:
-    TokenQuotes(int line, int column, IOReader* reader) : Token(line, column, reader)
-    {
+    TokenQuotes::TokenQuotes(int line, int column, JsonStreamAnalyzer::Buffer::IOReader *reader) : Token(line, column, reader) {
     }
 
-    int getType()
-    {
+    int TokenQuotes::getType() {
         return TOKEN_TYPE_QUOTES;
     }
-};
+} // JsonStreamAnalyzer::Token

@@ -1,15 +1,26 @@
-class Stream
+#include <json-stream-analyzer/token.h>
+#include <json-stream-analyzer/io_buffer.h>
+#include <json-stream-analyzer/stream.h>
+
+#include <memory>
+
+#define STREAM_BUFFER_SIZE 4096
+
+#define JSON_LEXER_PLAIN_MODE 0
+#define JSON_LEXER_TEXT_MODE 1
+#define JSON_LEXER_DIGIT_MODE 2
+#define JSON_LEXER_WORD_MODE  3
+
+namespace JsonStreamAnalyzer
 {
-public:
-    Stream(IOReader* reader)
-    {
+    Stream::Stream(Buffer::IOReader *reader) {
         this->reader = reader;
 
         this->currentBuffer = new char[STREAM_BUFFER_SIZE];
         this->forwardBuffer = new char[STREAM_BUFFER_SIZE];
 
-        memset(this->currentBuffer, 0, STREAM_BUFFER_SIZE * sizeof(char));
-        memset(this->forwardBuffer, 0, STREAM_BUFFER_SIZE * sizeof(char));
+        std::memset(this->currentBuffer, 0, STREAM_BUFFER_SIZE * sizeof(char));
+        std::memset(this->forwardBuffer, 0, STREAM_BUFFER_SIZE * sizeof(char));
 
         this->currentPosition = 0;
 
@@ -28,13 +39,12 @@ public:
         this->lastFrame = false;
     }
 
-    ~Stream()
-    {
+    Stream::~Stream() {
         delete this->currentBuffer;
         delete this->forwardBuffer;
     }
 
-    Token* get_next_token()
+    Token::Token* Stream::get_next_token()
     {
         if (this->lastFrame && this->currentPosition == this->posCurrent) {
             // достигнут конец
@@ -61,21 +71,21 @@ public:
         bool endOfToken = false;
         this->lexemeWriter = NULL;
         bool escape = false;
-        Token* token = NULL;
+        Token::Token *token = NULL;
 
         while (!endOfToken) {
             // если текущий указатель перешел в forward-буфер
             if (this->currentPosition >= STREAM_BUFFER_SIZE) {
                 // очищаем буфер со старыми данными
-                memset(this->currentBuffer, 0, STREAM_BUFFER_SIZE * sizeof(char));
+                std::memset(this->currentBuffer, 0, STREAM_BUFFER_SIZE * sizeof(char));
                 // копируем данные из forward buffer в current
-                memcpy(this->currentBuffer, this->forwardBuffer, STREAM_BUFFER_SIZE);
+                std::memcpy(this->currentBuffer, this->forwardBuffer, STREAM_BUFFER_SIZE);
                 // копируем конечную позицию в буфере из forward в current
                 this->posCurrent = this->posForward;
                 // смещаем текущую позицию
                 this->currentPosition -= STREAM_BUFFER_SIZE;
                 // подготавливаем память для заливки новых данных
-                memset(this->forwardBuffer, 0, STREAM_BUFFER_SIZE * sizeof(char));
+                std::memset(this->forwardBuffer, 0, STREAM_BUFFER_SIZE * sizeof(char));
 
                 if (!this->eof) {
                     // если не был достигнут конец файла, читаем новый forward-буфер
@@ -103,37 +113,38 @@ public:
                             this->appendCurrentLexeme(symbol);
                             endOfToken = true;
                             this->prevMode = JSON_LEXER_PLAIN_MODE;
-                            token = new TokenBracesOpen(this->currentLine, this->currentColumn, this->lexemeWriter);
+                            token = new Token::TokenBracesOpen(this->currentLine, this->currentColumn, this->lexemeWriter);
                             break;
                         case '}':
                             this->appendCurrentLexeme(symbol);
                             endOfToken = true;
                             this->prevMode = JSON_LEXER_PLAIN_MODE;
-                            token = new TokenBracesClose(this->currentLine, this->currentColumn, this->lexemeWriter);
+                            token = new Token::TokenBracesClose(this->currentLine, this->currentColumn,
+                                                         this->lexemeWriter);
                             break;
                         case '[':
                             this->appendCurrentLexeme(symbol);
                             endOfToken = true;
                             this->prevMode = JSON_LEXER_PLAIN_MODE;
-                            token = new TokenArrayOpen(this->currentLine, this->currentColumn, this->lexemeWriter);
+                            token = new Token::TokenArrayOpen(this->currentLine, this->currentColumn, this->lexemeWriter);
                             break;
                         case ']':
                             this->appendCurrentLexeme(symbol);
                             endOfToken = true;
                             this->prevMode = JSON_LEXER_PLAIN_MODE;
-                            token = new TokenArrayClose(this->currentLine, this->currentColumn, this->lexemeWriter);
+                            token = new Token::TokenArrayClose(this->currentLine, this->currentColumn, this->lexemeWriter);
                             break;
                         case ':':
                             this->appendCurrentLexeme(symbol);
                             endOfToken = true;
                             this->prevMode = JSON_LEXER_PLAIN_MODE;
-                            token = new TokenColon(this->currentLine, this->currentColumn, this->lexemeWriter);
+                            token = new Token::TokenColon(this->currentLine, this->currentColumn, this->lexemeWriter);
                             break;
                         case ',':
                             this->appendCurrentLexeme(symbol);
                             endOfToken = true;
                             this->prevMode = JSON_LEXER_PLAIN_MODE;
-                            token = new TokenComma(this->currentLine, this->currentColumn, this->lexemeWriter);
+                            token = new Token::TokenComma(this->currentLine, this->currentColumn, this->lexemeWriter);
                             break;
                         case '"':
                             this->appendCurrentLexeme(symbol);
@@ -143,7 +154,7 @@ public:
                                 escape = false;
                             }
                             this->prevMode = JSON_LEXER_PLAIN_MODE;
-                            token = new TokenQuotes(this->currentLine, this->currentColumn, this->lexemeWriter);
+                            token = new Token::TokenQuotes(this->currentLine, this->currentColumn, this->lexemeWriter);
                             break;
                     }
 
@@ -175,7 +186,7 @@ public:
                             endOfToken = true;
                             this->mode = JSON_LEXER_PLAIN_MODE;
                             this->prevMode = JSON_LEXER_TEXT_MODE;
-                            token = new TokenLexemeWord(this->currentLine, this->currentColumn, this->lexemeWriter);
+                            token = new Token::TokenLexemeWord(this->currentLine, this->currentColumn, this->lexemeWriter);
                         } else {
                             this->appendCurrentLexeme(symbol);
                         }
@@ -190,7 +201,7 @@ public:
                         this->mode = this->prevMode;
                         this->prevMode = JSON_LEXER_DIGIT_MODE;
                         move_position = false;
-                        token = new TokenNumeric(this->currentLine, this->currentColumn, this->lexemeWriter);
+                        token = new Token::TokenNumeric(this->currentLine, this->currentColumn, this->lexemeWriter);
                     }
                     break;
                 case JSON_LEXER_WORD_MODE:
@@ -199,7 +210,7 @@ public:
                         this->mode = this->prevMode;
                         this->prevMode = JSON_LEXER_WORD_MODE;
                         move_position = false;
-                        token = new TokenLexemeWord(this->currentLine, this->currentColumn, this->lexemeWriter);
+                        token = new Token::TokenLexemeWord(this->currentLine, this->currentColumn, this->lexemeWriter);
                     } else {
                         this->appendCurrentLexeme(symbol);
                     }
@@ -225,51 +236,4 @@ public:
 
         return token;
     }
-
-private:
-    IOReader* reader;
-
-    char* currentBuffer;
-    char* forwardBuffer;
-
-    // текущая позиция для чтения
-    int currentPosition;
-
-    // позиция начала текущего блока
-    int posCurrent;
-    // позиция начала следующего блока
-    int posForward;
-
-    // признак конца потока
-    bool eof;
-
-    // координаты токена в документе
-    int currentLine;
-    int currentColumn;
-
-    IOMemoryBuffer* lexemeWriter;
-
-    int mode;
-    int prevMode;
-
-    bool lastFrame;
-
-    bool is_digit(char symbol)
-    {
-        return symbol >= '0' && symbol <= '9';
-    }
-
-    bool is_word(char symbol)
-    {
-        return symbol >= 'a' && symbol <= 'z';
-    }
-
-    void appendCurrentLexeme(char symbol)
-    {
-        if (this->lexemeWriter == NULL) {
-            this->lexemeWriter = new IOMemoryBuffer;
-        }
-
-        this->lexemeWriter->write(&symbol, 1);
-    }
-};
+} // JsonStreamAnalyzer

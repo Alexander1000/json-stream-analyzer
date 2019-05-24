@@ -1,12 +1,11 @@
-class TokenArrayOpen : public Token
+#include <json-stream-analyzer/token.h>
+
+namespace JsonStreamAnalyzer::Token
 {
-public:
-    TokenArrayOpen(int line, int column, IOReader* reader) : Token(line, column, reader)
-    {
+    TokenArrayOpen::TokenArrayOpen(int line, int column, JsonStreamAnalyzer::Buffer::IOReader *reader) : Token(line, column, reader) {
     }
 
-    int getType()
-    {
+    int TokenArrayOpen::getType() {
         return TOKEN_TYPE_ARRAY_OPEN;
     }
-};
+} // JsonStreamAnalyzer::Token

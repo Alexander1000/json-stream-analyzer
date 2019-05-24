@@ -2,8 +2,7 @@
 #include "cl.cpp"
 #include <sys/stat.h>
 
-#include "buffer/io_buffer.h"
-#include "json/stream.h"
+#include <json-stream-analyzer.h>
 
 #define ERROR_MISSING_INPUT (-1)
 #define ERROR_STAT_INFO (-2)
@@ -59,9 +58,9 @@ int main(int argc, char* argv[])
 
     if(s.st_mode & S_IFREG) {
         std::cout << "starting analyze file" << std::endl;
-        IOFileReader file_buffer(inputPath);
-        Stream json_stream(&file_buffer);
-        Decoder decoder(&json_stream);
+        JsonStreamAnalyzer::Buffer::IOFileReader file_buffer(inputPath);
+        JsonStreamAnalyzer::Stream json_stream(&file_buffer);
+        JsonStreamAnalyzer::Decoder decoder(&json_stream);
         decoder.decode();
     } else {
         return ERROR_STAT_INVALID_MODE;

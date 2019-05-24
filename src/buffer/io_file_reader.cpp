@@ -1,27 +1,20 @@
-class IOFileReader : public IOReader
-{
-public:
-    IOFileReader(char* fileName) : IOReader()
-    {
+#include <json-stream-analyzer/io_buffer.h>
+#include <iostream>
+
+namespace JsonStreamAnalyzer::Buffer {
+
+    IOFileReader::IOFileReader(char *fileName) : IOReader() {
         this->fileName = fileName;
         this->hFile = NULL;
     }
 
-    ~IOFileReader()
-    {
+    IOFileReader::~IOFileReader() {
         if (this->hFile != NULL) {
             fclose(this->hFile);
         }
     }
 
-    /**
-     * Чтение из файла
-     * @param buffer
-     * @param length
-     * @return
-     */
-    int read(char* buffer, int length)
-    {
+    int IOFileReader::read(char *buffer, int length) {
         hFile = this->getHandler();
 
         if (hFile == NULL) {
@@ -32,16 +25,7 @@ public:
         return (int) size;
     }
 
-private:
-    char* fileName;
-
-    FILE* hFile;
-
-    /**
-     * @return
-     */
-    FILE* getHandler()
-    {
+    FILE* IOFileReader::getHandler() {
         if (this->hFile != NULL) {
             return this->hFile;
         }
@@ -49,4 +33,5 @@ private:
         this->hFile = fopen(this->fileName, "r");
         return this->hFile;
     }
-};
+
+} // JsonStreamAnalyzer::Buffer

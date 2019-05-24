@@ -1,32 +1,22 @@
-class Token
-{
-public:
-    Token(int line, int column, IOReader* reader)
-    {
+#include <json-stream-analyzer/token.h>
+
+namespace JsonStreamAnalyzer::Token {
+
+    Token::Token(int line, int column, JsonStreamAnalyzer::Buffer::IOReader *reader) {
         this->line = line;
         this->column = column;
         this->reader = reader;
     }
 
-    int getLine()
-    {
+    int Token::getLine() {
         return this->line;
     }
 
-    int getColumn()
-    {
+    int Token::getColumn() {
         return this->column;
     }
 
-    IOReader* getReader()
-    {
+    JsonStreamAnalyzer::Buffer::IOReader* Token::getReader() {
         return this->reader;
     }
-
-    virtual int getType() = 0;
-
-protected:
-    int line;
-    int column;
-    IOReader* reader;
-};
+} // JsonStreamAnalyzer::Token

@@ -1,12 +1,11 @@
-class TokenLexemeWord : public Token
+#include <json-stream-analyzer/token.h>
+
+namespace JsonStreamAnalyzer::Token
 {
-public:
-    TokenLexemeWord(int line, int column, IOReader* reader) : Token(line, column, reader)
-    {
+    TokenLexemeWord::TokenLexemeWord(int line, int column, JsonStreamAnalyzer::Buffer::IOReader *reader) : Token(line, column, reader) {
     }
 
-    int getType()
-    {
+    int TokenLexemeWord::getType() {
         return TOKEN_TYPE_TEXT;
     }
-};
+} // JsonStreamAnalyzer::Token

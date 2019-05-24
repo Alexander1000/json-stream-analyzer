@@ -1,12 +1,11 @@
-class TokenNumeric : public Token
+#include <json-stream-analyzer/token.h>
+
+namespace JsonStreamAnalyzer::Token
 {
-public:
-    TokenNumeric(int line, int column, IOReader* reader) : Token(line, column, reader)
-    {
+    TokenNumeric::TokenNumeric(int line, int column, JsonStreamAnalyzer::Buffer::IOReader *reader) : Token(line, column, reader) {
     }
 
-    int getType()
-    {
+    int TokenNumeric::getType() {
         return TOKEN_TYPE_NUMERIC;
     }
-};
+} // JsonStreamAnalyzer::Token

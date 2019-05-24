@@ -1,18 +1,32 @@
-#include <vector>
+#include <json-stream-analyzer/io_buffer.h>
 
-class IOMemoryBuffer : public IOBuffer {
-public:
-    IOMemoryBuffer() : IOBuffer() {
+#define IO_MEMORY_BLOCK_SIZE 512
+
+namespace JsonStreamAnalyzer::Buffer {
+
+    IOMemoryBuffer::IOMemoryBuffer() : IOBuffer() {
         this->writePosition = 0;
         this->readPosition = 0;
 
-        char *firstBlock = new char[IO_MEMORY_BLOCK_SIZE];
+        this->ioMemoryBlockSize = IO_MEMORY_BLOCK_SIZE;
+        char *firstBlock = new char[this->ioMemoryBlockSize];
         this->blocks.clear();
         this->blocks.push_back(firstBlock);
         this->currentBlockNumber = 0;
     }
 
-    ~IOMemoryBuffer() {
+    IOMemoryBuffer::IOMemoryBuffer(int ioMemoryBlockSize) : IOBuffer() {
+        this->writePosition = 0;
+        this->readPosition = 0;
+
+        this->ioMemoryBlockSize = ioMemoryBlockSize;
+        char *firstBlock = new char[this->ioMemoryBlockSize];
+        this->blocks.clear();
+        this->blocks.push_back(firstBlock);
+        this->currentBlockNumber = 0;
+    }
+
+    IOMemoryBuffer::~IOMemoryBuffer() {
         char *buffer = NULL;
         int size = this->blocks.size();
 
@@ -27,7 +41,7 @@ public:
         this->blocks.clear();
     }
 
-    int write(char *buffer, int length) {
+    int IOMemoryBuffer::write(char *buffer, int length) {
         int nearLimitBlock, localWriteIndex, leftSave, lengthForSave;
 
         int savedLength = 0;
@@ -64,7 +78,7 @@ public:
         return savedLength;
     }
 
-    int read(char *buffer, int length) {
+    int IOMemoryBuffer::read(char *buffer, int length) {
         // прочитано данных
         int readLength = 0;
         // осталось прочитать
@@ -101,20 +115,11 @@ public:
         return 0;
     }
 
-    void setPosition(int position)
-    {
+    void IOMemoryBuffer::setPosition(int position) {
         this->readPosition = position;
     }
 
-    int length()
-    {
+    int IOMemoryBuffer::length() {
         return this->writePosition;
     }
-
-protected:
-    std::vector<char*> blocks;
-
-    int currentBlockNumber;
-    int writePosition;
-    int readPosition;
-};
+} // JsonStreamAnalyzer::Buffer

@@ -3,74 +3,70 @@
 #include <list>
 #include <iostream>
 
-class Decoder
-{
-public:
-    Decoder(Stream *stream)
-    {
+#include <json-stream-analyzer/element.h>
+#include <json-stream-analyzer/stream.h>
+#include <json-stream-analyzer/token.h>
+#include <json-stream-analyzer/decoder.h>
+
+namespace JsonStreamAnalyzer {
+
+    Decoder::Decoder(Stream *stream) {
         this->stream = stream;
     }
 
-    Element* decode()
-    {
+    Element* Decoder::decode() {
         return this->parse();
     }
 
-private:
-    Stream* stream;
-
-    Element* parse()
-    {
+    Element* Decoder::parse() {
         return this->parse_element();
     }
 
-    Element* parse_element()
-    {
-        Token* token = this->stream->get_next_token();
+    Element* Decoder::parse_element() {
+        Token::Token *token = this->stream->get_next_token();
         if (token == NULL) {
             return NULL;
         }
 
-        Element* element;
-        std::map<std::string, Element*>* obj;
-        std::string* text;
-        std::string* digit;
-        std::list<Element*>* array;
+        Element *element;
+        std::map<std::string, Element *> *obj;
+        std::string *text;
+        std::string *digit;
+        std::list<Element *> *array;
 
         switch (token->getType()) {
             case TOKEN_TYPE_BRACES_OPEN:
                 // object
                 obj = this->parse_object();
-                element = new Element(ELEMENT_TYPE_OBJECT, (void*) obj);
+                element = new Element(ELEMENT_TYPE_OBJECT, (void *) obj);
                 return element;
             case TOKEN_TYPE_QUOTES:
                 // text
                 text = this->parse_text();
-                element = new Element(ELEMENT_TYPE_TEXT, (void*) text);
+                element = new Element(ELEMENT_TYPE_TEXT, (void *) text);
                 return element;
             case TOKEN_TYPE_NUMERIC:
                 // numeric
-                digit = this->parse_numeric();
-                element = new Element(ELEMENT_TYPE_NUMERIC, (void*) digit);
+                digit = this->parse_numeric(token);
+                element = new Element(ELEMENT_TYPE_NUMERIC, (void *) digit);
                 return element;
             case TOKEN_TYPE_ARRAY_OPEN:
                 // array
                 array = this->parse_array();
-                element = new Element(ELEMENT_TYPE_ARRAY, (void*) array);
+                element = new Element(ELEMENT_TYPE_ARRAY, (void *) array);
                 return element;
         }
 
         return NULL;
     }
 
-    std::map<std::string, Element*>* parse_object()
-    {
-        std::map<std::string, Element*>* object;
-        object = new std::map<std::string, Element*>;
+    std::map<std::string, Element *>* Decoder::parse_object() {
+        std::map<std::string, Element *> *object;
+        object = new std::map<std::string, Element *>;
 
-        Token* token;
+        Token::Token *token;
 
-PARSE_OBJ_PROPERTY:
+        PARSE_OBJ_PROPERTY:
         token = this->stream->get_next_token();
         if (token->getType() != TOKEN_TYPE_QUOTES) {
             // unexpected, object property must be have quote
@@ -86,7 +82,7 @@ PARSE_OBJ_PROPERTY:
         }
 
         // @todo: optimize and reuse (memory managment)
-        char* property_name = (char*) malloc(sizeof(char*) * 1024);
+        char *property_name = (char *) malloc(sizeof(char *) * 1024);
         token->getReader()->read(property_name, 1024);
 
         token = this->stream->get_next_token();
@@ -101,11 +97,12 @@ PARSE_OBJ_PROPERTY:
             return NULL;
         }
 
-        Element* property_value = this->parse_element();
+        Element *property_value = this->parse_element();
 
         (*object)[std::string(property_name)] = property_value;
 
         token = this->stream->get_next_token();
+
         switch (token->getType()) {
             case TOKEN_TYPE_COMMA:
                 // parse next object property key-val
@@ -119,14 +116,13 @@ PARSE_OBJ_PROPERTY:
         return object;
     }
 
-    std::string* parse_text()
-    {
-        Token* token = this->stream->get_next_token();
+    std::string* Decoder::parse_text() {
+        Token::Token *token = this->stream->get_next_token();
         if (token->getType() != TOKEN_TYPE_TEXT) {
             return NULL;
         }
 
-        std::string* val;
+        std::string *val;
         if (token->getReader() == NULL) {
             // empty token
             val = new std::string("");
@@ -145,30 +141,23 @@ PARSE_OBJ_PROPERTY:
         return val;
     }
 
-    std::string* parse_numeric()
-    {
-        Token* token = this->stream->get_next_token();
-        if (token->getType() != TOKEN_TYPE_NUMERIC) {
-            return NULL;
-        }
-
-        char* text = (char*) malloc(sizeof(char*) * 1024);
+    std::string* Decoder::parse_numeric(Token::Token *token) {
+        char *text = (char *) malloc(sizeof(char *) * 1024);
         token->getReader()->read(text, 1024);
-        std::string* val = new std::string(text);
+        std::string *val = new std::string(text);
         return val;
     }
 
-    std::list<Element*>* parse_array()
-    {
-        std::list<Element*>* list;
-        list = new std::list<Element*>;
-        Element* element;
+    std::list<Element *>* Decoder::parse_array() {
+        std::list<Element *> *list;
+        list = new std::list<Element *>;
+        Element *element;
 
-PARSE_ARRAY:
+        PARSE_ARRAY:
         element = this->parse_element();
         list->push_back(element);
 
-        Token* token = this->stream->get_next_token();
+        Token::Token *token = this->stream->get_next_token();
         if (token->getType() == TOKEN_TYPE_COMMA) {
             // repeat
             goto PARSE_ARRAY;
@@ -181,4 +170,4 @@ PARSE_ARRAY:
 
         return list;
     }
-};
+} // JsonStreamAnalyzer
