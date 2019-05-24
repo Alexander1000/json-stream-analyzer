@@ -13,12 +13,6 @@
 
 #include <json-stream-analyzer/io_buffer.h>
 
-#include <json-stream-analyzer/token/comma.h>
-#include <json-stream-analyzer/token/colon.h>
-#include <json-stream-analyzer/token/quotes.h>
-#include <json-stream-analyzer/token/text.h>
-#include <json-stream-analyzer/token/numeric.h>
-
 namespace JsonStreamAnalyzer::Token {
     class Token {
     public:
@@ -74,6 +68,56 @@ namespace JsonStreamAnalyzer::Token {
     class TokenBracesOpen : public Token {
     public:
         TokenBracesOpen(int line, int column, JsonStreamAnalyzer::Buffer::IOReader *reader);
+        int getType();
+    };
+
+    // --------------------
+    // --- Token: colon ---
+    // --------------------
+
+    class TokenColon : public Token {
+    public:
+        TokenColon(int line, int column, JsonStreamAnalyzer::Buffer::IOReader *reader);
+        int getType();
+    };
+
+    // --------------------
+    // --- Token: comma ---
+    // --------------------
+
+    class TokenComma : public Token {
+    public:
+        TokenComma(int line, int column, JsonStreamAnalyzer::Buffer::IOReader *reader);
+        int getType();
+    };
+
+    // ----------------------
+    // --- Token: numeric ---
+    // ----------------------
+
+    class TokenNumeric : public Token {
+    public:
+        TokenNumeric(int line, int column, JsonStreamAnalyzer::Buffer::IOReader *reader);
+        int getType();
+    };
+
+    // ---------------------
+    // --- Token: quotes ---
+    // ---------------------
+
+    class TokenQuotes : public Token {
+    public:
+        TokenQuotes(int line, int column, JsonStreamAnalyzer::Buffer::IOReader *reader);
+        int getType();
+    };
+
+    // -------------------
+    // --- Token: text ---
+    // -------------------
+
+    class TokenLexemeWord : public Token {
+    public:
+        TokenLexemeWord(int line, int column, JsonStreamAnalyzer::Buffer::IOReader *reader);
         int getType();
     };
 }

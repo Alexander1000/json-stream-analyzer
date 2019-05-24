@@ -1,13 +1,11 @@
 #include <json-stream-analyzer/token.h>
 
-namespace JsonStreamAnalyzer::Token {
-    class TokenColon : public Token {
-    public:
-        TokenColon(int line, int column, JsonStreamAnalyzer::Buffer::IOReader *reader) : Token(line, column, reader) {
-        }
+namespace JsonStreamAnalyzer::Token
+{
+    TokenColon::TokenColon(int line, int column, JsonStreamAnalyzer::Buffer::IOReader *reader) : Token(line, column, reader) {
+    }
 
-        int getType() {
-            return TOKEN_TYPE_COLON;
-        }
-    };
+    int TokenColon::getType() {
+        return TOKEN_TYPE_COLON;
+    }
 } // JsonStreamAnalyzer::Token
