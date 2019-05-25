@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <vector>
+#include <string>
 
 #ifndef IOBUFFER_INCLUDED
 #define IOBUFFER_INCLUDED
@@ -21,6 +22,8 @@ namespace JsonStreamAnalyzer::Buffer {
     class IOFileReader : public IOReader {
     public:
         IOFileReader(char *fileName);
+        IOFileReader(const char* fileName);
+        IOFileReader(std::string fileName);
         ~IOFileReader();
         int read(char *buffer, int length);
     private:

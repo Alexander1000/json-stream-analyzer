@@ -3,8 +3,18 @@
 
 namespace JsonStreamAnalyzer::Buffer {
 
-    IOFileReader::IOFileReader(char *fileName) : IOReader() {
+    IOFileReader::IOFileReader(char * fileName) : IOReader() {
         this->fileName = fileName;
+        this->hFile = NULL;
+    }
+
+    IOFileReader::IOFileReader(const char* fileName) : IOReader() {
+        this->fileName = (char*) fileName;
+        this->hFile = NULL;
+    }
+
+    IOFileReader::IOFileReader(std::string fileName) : IOReader() {
+        this->fileName = (char*) fileName.c_str();
         this->hFile = NULL;
     }
 
