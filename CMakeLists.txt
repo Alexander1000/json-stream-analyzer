@@ -21,6 +21,14 @@ set(JSON_STREAM_ANALYZER_SOURCES
     src/buffer/io_memory_buffer.cpp
 )
 
+set(PUBLIC_HEADERS
+    include/json-stream-analyzer.h
+    include/json-stream-analyzer/io_buffer.h
+    include/json-stream-analyzer/element.h
+    include/json-stream-analyzer/stream.h
+    include/json-stream-analyzer/token.h
+)
+
 #--------------
 # Static
 #--------------
@@ -31,7 +39,7 @@ add_library(${PROJECT_NAME} STATIC ${JSON_STREAM_ANALYZER_SOURCES})
 
 set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(${PROJECT_NAME} PROPERTIES SOVERSION 1)
-set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER include/json-stream-analyzer.h)
+set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER ${PUBLIC_HEADERS})
 set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "json-stream-analyzer")
 set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS -fPIC)
 
@@ -54,7 +62,7 @@ add_library(${PROJECT_NAME} SHARED ${JSON_STREAM_ANALYZER_SOURCES})
 
 set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(${PROJECT_NAME} PROPERTIES SOVERSION 1)
-set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER include/json-stream-analyzer.h)
+set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER ${PUBLIC_HEADERS})
 set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "json-stream-analyzer")
 
 target_include_directories(${PROJECT_NAME} PRIVATE include)
