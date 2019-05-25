@@ -29,6 +29,14 @@ set(PUBLIC_HEADERS
     include/json-stream-analyzer/token.h
 )
 
+if(NOT DEFINED CMAKE_INSTALL_INCLUDEDIR)
+    set(CMAKE_INSTALL_INCLUDEDIR include)
+endif(NOT DEFINED CMAKE_INSTALL_INCLUDEDIR)
+
+# installation of json-stream-analyzer CXX library headers
+install(DIRECTORY include/json-stream-analyzer DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+
+
 #--------------
 # Static
 #--------------
