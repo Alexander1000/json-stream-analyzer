@@ -2,7 +2,7 @@
 #include <json-stream-analyzer/io_buffer.h>
 #include <json-stream-analyzer/stream.h>
 
-#include <memory>
+#include <memory.h>
 
 #define STREAM_BUFFER_SIZE 4096
 
@@ -19,7 +19,7 @@ namespace JsonStreamAnalyzer
         this->currentBuffer = new char[STREAM_BUFFER_SIZE];
         this->forwardBuffer = new char[STREAM_BUFFER_SIZE];
 
-        std::memset(this->currentBuffer, 0, STREAM_BUFFER_SIZE * sizeof(char));
+        memset(this->currentBuffer, 0, STREAM_BUFFER_SIZE * sizeof(char));
         std::memset(this->forwardBuffer, 0, STREAM_BUFFER_SIZE * sizeof(char));
 
         this->currentPosition = 0;
