@@ -1,5 +1,6 @@
 #include <json-stream-analyzer/io_buffer.h>
 #include <memory.h>
+#include <iostream>
 
 #define IO_MEMORY_BLOCK_SIZE 512
 
@@ -113,6 +114,9 @@ namespace JsonStreamAnalyzer::Buffer {
             this->readPosition += lengthForRead;
             readLength += lengthForRead;
         }
+
+        // set last byte to NULL
+        buffer[readLength] = '\x00';
 
         return 0;
     }

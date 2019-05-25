@@ -186,6 +186,7 @@ namespace JsonStreamAnalyzer
                             endOfToken = true;
                             this->mode = JSON_LEXER_PLAIN_MODE;
                             this->prevMode = JSON_LEXER_TEXT_MODE;
+                            this->appendCurrentLexeme('\00');
                             token = new Token::TokenLexemeWord(this->currentLine, this->currentColumn, this->lexemeWriter);
                         } else {
                             this->appendCurrentLexeme(symbol);
@@ -201,6 +202,7 @@ namespace JsonStreamAnalyzer
                         this->mode = this->prevMode;
                         this->prevMode = JSON_LEXER_DIGIT_MODE;
                         move_position = false;
+                        this->appendCurrentLexeme('\00');
                         token = new Token::TokenNumeric(this->currentLine, this->currentColumn, this->lexemeWriter);
                     }
                     break;
@@ -210,6 +212,7 @@ namespace JsonStreamAnalyzer
                         this->mode = this->prevMode;
                         this->prevMode = JSON_LEXER_WORD_MODE;
                         move_position = false;
+                        this->appendCurrentLexeme('\00');
                         token = new Token::TokenLexemeWord(this->currentLine, this->currentColumn, this->lexemeWriter);
                     } else {
                         this->appendCurrentLexeme(symbol);
