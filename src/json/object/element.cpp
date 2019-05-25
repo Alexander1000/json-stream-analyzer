@@ -5,4 +5,12 @@ namespace JsonStreamAnalyzer {
         this->type = type;
         this->data = data;
     }
+
+    int Element::getType() {
+        return this->type;
+    }
+
+    void* Element::getData() {
+        return this->data;
+    }
 } // JsonStreamAnalyzer
