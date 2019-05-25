@@ -128,6 +128,7 @@ namespace JsonStreamAnalyzer {
             val = new std::string("");
         } else {
             char *text = (char *) malloc(sizeof(char *) * 1024);
+            memset(text, 0, sizeof(char) * 1024);
             token->getReader()->read(text, 1024);
             val = new std::string(text);
         }
@@ -143,6 +144,7 @@ namespace JsonStreamAnalyzer {
 
     std::string* Decoder::parse_numeric(Token::Token *token) {
         char *text = (char *) malloc(sizeof(char *) * 1024);
+        memset(text, 0, sizeof(char) * 1024);
         token->getReader()->read(text, 1024);
         std::string *val = new std::string(text);
         return val;
