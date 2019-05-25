@@ -1,4 +1,5 @@
 #include <json-stream-analyzer/io_buffer.h>
+#include <memory.h>
 
 #define IO_MEMORY_BLOCK_SIZE 512
 
