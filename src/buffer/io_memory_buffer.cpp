@@ -69,6 +69,7 @@ namespace JsonStreamAnalyzer::Buffer {
             if (this->writePosition % IO_MEMORY_BLOCK_SIZE == 0) {
                 // если полностью заполнили блок, выделяем новый
                 pBlock = new char[IO_MEMORY_BLOCK_SIZE];
+                memset(pBlock, 0, sizeof(char) * IO_MEMORY_BLOCK_SIZE);
                 ++this->currentBlockNumber;
                 this->blocks.push_back(pBlock);
             }

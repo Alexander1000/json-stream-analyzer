@@ -82,7 +82,8 @@ namespace JsonStreamAnalyzer {
         }
 
         // @todo: optimize and reuse (memory managment)
-        char *property_name = (char *) malloc(sizeof(char *) * 1024);
+        char *property_name = (char *) malloc(sizeof(char) * 1024);
+        memset(property_name, 0, sizeof(char) * 1024);
         token->getReader()->read(property_name, 1024);
 
         token = this->stream->get_next_token();
@@ -127,7 +128,7 @@ namespace JsonStreamAnalyzer {
             // empty token
             val = new std::string("");
         } else {
-            char *text = (char *) malloc(sizeof(char *) * 1024);
+            char *text = (char *) malloc(sizeof(char) * 1024);
             memset(text, 0, sizeof(char) * 1024);
             token->getReader()->read(text, 1024);
             val = new std::string(text);
