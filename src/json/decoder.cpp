@@ -2,6 +2,7 @@
 #include <string>
 #include <list>
 #include <iostream>
+#include <memory.h>
 
 #include <json-stream-analyzer/element.h>
 #include <json-stream-analyzer/stream.h>
