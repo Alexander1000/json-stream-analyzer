@@ -11,24 +11,24 @@
 #define TOKEN_TYPE_ARRAY_CLOSE 7
 #define TOKEN_TYPE_NUMERIC 8
 
-#include <json-stream-analyzer/io_buffer.h>
+#include <io-buffer.h>
 
 namespace JsonStreamAnalyzer::Token {
     class Token {
     public:
-        Token(int line, int column, JsonStreamAnalyzer::Buffer::IOReader *reader);
+        Token(int line, int column, IOBuffer::IOReader *reader);
 
         int getLine();
 
         int getColumn();
 
-        JsonStreamAnalyzer::Buffer::IOReader *getReader();
+        IOBuffer::IOReader *getReader();
 
         virtual int getType() = 0;
     protected:
         int line;
         int column;
-        JsonStreamAnalyzer::Buffer::IOReader *reader;
+        IOBuffer::IOReader *reader;
     };
 
     // --------------------------
@@ -37,7 +37,7 @@ namespace JsonStreamAnalyzer::Token {
 
     class TokenArrayClose : public Token {
     public:
-        TokenArrayClose(int line, int column, JsonStreamAnalyzer::Buffer::IOReader *reader);
+        TokenArrayClose(int line, int column, IOBuffer::IOReader *reader);
         int getType();
     };
 
@@ -47,7 +47,7 @@ namespace JsonStreamAnalyzer::Token {
 
     class TokenArrayOpen : public Token {
     public:
-        TokenArrayOpen(int line, int column, JsonStreamAnalyzer::Buffer::IOReader *reader);
+        TokenArrayOpen(int line, int column, IOBuffer::IOReader *reader);
         int getType();
     };
 
@@ -57,7 +57,7 @@ namespace JsonStreamAnalyzer::Token {
 
     class TokenBracesClose : public Token {
     public:
-        TokenBracesClose(int line, int column, JsonStreamAnalyzer::Buffer::IOReader *reader);
+        TokenBracesClose(int line, int column, IOBuffer::IOReader *reader);
         int getType();
     };
 
@@ -67,7 +67,7 @@ namespace JsonStreamAnalyzer::Token {
 
     class TokenBracesOpen : public Token {
     public:
-        TokenBracesOpen(int line, int column, JsonStreamAnalyzer::Buffer::IOReader *reader);
+        TokenBracesOpen(int line, int column, IOBuffer::IOReader *reader);
         int getType();
     };
 
@@ -77,7 +77,7 @@ namespace JsonStreamAnalyzer::Token {
 
     class TokenColon : public Token {
     public:
-        TokenColon(int line, int column, JsonStreamAnalyzer::Buffer::IOReader *reader);
+        TokenColon(int line, int column, IOBuffer::IOReader *reader);
         int getType();
     };
 
@@ -87,7 +87,7 @@ namespace JsonStreamAnalyzer::Token {
 
     class TokenComma : public Token {
     public:
-        TokenComma(int line, int column, JsonStreamAnalyzer::Buffer::IOReader *reader);
+        TokenComma(int line, int column, IOBuffer::IOReader *reader);
         int getType();
     };
 
@@ -97,7 +97,7 @@ namespace JsonStreamAnalyzer::Token {
 
     class TokenNumeric : public Token {
     public:
-        TokenNumeric(int line, int column, JsonStreamAnalyzer::Buffer::IOReader *reader);
+        TokenNumeric(int line, int column, IOBuffer::IOReader *reader);
         int getType();
     };
 
@@ -107,7 +107,7 @@ namespace JsonStreamAnalyzer::Token {
 
     class TokenQuotes : public Token {
     public:
-        TokenQuotes(int line, int column, JsonStreamAnalyzer::Buffer::IOReader *reader);
+        TokenQuotes(int line, int column, IOBuffer::IOReader *reader);
         int getType();
     };
 
@@ -117,7 +117,7 @@ namespace JsonStreamAnalyzer::Token {
 
     class TokenLexemeWord : public Token {
     public:
-        TokenLexemeWord(int line, int column, JsonStreamAnalyzer::Buffer::IOReader *reader);
+        TokenLexemeWord(int line, int column, IOBuffer::IOReader *reader);
         int getType();
     };
 }

@@ -1,8 +1,9 @@
 #include <json-stream-analyzer/token.h>
+#include <io-buffer.h>
 
 namespace JsonStreamAnalyzer::Token
 {
-    TokenBracesOpen::TokenBracesOpen(int line, int column, JsonStreamAnalyzer::Buffer::IOReader *reader) : Token(line, column, reader) {
+    TokenBracesOpen::TokenBracesOpen(int line, int column, IOBuffer::IOReader *reader) : Token(line, column, reader) {
     }
 
     int TokenBracesOpen::getType() {

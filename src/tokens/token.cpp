@@ -1,8 +1,9 @@
 #include <json-stream-analyzer/token.h>
+#include <io-buffer.h>
 
 namespace JsonStreamAnalyzer::Token {
 
-    Token::Token(int line, int column, JsonStreamAnalyzer::Buffer::IOReader *reader) {
+    Token::Token(int line, int column, IOBuffer::IOReader *reader) {
         this->line = line;
         this->column = column;
         this->reader = reader;
@@ -16,7 +17,7 @@ namespace JsonStreamAnalyzer::Token {
         return this->column;
     }
 
-    JsonStreamAnalyzer::Buffer::IOReader* Token::getReader() {
+    IOBuffer::IOReader* Token::getReader() {
         return this->reader;
     }
 } // JsonStreamAnalyzer::Token

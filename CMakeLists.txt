@@ -4,26 +4,23 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 set(JSON_STREAM_ANALYZER_SOURCES
-    src/json/object/element.cpp
-    src/json/tokens/token.cpp
-    src/json/tokens/token_array_close.cpp
-    src/json/tokens/token_array_open.cpp
-    src/json/tokens/token_braces_close.cpp
-    src/json/tokens/token_braces_open.cpp
-    src/json/tokens/token_colon.cpp
-    src/json/tokens/token_comma.cpp
-    src/json/tokens/token_lexeme_word.cpp
-    src/json/tokens/token_numeric.cpp
-    src/json/tokens/token_quotes.cpp
-    src/json/decoder.cpp
-    src/json/stream.cpp
-    src/buffer/io_file_reader.cpp
-    src/buffer/io_memory_buffer.cpp
+    src/object/element.cpp
+    src/tokens/token.cpp
+    src/tokens/token_array_close.cpp
+    src/tokens/token_array_open.cpp
+    src/tokens/token_braces_close.cpp
+    src/tokens/token_braces_open.cpp
+    src/tokens/token_colon.cpp
+    src/tokens/token_comma.cpp
+    src/tokens/token_lexeme_word.cpp
+    src/tokens/token_numeric.cpp
+    src/tokens/token_quotes.cpp
+    src/decoder.cpp
+    src/stream.cpp
 )
 
 set(PUBLIC_HEADERS
     include/json-stream-analyzer.h
-    include/json-stream-analyzer/io_buffer.h
     include/json-stream-analyzer/element.h
     include/json-stream-analyzer/stream.h
     include/json-stream-analyzer/token.h
@@ -35,7 +32,6 @@ endif(NOT DEFINED CMAKE_INSTALL_INCLUDEDIR)
 
 # installation of json-stream-analyzer CXX library headers
 install(DIRECTORY include/json-stream-analyzer DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
-
 
 #--------------
 # Static
