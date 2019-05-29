@@ -3,6 +3,7 @@
 #include <sys/stat.h>
 
 #include <json-stream-analyzer.h>
+#include <io-buffer.h>
 
 #define ERROR_MISSING_INPUT (-1)
 #define ERROR_STAT_INFO (-2)
@@ -58,7 +59,7 @@ int main(int argc, char* argv[])
 
     if(s.st_mode & S_IFREG) {
         std::cout << "starting analyze file" << std::endl;
-        JsonStreamAnalyzer::Buffer::IOFileReader file_buffer(inputPath);
+        IOBuffer::IOFileReader file_buffer(inputPath);
         JsonStreamAnalyzer::Stream json_stream(&file_buffer);
         JsonStreamAnalyzer::Decoder decoder(&json_stream);
         decoder.decode();

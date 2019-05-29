@@ -9,17 +9,17 @@
 #define JSON_LEXER_WORD_MODE  3
 
 #include <json-stream-analyzer/token.h>
-#include <json-stream-analyzer/io_buffer.h>
+#include <io-buffer.h>
 
 namespace JsonStreamAnalyzer
 {
     class Stream {
     public:
-        Stream(Buffer::IOReader *reader);
+        Stream(IOBuffer::IOReader *reader);
         Token::Token *get_next_token();
         ~Stream();
     private:
-        Buffer::IOReader *reader;
+        IOBuffer::IOReader *reader;
 
         char *currentBuffer;
         char *forwardBuffer;
@@ -40,7 +40,7 @@ namespace JsonStreamAnalyzer
         int currentLine;
         int currentColumn;
 
-        Buffer::IOMemoryBuffer *lexemeWriter;
+        IOBuffer::IOMemoryBuffer *lexemeWriter;
 
         int mode;
         int prevMode;
@@ -57,7 +57,7 @@ namespace JsonStreamAnalyzer
 
         void appendCurrentLexeme(char symbol) {
             if (this->lexemeWriter == NULL) {
-                this->lexemeWriter = new Buffer::IOMemoryBuffer;
+                this->lexemeWriter = new IOBuffer::IOMemoryBuffer;
             }
 
             this->lexemeWriter->write(&symbol, 1);

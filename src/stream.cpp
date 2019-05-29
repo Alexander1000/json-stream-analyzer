@@ -1,6 +1,6 @@
 #include <json-stream-analyzer/token.h>
-#include <json-stream-analyzer/io_buffer.h>
 #include <json-stream-analyzer/stream.h>
+#include <io-buffer.h>
 
 #include <memory.h>
 
@@ -13,7 +13,7 @@
 
 namespace JsonStreamAnalyzer
 {
-    Stream::Stream(Buffer::IOReader *reader) {
+    Stream::Stream(IOBuffer::IOReader *reader) {
         this->reader = reader;
 
         this->currentBuffer = new char[STREAM_BUFFER_SIZE];
