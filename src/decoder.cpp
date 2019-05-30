@@ -36,22 +36,22 @@ namespace JsonStreamAnalyzer {
         std::list<Element *> *array;
 
         switch (token->getType()) {
-            case TOKEN_TYPE_BRACES_OPEN:
+            case Token::Type::BracesOpen:
                 // object
                 obj = this->parse_object();
                 element = new Element(ELEMENT_TYPE_OBJECT, (void *) obj);
                 return element;
-            case TOKEN_TYPE_QUOTES:
+            case Token::Type::Quotes:
                 // text
                 text = this->parse_text();
                 element = new Element(ELEMENT_TYPE_TEXT, (void *) text);
                 return element;
-            case TOKEN_TYPE_NUMERIC:
+            case Token::Type::Numeric:
                 // numeric
                 digit = this->parse_numeric(token);
                 element = new Element(ELEMENT_TYPE_NUMERIC, (void *) digit);
                 return element;
-            case TOKEN_TYPE_ARRAY_OPEN:
+            case Token::Type::ArrayOpen:
                 // array
                 array = this->parse_array();
                 element = new Element(ELEMENT_TYPE_ARRAY, (void *) array);
@@ -69,14 +69,14 @@ namespace JsonStreamAnalyzer {
 
         PARSE_OBJ_PROPERTY:
         token = this->stream->get_next_token();
-        if (token->getType() != TOKEN_TYPE_QUOTES) {
+        if (token->getType() != Token::Type::Quotes) {
             // unexpected, object property must be have quote
             // @todo: throw exception
             return NULL;
         }
 
         token = this->stream->get_next_token();
-        if (token->getType() != TOKEN_TYPE_TEXT) {
+        if (token->getType() != Token::Type::Text) {
             // unexpected
             // @todo: throw exception
             return NULL;
@@ -88,13 +88,13 @@ namespace JsonStreamAnalyzer {
         token->getReader()->read(property_name, 1024);
 
         token = this->stream->get_next_token();
-        if (token->getType() != TOKEN_TYPE_QUOTES) {
+        if (token->getType() != Token::Type::Quotes) {
             // @todo: throw exception
             return NULL;
         }
 
         token = this->stream->get_next_token();
-        if (token->getType() != TOKEN_TYPE_COLON) {
+        if (token->getType() != Token::Type::Colon) {
             // @todo: unexpected
             return NULL;
         }
@@ -106,11 +106,11 @@ namespace JsonStreamAnalyzer {
         token = this->stream->get_next_token();
 
         switch (token->getType()) {
-            case TOKEN_TYPE_COMMA:
+            case Token::Type::Comma:
                 // parse next object property key-val
                 // todo: fixme, refactor
                 goto PARSE_OBJ_PROPERTY;
-            case TOKEN_TYPE_BRACES_CLOSE:
+            case Token::Type::BracesClose:
                 break;
         }
 
@@ -120,7 +120,7 @@ namespace JsonStreamAnalyzer {
 
     std::string* Decoder::parse_text() {
         Token::Token *token = this->stream->get_next_token();
-        if (token->getType() != TOKEN_TYPE_TEXT) {
+        if (token->getType() != Token::Type::Text) {
             return NULL;
         }
 
@@ -136,7 +136,7 @@ namespace JsonStreamAnalyzer {
         }
 
         token = this->stream->get_next_token();
-        if (token->getType() != TOKEN_TYPE_QUOTES) {
+        if (token->getType() != Token::Type::Quotes) {
             // todo: throw exception
             return NULL;
         }
@@ -162,12 +162,12 @@ namespace JsonStreamAnalyzer {
         list->push_back(element);
 
         Token::Token *token = this->stream->get_next_token();
-        if (token->getType() == TOKEN_TYPE_COMMA) {
+        if (token->getType() == Token::Type::Comma) {
             // repeat
             goto PARSE_ARRAY;
         }
 
-        if (token->getType() != TOKEN_TYPE_ARRAY_CLOSE) {
+        if (token->getType() != Token::Type::ArrayClose) {
             // throw exception
             return NULL;
         }
