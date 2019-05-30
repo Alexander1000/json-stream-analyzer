@@ -56,6 +56,10 @@ namespace JsonStreamAnalyzer {
                 array = this->parse_array();
                 element = new Element(ELEMENT_TYPE_ARRAY, (void *) array);
                 return element;
+            default:
+                std::cout << "unexpected token: " << token->getType() << std::endl;
+                // unsupporeted
+                return NULL;
         }
 
         return NULL;
@@ -112,6 +116,10 @@ namespace JsonStreamAnalyzer {
                 goto PARSE_OBJ_PROPERTY;
             case Token::Type::BracesClose:
                 break;
+            default:
+                // @todo: throw exception
+                std::cout << "unexpected token: " << token->getType() << std::endl;
+                return NULL;
         }
 
         // todo: allocate memory
