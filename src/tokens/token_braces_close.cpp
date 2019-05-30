@@ -6,7 +6,7 @@ namespace JsonStreamAnalyzer::Token
     TokenBracesClose::TokenBracesClose(int line, int column, IOBuffer::IOReader *reader) : Token(line, column, reader) {
     }
 
-    int TokenBracesClose::getType() {
-        return TOKEN_TYPE_BRACES_CLOSE;
+    Type TokenBracesClose::getType() {
+        return Type::BracesClose;
     }
 } // JsonStreamAnalyzer::Token

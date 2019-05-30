@@ -6,7 +6,7 @@ namespace JsonStreamAnalyzer::Token
     TokenColon::TokenColon(int line, int column, IOBuffer::IOReader *reader) : Token(line, column, reader) {
     }
 
-    int TokenColon::getType() {
-        return TOKEN_TYPE_COLON;
+    Type TokenColon::getType() {
+        return Type::Colon;
     }
 } // JsonStreamAnalyzer::Token

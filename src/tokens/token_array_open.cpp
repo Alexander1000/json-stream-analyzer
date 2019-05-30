@@ -6,7 +6,7 @@ namespace JsonStreamAnalyzer::Token
     TokenArrayOpen::TokenArrayOpen(int line, int column, IOBuffer::IOReader *reader) : Token(line, column, reader) {
     }
 
-    int TokenArrayOpen::getType() {
-        return TOKEN_TYPE_ARRAY_OPEN;
+    Type TokenArrayOpen::getType() {
+        return Type::ArrayOpen;
     }
 } // JsonStreamAnalyzer::Token
