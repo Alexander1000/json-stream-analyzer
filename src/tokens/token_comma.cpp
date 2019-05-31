@@ -6,7 +6,7 @@ namespace JsonStreamAnalyzer::Token
     TokenComma::TokenComma(int line, int column, IOBuffer::IOReader *reader) : Token(line, column, reader) {
     }
 
-    int TokenComma::getType() {
-        return TOKEN_TYPE_COMMA;
+    Type TokenComma::getType() {
+        return Type::Comma;
     }
 } // JsonStreamAnalyzer::Token

@@ -14,6 +14,18 @@
 #include <io-buffer.h>
 
 namespace JsonStreamAnalyzer::Token {
+    enum Type {
+        ArrayClose,
+        ArrayOpen,
+        BracesClose,
+        BracesOpen,
+        Colon,
+        Comma,
+        Numeric,
+        Quotes,
+        Text,
+    };
+
     class Token {
     public:
         Token(int line, int column, IOBuffer::IOReader *reader);
@@ -24,7 +36,7 @@ namespace JsonStreamAnalyzer::Token {
 
         IOBuffer::IOReader *getReader();
 
-        virtual int getType() = 0;
+        virtual Type getType() = 0;
     protected:
         int line;
         int column;
@@ -38,7 +50,7 @@ namespace JsonStreamAnalyzer::Token {
     class TokenArrayClose : public Token {
     public:
         TokenArrayClose(int line, int column, IOBuffer::IOReader *reader);
-        int getType();
+        Type getType();
     };
 
     // -------------------------
@@ -48,7 +60,7 @@ namespace JsonStreamAnalyzer::Token {
     class TokenArrayOpen : public Token {
     public:
         TokenArrayOpen(int line, int column, IOBuffer::IOReader *reader);
-        int getType();
+        Type getType();
     };
 
     // ---------------------------
@@ -58,7 +70,7 @@ namespace JsonStreamAnalyzer::Token {
     class TokenBracesClose : public Token {
     public:
         TokenBracesClose(int line, int column, IOBuffer::IOReader *reader);
-        int getType();
+        Type getType();
     };
 
     // ---------------------------
@@ -68,7 +80,7 @@ namespace JsonStreamAnalyzer::Token {
     class TokenBracesOpen : public Token {
     public:
         TokenBracesOpen(int line, int column, IOBuffer::IOReader *reader);
-        int getType();
+        Type getType();
     };
 
     // --------------------
@@ -78,7 +90,7 @@ namespace JsonStreamAnalyzer::Token {
     class TokenColon : public Token {
     public:
         TokenColon(int line, int column, IOBuffer::IOReader *reader);
-        int getType();
+        Type getType();
     };
 
     // --------------------
@@ -88,7 +100,7 @@ namespace JsonStreamAnalyzer::Token {
     class TokenComma : public Token {
     public:
         TokenComma(int line, int column, IOBuffer::IOReader *reader);
-        int getType();
+        Type getType();
     };
 
     // ----------------------
@@ -98,7 +110,7 @@ namespace JsonStreamAnalyzer::Token {
     class TokenNumeric : public Token {
     public:
         TokenNumeric(int line, int column, IOBuffer::IOReader *reader);
-        int getType();
+        Type getType();
     };
 
     // ---------------------
@@ -108,7 +120,7 @@ namespace JsonStreamAnalyzer::Token {
     class TokenQuotes : public Token {
     public:
         TokenQuotes(int line, int column, IOBuffer::IOReader *reader);
-        int getType();
+        Type getType();
     };
 
     // -------------------
@@ -118,7 +130,7 @@ namespace JsonStreamAnalyzer::Token {
     class TokenLexemeWord : public Token {
     public:
         TokenLexemeWord(int line, int column, IOBuffer::IOReader *reader);
-        int getType();
+        Type getType();
     };
 }
 

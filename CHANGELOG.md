@@ -1,5 +1,8 @@
 # Changelog json-stream-analyzer
 
+## 0.1.1
+  - refactoring for enum usage
+
 ## 0.1.0
   - io-buffer in independence package
 
