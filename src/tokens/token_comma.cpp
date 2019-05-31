@@ -7,6 +7,6 @@ namespace JsonStreamAnalyzer::Token
     }
 
     Type TokenComma::getType() {
-        return Type::Colon;
+        return Type::Comma;
     }
 } // JsonStreamAnalyzer::Token

@@ -118,7 +118,7 @@ namespace JsonStreamAnalyzer {
                 break;
             default:
                 // @todo: throw exception
-                std::cout << "unexpected token: " << token->getType() << std::endl;
+                std::cout << "unexpected token while parse object: " << token->getType() << std::endl;
                 return NULL;
         }
 
