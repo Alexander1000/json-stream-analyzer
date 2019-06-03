@@ -13,3 +13,4 @@ libjson-stream-analyzer.a
 json-stream-analyzer-shared.cbp
 install_manifest.txt
 cli/json-analyzer
+tests/json-analyzer-tests
