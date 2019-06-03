@@ -62,6 +62,8 @@ namespace JsonStreamAnalyzer
 
             this->lexemeWriter->write(&symbol, 1);
         }
+
+        char* getNextChar();
     };
 }
 
