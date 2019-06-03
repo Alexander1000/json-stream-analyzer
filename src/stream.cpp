@@ -51,12 +51,9 @@ namespace JsonStreamAnalyzer
         bool escape = false;
         Token::Token *token = NULL;
 
-        while (!endOfToken) {
-            char* curChar = this->getNextChar();
-            if (curChar == NULL) {
-                break;
-            }
-            
+        char* curChar = this->getNextChar();
+
+        while (!endOfToken && curChar != NULL) {
             // текущий указатель находится внутри первого буфера
             bool move_position = true;
 
@@ -188,9 +185,7 @@ namespace JsonStreamAnalyzer
                 ++this->currentPosition;
             }
 
-            if (this->lastFrame && this->currentPosition == this->posCurrent) {
-                break;
-            }
+            curChar = this->getNextChar();
         }
 
         return token;
