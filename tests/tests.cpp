@@ -1,5 +1,7 @@
 #include <iostream>
 
+#include <tests.h>
+
 #include <json-stream-analyzer.h>
 #include <io-buffer.h>
 
@@ -24,7 +26,9 @@ void assertObjectPropertyExist(JsonObject* obj, const char* propertyName) {
     }
 }
 
-int main(int argc, char** argv) {
+Test::TestCase* testCase_SimpleExample_Positive() {
+    Test::TestCase* testCase = new Test::TestCase("001-simple-example");
+
     IOBuffer::IOFileReader file_buffer("../fixtures/001-simple-example.json");
     JsonStreamAnalyzer::Stream json_stream(&file_buffer);
     JsonStreamAnalyzer::Decoder decoder(&json_stream);
@@ -35,5 +39,11 @@ int main(int argc, char** argv) {
     assertObjectPropertyExist(obj, "services");
     assertObjectPropertyExist(obj, "test-identical");
 
+    return testCase;
+}
+
+int main(int argc, char** argv) {
+    Test::TestSuite testSuite();
+    testSuite.addTestCase(testCase_SimpleExample_Positive());
     return 0;
 }
