@@ -35,6 +35,8 @@ namespace JsonStreamAnalyzer {
         std::string *digit;
         std::list<Element *> *array;
 
+        std::cout << "token type: " << token->getType() << std::endl;
+
         switch (token->getType()) {
             case Token::Type::BracesOpen:
                 // object

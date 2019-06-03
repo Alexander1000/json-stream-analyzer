@@ -1,0 +1,24 @@
+{
+  "services": [
+    {
+      "name": "Some-Name",
+      "description": "simple field"
+    },
+    {
+      "name": "Service-2",
+      "value": 724
+    }
+  ],
+  "test-identical": {
+    "someProperty": {
+      "currentProperty": {
+        "values": [
+          123,
+          456,
+          789
+        ]
+      },
+      "currentValue": "some-test"
+    }
+  }
+}
