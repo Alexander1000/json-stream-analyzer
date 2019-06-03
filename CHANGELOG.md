@@ -1,5 +1,8 @@
 # Changelog json-stream-analyzer
 
+## 0.2.0
+  - refactoring code block usage
+
 ## 0.1.1
   - refactoring for enum usage
 
