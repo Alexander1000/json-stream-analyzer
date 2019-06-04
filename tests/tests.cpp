@@ -64,38 +64,42 @@ Test::TestCase* testCase_SimpleExample_Positive() {
     assertObjectPropertyExist(t, obj, "services");
     assertObjectPropertyExist(t, obj, "test-identical");
 
+    // JsonPointer: /services
+
     JsonStreamAnalyzer::Element* servicesObject = obj->at("services");
     assertType(t, servicesObject, ELEMENT_TYPE_ARRAY);
     JsonArray* serviceList = (JsonArray*) servicesObject->getData();
 
     JsonArray::iterator it = serviceList->begin();
 
+    // JsonPointer: /services/0
     JsonStreamAnalyzer::Element* el1 = *it;
     assertType(t, el1, ELEMENT_TYPE_OBJECT);
     JsonObject* obj1 = (JsonObject*) el1->getData();
     assertObjectPropertyExist(t, obj1, "name");
     assertObjectPropertyExist(t, obj1, "description");
-    // field: name
+    // JsonPointer: /services/0/name
     JsonStreamAnalyzer::Element* obj1Name = obj1->at("name");
     assertType(t, obj1Name, ELEMENT_TYPE_TEXT);
     assertEquals(t, (std::string*) obj1Name->getData(), "Some-Name");
-    // field: description
+    // JsonPointer: /services/0/description
     JsonStreamAnalyzer::Element* obj1Descr = obj1->at("description");
     assertType(t, obj1Descr, ELEMENT_TYPE_TEXT);
     assertEquals(t, (std::string*) obj1Descr->getData(), "simple field");
 
     ++it;
 
+    // JsonPointer: /services/1
     JsonStreamAnalyzer::Element* el2 = *it;
     assertType(t, el2, ELEMENT_TYPE_OBJECT);
     JsonObject* obj2 = (JsonObject*) el2->getData();
     assertObjectPropertyExist(t, obj2, "name");
     assertObjectPropertyExist(t, obj2, "value");
-    // field: name
+    // JsonPointer: /services/1/name
     JsonStreamAnalyzer::Element* obj2Name = obj2->at("name");
     assertType(t, obj2Name, ELEMENT_TYPE_TEXT);
     assertEquals(t, (std::string*) obj2Name->getData(), "Service-2");
-    // field: value
+    // JsonPointer: /services/1/value
     JsonStreamAnalyzer::Element* obj2Value = obj2->at("value");
     assertType(t, obj2Value, ELEMENT_TYPE_NUMERIC);
     assertEquals(t, (std::string*) obj2Value->getData(), "724");
