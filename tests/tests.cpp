@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 
 #include <tests.h>
 
@@ -9,6 +10,9 @@ class AssertElementTypeException
 {};
 
 class AssertObjectPropertyExist
+{};
+
+class AssertEqualsException
 {};
 
 typedef std::map<std::string, JsonStreamAnalyzer::Element*> JsonObject;
@@ -28,6 +32,22 @@ void assertObjectPropertyExist(Test::TestCase* testCase, JsonObject* obj, const 
 
     if (obj->find(propertyName) == obj->end()) {
         throw new AssertObjectPropertyExist;
+    }
+}
+
+void assertEquals(Test::TestCase* testCase, std::string str1, std::string str2)
+{
+    testCase->increment();
+    if (str1.compare(str2) != 0) {
+        throw new AssertEqualsException;
+    }
+}
+
+void assertEquals(Test::TestCase* testCase, std::string* str1, std::string str2)
+{
+    testCase->increment();
+    if (str1->compare(str2) != 0) {
+        throw new AssertEqualsException;
     }
 }
 
@@ -53,6 +73,11 @@ Test::TestCase* testCase_SimpleExample_Positive() {
     JsonStreamAnalyzer::Element* el1 = *it;
     assertType(t, el1, ELEMENT_TYPE_OBJECT);
     JsonObject* obj1 = (JsonObject*) el1->getData();
+    assertObjectPropertyExist(t, obj1, "name");
+    assertObjectPropertyExist(t, obj1, "description");
+    JsonStreamAnalyzer::Element* obj1Name = obj1->at("name");
+    assertType(t, obj1Name, ELEMENT_TYPE_TEXT);
+    assertEquals(t, (std::string*) obj1Name->getData(), "Some-Name");
 
     ++it;
 
