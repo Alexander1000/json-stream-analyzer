@@ -10,24 +10,29 @@ namespace Test
     public:
         TestCase(const char* name)
         {
-            this->name = name;
+            this->name = (char*) name;
+        }
+
+        void increment()
+        {
+            this->asserts++;
         }
     private:
         char* name;
+        int asserts = 0;
     };
 
     class TestSuite
     {
     public:
         TestSuite() {
-            this->testCaseList = std::list<TestCase>();
         }
 
-        void addTestCase(TestCase testCase) {
+        void addTestCase(TestCase* testCase) {
             this->testCaseList.push_front(testCase);
         }
     private:
-        std::list<TestCase> testCaseList;
+        std::list<TestCase*> testCaseList;
     };
 }
 
