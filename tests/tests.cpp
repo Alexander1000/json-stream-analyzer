@@ -48,6 +48,14 @@ Test::TestCase* testCase_SimpleExample_Positive() {
     assertType(t, servicesObject, ELEMENT_TYPE_ARRAY);
     JsonArray* serviceList = (JsonArray*) servicesObject->getData();
 
+    JsonArray::iterator it = serviceList->begin();
+
+    JsonStreamAnalyzer::Element* el1 = *it;
+    assertType(t, el1, ELEMENT_TYPE_OBJECT);
+    JsonObject* obj1 = (JsonObject*) el1->getData();
+
+    ++it;
+
     return t;
 }
 
