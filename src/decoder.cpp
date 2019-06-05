@@ -35,6 +35,8 @@ namespace JsonStreamAnalyzer {
         std::string *digit;
         std::list<Element *> *array;
 
+        std::cout << JsonStreamAnalyzer::Token::getTokenTypeName(token->getType()) << std::endl;
+
         switch (token->getType()) {
             case Token::Type::BracesOpen:
                 // object
@@ -57,7 +59,7 @@ namespace JsonStreamAnalyzer {
                 element = new Element(ELEMENT_TYPE_ARRAY, (void *) array);
                 return element;
             default:
-                std::cout << "unexpected token: " << token->getType() << std::endl;
+                std::cout << "unexpected token: " << JsonStreamAnalyzer::Token::getTokenTypeName(token->getType()) << std::endl;
                 // unsupporeted
                 return NULL;
         }

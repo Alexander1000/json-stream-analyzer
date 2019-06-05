@@ -185,8 +185,24 @@ Test::TestCase* testCase_SimpleExample02_Positive()
 
 int main(int argc, char** argv) {
     Test::TestSuite testSuite;
+
+    std::cout << "=================================" << std::endl;
+    std::cout << "testCase_SimpleExample_Positive" << std::endl;
+    std::cout << "=================================" << std::endl;
+    std::cout << std::endl;
+
     testSuite.addTestCase(testCase_SimpleExample_Positive());
+
+    std::cout << std::endl;
+
+    std::cout << "=================================" << std::endl;
+    std::cout << "testCase_SimpleExample02_Positive" << std::endl;
+    std::cout << "=================================" << std::endl;
+
+    std::cout << std::endl;
+
     testSuite.addTestCase(testCase_SimpleExample02_Positive());
+
     testSuite.print();
     return 0;
 }
