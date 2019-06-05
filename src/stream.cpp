@@ -162,12 +162,60 @@ namespace JsonStreamAnalyzer
                 case JSON_LEXER_WORD_MODE:
                     if (!this->is_word(symbol)) {
                         endOfToken = true;
+                        this->appendCurrentLexeme('\00');
+
+                        if (this->prevMode == JSON_LEXER_PLAIN_MODE) {
+                            int length = this->lexemeWriter->length();
+                            // true/false/null
+                            if (length == 4) {
+                                // check true
+                                char* tb = (char*) malloc(sizeof(char) * 5);
+                                memset(tb, 0, sizeof(char) * 5);
+                                this->lexemeWriter->read(tb, 4);
+                                std::string sTrue = "true";
+                                std::string sNull = "null";
+                                if (sTrue == tb) {
+                                    token = new Token::TokenBool(
+                                        this->currentLine,
+                                        this->currentColumn,
+                                        this->lexemeWriter
+                                    );
+                                } else if (sNull == tb) {
+                                    token = new Token::TokenNull(
+                                        this->currentLine,
+                                        this->currentColumn,
+                                        this->lexemeWriter
+                                    );
+                                }
+                                free(tb);
+                            } else if (length == 5) {
+                                // check false
+                                char* tb = (char*) malloc(sizeof(char) * 6);
+                                memset(tb, 0, sizeof(char) * 6);
+                                this->lexemeWriter->read(tb, 5);
+                                std::string sFalse = "false";
+                                if (sFalse == tb) {
+                                    token = new Token::TokenBool(
+                                        this->currentLine,
+                                        this->currentColumn,
+                                        this->lexemeWriter
+                                    );
+                                }
+                                free(tb);
+                            }
+                        }
+
                         this->mode = this->prevMode;
                         this->prevMode = JSON_LEXER_WORD_MODE;
                         move_position = false;
-                        this->appendCurrentLexeme('\00');
-                        // todo: check special words (null, true/false)
-                        token = new Token::TokenLexemeWord(this->currentLine, this->currentColumn, this->lexemeWriter);
+
+                        if (token == NULL) {
+                            token = new Token::TokenLexemeWord(
+                                this->currentLine,
+                                this->currentColumn,
+                                this->lexemeWriter
+                            );
+                        }
                     } else {
                         this->appendCurrentLexeme(symbol);
                     }
