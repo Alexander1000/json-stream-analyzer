@@ -14,6 +14,8 @@ namespace JsonStreamAnalyzer::Token {
         Numeric,
         Quotes,
         Text,
+        Bool,
+        Null,
     };
 
     const char* getTokenTypeName(Type);
@@ -122,6 +124,26 @@ namespace JsonStreamAnalyzer::Token {
     class TokenLexemeWord : public Token {
     public:
         TokenLexemeWord(int line, int column, IOBuffer::IOReader *reader);
+        Type getType();
+    };
+
+    // -------------------
+    // --- Token: bool ---
+    // -------------------
+
+    class TokenBool : public Token {
+    public:
+        TokenBool(int line, int column, IOBuffer::IOReader *reader);
+        Type getType();
+    };
+
+    // -------------------
+    // --- Token: null ---
+    // -------------------
+
+    class TokenNull : public Token {
+    public:
+        TokenNull(int line, int column, IOBuffer::IOReader *reader);
         Type getType();
     };
 }
