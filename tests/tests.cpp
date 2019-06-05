@@ -174,5 +174,6 @@ Test::TestCase* testCase_SimpleExample_Positive() {
 int main(int argc, char** argv) {
     Test::TestSuite testSuite;
     testSuite.addTestCase(testCase_SimpleExample_Positive());
+    testSuite.print();
     return 0;
 }
