@@ -104,6 +104,62 @@ Test::TestCase* testCase_SimpleExample_Positive() {
     assertType(t, obj2Value, ELEMENT_TYPE_NUMERIC);
     assertEquals(t, (std::string*) obj2Value->getData(), "724");
 
+    // JsonPointer: /test-identical
+
+    JsonStreamAnalyzer::Element* elTestIdentical = obj->at("test-identical");
+    assertType(t, elTestIdentical, ELEMENT_TYPE_OBJECT);
+    JsonObject* oTestIdentical = (JsonObject*) elTestIdentical->getData();
+    assertObjectPropertyExist(t, oTestIdentical, "someProperty");
+
+    // JsonPointer: /test-identical/someProperty
+
+    JsonStreamAnalyzer::Element* elSomeProperty = oTestIdentical->at("someProperty");
+    assertType(t, elSomeProperty, ELEMENT_TYPE_OBJECT);
+    JsonObject* oSomeProperty = (JsonObject*) elSomeProperty->getData();
+    assertObjectPropertyExist(t, oSomeProperty, "currentProperty");
+    assertObjectPropertyExist(t, oSomeProperty, "currentValue");
+
+    // JsonPointer: /test-identical/someProperty/currentProperty
+
+    JsonStreamAnalyzer::Element* elCurrentProperty = oSomeProperty->at("currentProperty");
+    assertType(t, elCurrentProperty, ELEMENT_TYPE_OBJECT);
+    JsonObject* oCurrentProperty = (JsonObject*) elCurrentProperty->getData();
+    assertObjectPropertyExist(t, oCurrentProperty, "values");
+
+    // JsonPointer: /test-identical/someProperty/currentProperty/values
+
+    JsonStreamAnalyzer::Element* elValues = oCurrentProperty->at("values");
+    assertType(t, elValues, ELEMENT_TYPE_ARRAY);
+    JsonArray* aValues = (JsonArray*) elValues->getData();
+
+    JsonArray::iterator iValues = aValues->begin();
+
+    // JsonPointer: /test-identical/someProperty/currentProperty/values/0
+
+    JsonStreamAnalyzer::Element* elValues0 = *iValues;
+    assertType(t, elValues0, ELEMENT_TYPE_NUMERIC);
+    assertEquals(t, "123", (std::string*) elValues0->getData());
+    
+    // JsonPointer: /test-identical/someProperty/currentProperty/values/1
+
+    ++iValues;
+    JsonStreamAnalyzer::Element* elValues1 = *iValues;
+    assertType(t, elValues1, ELEMENT_TYPE_NUMERIC);
+    assertEquals(t, "456", (std::string*) elValues1->getData());
+
+    // JsonPointer: /test-identical/someProperty/currentProperty/values/2
+
+    ++iValues;
+    JsonStreamAnalyzer::Element* elValues2 = *iValues;
+    assertType(t, elValues2, ELEMENT_TYPE_NUMERIC);
+    assertEquals(t, "789", (std::string*) elValues2->getData());
+
+    // JsonPointer: /test-identical/someProperty/currentValue
+
+    JsonStreamAnalyzer::Element* elCurrentValue = oSomeProperty->at("currentValue");
+    assertType(t, elCurrentValue, ELEMENT_TYPE_TEXT);
+    assertEquals(t, "some-test", (std::string*) elCurrentValue->getData());
+
     return t;
 }
 
