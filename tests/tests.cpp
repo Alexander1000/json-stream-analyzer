@@ -51,6 +51,14 @@ void assertEquals(Test::TestCase* testCase, std::string* str1, std::string str2)
     }
 }
 
+void assertEquals(Test::TestCase* testCase, std::string str1, std::string* str2)
+{
+    testCase->increment();
+    if (str1.compare(*str2) != 0) {
+        throw new AssertEqualsException;
+    }
+}
+
 Test::TestCase* testCase_SimpleExample_Positive() {
     Test::TestCase* t = new Test::TestCase("001-simple-example");
 
@@ -139,7 +147,7 @@ Test::TestCase* testCase_SimpleExample_Positive() {
     JsonStreamAnalyzer::Element* elValues0 = *iValues;
     assertType(t, elValues0, ELEMENT_TYPE_NUMERIC);
     assertEquals(t, "123", (std::string*) elValues0->getData());
-    
+
     // JsonPointer: /test-identical/someProperty/currentProperty/values/1
 
     ++iValues;

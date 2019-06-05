@@ -31,6 +31,7 @@ namespace Test
         void addTestCase(TestCase* testCase) {
             this->testCaseList.push_front(testCase);
         }
+
     private:
         std::list<TestCase*> testCaseList;
     };
