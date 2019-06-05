@@ -1,5 +1,9 @@
 # Changelog json-stream-analyzer
 
+## 0.3.0
+  - add tokens bool and null
+  - add tests
+
 ## 0.2.1
   - add tests
 
