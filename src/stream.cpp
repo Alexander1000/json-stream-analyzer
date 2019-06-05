@@ -166,6 +166,7 @@ namespace JsonStreamAnalyzer
                         this->prevMode = JSON_LEXER_WORD_MODE;
                         move_position = false;
                         this->appendCurrentLexeme('\00');
+                        // todo: check special words (null, true/false)
                         token = new Token::TokenLexemeWord(this->currentLine, this->currentColumn, this->lexemeWriter);
                     } else {
                         this->appendCurrentLexeme(symbol);
