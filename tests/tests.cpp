@@ -171,11 +171,11 @@ Test::TestCase* testCase_SimpleExample_Positive() {
     return t;
 }
 
-Test::TestCase* testCase_SimpleExample02_Positive()
+Test::TestCase* testCase_BoolData_Positive()
 {
-    Test::TestCase* t = new Test::TestCase("002-sample-for-test");
+    Test::TestCase* t = new Test::TestCase("002-bool-data");
 
-    IOBuffer::IOFileReader file_buffer("../fixtures/002-sample-for-test.json");
+    IOBuffer::IOFileReader file_buffer("../fixtures/002-bool-data.json");
     JsonStreamAnalyzer::Stream json_stream(&file_buffer);
     JsonStreamAnalyzer::Decoder decoder(&json_stream);
     JsonStreamAnalyzer::Element* object = decoder.decode();
@@ -186,22 +186,22 @@ Test::TestCase* testCase_SimpleExample02_Positive()
 int main(int argc, char** argv) {
     Test::TestSuite testSuite;
 
-    std::cout << "=================================" << std::endl;
-    std::cout << "testCase_SimpleExample_Positive" << std::endl;
-    std::cout << "=================================" << std::endl;
+    std::cout << "===================================" << std::endl;
+    std::cout << "= testCase_SimpleExample_Positive =" << std::endl;
+    std::cout << "===================================" << std::endl;
     std::cout << std::endl;
 
     testSuite.addTestCase(testCase_SimpleExample_Positive());
 
     std::cout << std::endl;
 
-    std::cout << "=================================" << std::endl;
-    std::cout << "testCase_SimpleExample02_Positive" << std::endl;
-    std::cout << "=================================" << std::endl;
+    std::cout << "==============================" << std::endl;
+    std::cout << "= testCase_BoolData_Positive =" << std::endl;
+    std::cout << "==============================" << std::endl;
 
     std::cout << std::endl;
 
-    testSuite.addTestCase(testCase_SimpleExample02_Positive());
+    testSuite.addTestCase(testCase_BoolData_Positive());
 
     testSuite.print();
     return 0;
