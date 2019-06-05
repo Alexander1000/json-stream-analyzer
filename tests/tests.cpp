@@ -171,9 +171,22 @@ Test::TestCase* testCase_SimpleExample_Positive() {
     return t;
 }
 
+Test::TestCase* testCase_SimpleExample02_Positive()
+{
+    Test::TestCase* t = new Test::TestCase("002-sample-for-test");
+
+    IOBuffer::IOFileReader file_buffer("../fixtures/002-sample-for-test.json");
+    JsonStreamAnalyzer::Stream json_stream(&file_buffer);
+    JsonStreamAnalyzer::Decoder decoder(&json_stream);
+    JsonStreamAnalyzer::Element* object = decoder.decode();
+
+    return t;
+}
+
 int main(int argc, char** argv) {
     Test::TestSuite testSuite;
     testSuite.addTestCase(testCase_SimpleExample_Positive());
+    testSuite.addTestCase(testCase_SimpleExample02_Positive());
     testSuite.print();
     return 0;
 }
