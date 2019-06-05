@@ -1,5 +1,8 @@
 # Changelog json-stream-analyzer
 
+## 0.2.1
+  - add tests
+
 ## 0.2.0
   - refactoring code block usage
 
