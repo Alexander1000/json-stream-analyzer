@@ -8,3 +8,9 @@ How build:
 cmake .
 make
 ```
+
+How tests:
+```shell
+cd tests
+./test.sh
+```
