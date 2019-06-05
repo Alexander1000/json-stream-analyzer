@@ -56,6 +56,12 @@ namespace JsonStreamAnalyzer {
                 array = this->parse_array();
                 element = new Element(ELEMENT_TYPE_ARRAY, (void *) array);
                 return element;
+            case Token::Type::Bool:
+                // todo: implement me
+                return NULL;
+            case Token::Type::Null:
+                // todo: implement me
+                return NULL;
             default:
                 std::cout << "unexpected token: " << JsonStreamAnalyzer::Token::getTokenTypeName(token->getType()) << std::endl;
                 if (token->getType() == Token::Type::Text) {

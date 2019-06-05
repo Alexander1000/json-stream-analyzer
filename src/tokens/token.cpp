@@ -41,6 +41,10 @@ namespace JsonStreamAnalyzer::Token {
                 return "text";
             case Numeric:
                 return "numeric";
+            case Bool:
+                return "bool";
+            case Null:
+                return "null";
         }
     }
 
