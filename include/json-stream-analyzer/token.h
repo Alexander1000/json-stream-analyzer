@@ -1,16 +1,6 @@
 #ifndef TOKEN_INCLUDED
 #define TOKEN_INCLUDED
 
-#define TOKEN_TYPE_TEXT 0
-#define TOKEN_TYPE_BRACES_OPEN 1
-#define TOKEN_TYPE_BRACES_CLOSE 2
-#define TOKEN_TYPE_COMMA 3
-#define TOKEN_TYPE_QUOTES 4
-#define TOKEN_TYPE_COLON 5
-#define TOKEN_TYPE_ARRAY_OPEN 6
-#define TOKEN_TYPE_ARRAY_CLOSE 7
-#define TOKEN_TYPE_NUMERIC 8
-
 #include <io-buffer.h>
 
 namespace JsonStreamAnalyzer::Token {
@@ -24,7 +14,11 @@ namespace JsonStreamAnalyzer::Token {
         Numeric,
         Quotes,
         Text,
+        Bool,
+        Null,
     };
+
+    const char* getTokenTypeName(Type);
 
     class Token {
     public:
@@ -130,6 +124,31 @@ namespace JsonStreamAnalyzer::Token {
     class TokenLexemeWord : public Token {
     public:
         TokenLexemeWord(int line, int column, IOBuffer::IOReader *reader);
+        Type getType();
+    };
+
+    // -------------------
+    // --- Token: bool ---
+    // -------------------
+
+    class TokenBool : public Token {
+    public:
+        TokenBool(int line, int column, bool value);
+        Type getType();
+        bool getValue() {
+            return this->value;
+        };
+    private:
+        bool value;
+    };
+
+    // -------------------
+    // --- Token: null ---
+    // -------------------
+
+    class TokenNull : public Token {
+    public:
+        TokenNull(int line, int column);
         Type getType();
     };
 }

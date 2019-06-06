@@ -15,6 +15,12 @@ class AssertObjectPropertyExist
 class AssertEqualsException
 {};
 
+class AssertTrueException
+{};
+
+class AssertFalseException
+{};
+
 typedef std::map<std::string, JsonStreamAnalyzer::Element*> JsonObject;
 typedef std::list<JsonStreamAnalyzer::Element*> JsonArray;
 
@@ -56,6 +62,22 @@ void assertEquals(Test::TestCase* testCase, std::string str1, std::string* str2)
     testCase->increment();
     if (str1.compare(*str2) != 0) {
         throw new AssertEqualsException;
+    }
+}
+
+void assertTrue(Test::TestCase* testCase, bool actual)
+{
+    testCase->increment();
+    if (!actual) {
+        throw new AssertTrueException;
+    }
+}
+
+void assertFalse(Test::TestCase* testCase, bool actual)
+{
+    testCase->increment();
+    if (actual) {
+        throw new AssertFalseException;
     }
 }
 
@@ -171,9 +193,97 @@ Test::TestCase* testCase_SimpleExample_Positive() {
     return t;
 }
 
+Test::TestCase* testCase_BoolData_Positive()
+{
+    Test::TestCase* t = new Test::TestCase("002-bool-data");
+
+    IOBuffer::IOFileReader file_buffer("../fixtures/002-bool-data.json");
+    JsonStreamAnalyzer::Stream json_stream(&file_buffer);
+    JsonStreamAnalyzer::Decoder decoder(&json_stream);
+    JsonStreamAnalyzer::Element* object = decoder.decode();
+
+    assertType(t, object, ELEMENT_TYPE_OBJECT);
+    JsonObject* obj = (JsonObject*) object->getData();
+    assertObjectPropertyExist(t, obj, "isPositive");
+    assertObjectPropertyExist(t, obj, "isNegative");
+
+    JsonStreamAnalyzer::Element* elIsPositive = obj->at("isPositive");
+    assertType(t, elIsPositive, ELEMENT_TYPE_BOOL);
+    assertTrue(t, (bool) elIsPositive->getData());
+
+    JsonStreamAnalyzer::Element* elIsNegative = obj->at("isNegative");
+    assertType(t, elIsNegative, ELEMENT_TYPE_BOOL);
+    assertFalse(t, (bool) elIsNegative->getData());
+
+    return t;
+}
+
+Test::TestCase* testCase_DataWithNull_Positive()
+{
+    Test::TestCase* t = new Test::TestCase("003-data-with-null");
+
+    IOBuffer::IOFileReader file_buffer("../fixtures/003-data-with-null.json");
+    JsonStreamAnalyzer::Stream json_stream(&file_buffer);
+    JsonStreamAnalyzer::Decoder decoder(&json_stream);
+    JsonStreamAnalyzer::Element* object = decoder.decode();
+
+    assertType(t, object, ELEMENT_TYPE_OBJECT);
+    JsonObject* obj = (JsonObject*) object->getData();
+    assertObjectPropertyExist(t, obj, "digit");
+    assertObjectPropertyExist(t, obj, "str");
+    assertObjectPropertyExist(t, obj, "isNullable");
+    assertObjectPropertyExist(t, obj, "simple");
+
+    JsonStreamAnalyzer::Element* elDigit = obj->at("digit");
+    assertType(t, elDigit, ELEMENT_TYPE_NUMERIC);
+    assertEquals(t, "42", (std::string*) elDigit->getData());
+
+    JsonStreamAnalyzer::Element* elStr = obj->at("str");
+    assertType(t, elStr, ELEMENT_TYPE_TEXT);
+    assertEquals(t, "it is text", (std::string*) elStr->getData());
+
+    JsonStreamAnalyzer::Element* elIsNullable = obj->at("isNullable");
+    assertType(t, elIsNullable, ELEMENT_TYPE_NULL);
+
+    JsonStreamAnalyzer::Element* elSimple = obj->at("simple");
+    assertType(t, elSimple, ELEMENT_TYPE_BOOL);
+    assertFalse(t, (bool) elSimple->getData());
+
+    return t;
+}
+
 int main(int argc, char** argv) {
     Test::TestSuite testSuite;
+
+    std::cout << "===================================" << std::endl;
+    std::cout << "= testCase_SimpleExample_Positive =" << std::endl;
+    std::cout << "===================================" << std::endl;
+    std::cout << std::endl;
+
     testSuite.addTestCase(testCase_SimpleExample_Positive());
+
+    std::cout << std::endl;
+
+    std::cout << "==============================" << std::endl;
+    std::cout << "= testCase_BoolData_Positive =" << std::endl;
+    std::cout << "==============================" << std::endl;
+
+    std::cout << std::endl;
+
+    testSuite.addTestCase(testCase_BoolData_Positive());
+
+    std::cout << std::endl;
+
+    std::cout << "==================================" << std::endl;
+    std::cout << "= testCase_DataWithNull_Positive =" << std::endl;
+    std::cout << "==================================" << std::endl;
+
+    std::cout << std::endl;
+
+    testSuite.addTestCase(testCase_DataWithNull_Positive());
+
+    std::cout << std::endl;
+
     testSuite.print();
     return 0;
 }

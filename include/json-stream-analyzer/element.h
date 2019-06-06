@@ -5,6 +5,8 @@
 #define ELEMENT_TYPE_TEXT 2
 #define ELEMENT_TYPE_NUMERIC 3
 #define ELEMENT_TYPE_ARRAY 4
+#define ELEMENT_TYPE_NULL 5
+#define ELEMENT_TYPE_BOOL 6
 
 namespace JsonStreamAnalyzer {
     class Element {
