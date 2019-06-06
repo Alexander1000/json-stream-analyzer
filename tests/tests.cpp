@@ -227,6 +227,28 @@ Test::TestCase* testCase_DataWithNull_Positive()
     JsonStreamAnalyzer::Decoder decoder(&json_stream);
     JsonStreamAnalyzer::Element* object = decoder.decode();
 
+    assertType(t, object, ELEMENT_TYPE_OBJECT);
+    JsonObject* obj = (JsonObject*) object->getData();
+    assertObjectPropertyExist(t, obj, "digit");
+    assertObjectPropertyExist(t, obj, "str");
+    assertObjectPropertyExist(t, obj, "isNullable");
+    assertObjectPropertyExist(t, obj, "simple");
+
+    JsonStreamAnalyzer::Element* elDigit = obj->at("digit");
+    assertType(t, elDigit, ELEMENT_TYPE_NUMERIC);
+    assertEquals(t, "42", (std::string*) elDigit->getData());
+
+    JsonStreamAnalyzer::Element* elStr = obj->at("str");
+    assertType(t, elStr, ELEMENT_TYPE_TEXT);
+    assertEquals(t, "it is text", (std::string*) elStr->getData());
+
+    JsonStreamAnalyzer::Element* elIsNullable = obj->at("isNullable");
+    assertType(t, elIsNullable, ELEMENT_TYPE_NULL);
+
+    JsonStreamAnalyzer::Element* elSimple = obj->at("simple");
+    assertType(t, elSimple, ELEMENT_TYPE_BOOL);
+    assertFalse(t, (bool) elSimple->getData());
+
     return t;
 }
 
