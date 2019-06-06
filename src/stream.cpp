@@ -167,7 +167,7 @@ namespace JsonStreamAnalyzer
                         if (this->prevMode == JSON_LEXER_PLAIN_MODE) {
                             int length = this->lexemeWriter->length();
                             // true/false/null
-                            if (length == 4) {
+                            if (length == 5) {
                                 // check true
                                 char* tb = (char*) malloc(sizeof(char) * 5);
                                 memset(tb, 0, sizeof(char) * 5);
@@ -178,7 +178,7 @@ namespace JsonStreamAnalyzer
                                     token = new Token::TokenBool(
                                         this->currentLine,
                                         this->currentColumn,
-                                        this->lexemeWriter
+                                        true
                                     );
                                 } else if (sNull == tb) {
                                     token = new Token::TokenNull(
@@ -188,7 +188,7 @@ namespace JsonStreamAnalyzer
                                     );
                                 }
                                 free(tb);
-                            } else if (length == 5) {
+                            } else if (length == 6) {
                                 // check false
                                 char* tb = (char*) malloc(sizeof(char) * 6);
                                 memset(tb, 0, sizeof(char) * 6);
@@ -198,7 +198,7 @@ namespace JsonStreamAnalyzer
                                     token = new Token::TokenBool(
                                         this->currentLine,
                                         this->currentColumn,
-                                        this->lexemeWriter
+                                        false
                                     );
                                 }
                                 free(tb);

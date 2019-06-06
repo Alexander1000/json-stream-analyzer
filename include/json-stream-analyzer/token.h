@@ -133,8 +133,13 @@ namespace JsonStreamAnalyzer::Token {
 
     class TokenBool : public Token {
     public:
-        TokenBool(int line, int column, IOBuffer::IOReader *reader);
+        TokenBool(int line, int column, bool value);
         Type getType();
+        bool getValue() {
+            return this->value;
+        };
+    private:
+        bool value;
     };
 
     // -------------------

@@ -15,6 +15,12 @@ class AssertObjectPropertyExist
 class AssertEqualsException
 {};
 
+class AssertTrueException
+{};
+
+class AssertFalseException
+{};
+
 typedef std::map<std::string, JsonStreamAnalyzer::Element*> JsonObject;
 typedef std::list<JsonStreamAnalyzer::Element*> JsonArray;
 
@@ -56,6 +62,22 @@ void assertEquals(Test::TestCase* testCase, std::string str1, std::string* str2)
     testCase->increment();
     if (str1.compare(*str2) != 0) {
         throw new AssertEqualsException;
+    }
+}
+
+void assertTrue(Test::TestCase* testCase, bool actual)
+{
+    testCase->increment();
+    if (!actual) {
+        throw new AssertTrueException;
+    }
+}
+
+void assertFalse(Test::TestCase* testCase, bool actual)
+{
+    testCase->increment();
+    if (actual) {
+        throw new AssertFalseException;
     }
 }
 
@@ -179,6 +201,19 @@ Test::TestCase* testCase_BoolData_Positive()
     JsonStreamAnalyzer::Stream json_stream(&file_buffer);
     JsonStreamAnalyzer::Decoder decoder(&json_stream);
     JsonStreamAnalyzer::Element* object = decoder.decode();
+
+    assertType(t, object, ELEMENT_TYPE_OBJECT);
+    JsonObject* obj = (JsonObject*) object->getData();
+    assertObjectPropertyExist(t, obj, "isPositive");
+    assertObjectPropertyExist(t, obj, "isNegative");
+
+    JsonStreamAnalyzer::Element* elIsPositive = obj->at("isPositive");
+    assertType(t, elIsPositive, ELEMENT_TYPE_BOOL);
+    assertTrue(t, (bool) elIsPositive->getData());
+
+    JsonStreamAnalyzer::Element* elIsNegative = obj->at("isNegative");
+    assertType(t, elIsNegative, ELEMENT_TYPE_BOOL);
+    assertFalse(t, (bool) elIsNegative->getData());
 
     return t;
 }

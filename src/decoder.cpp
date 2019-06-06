@@ -57,8 +57,8 @@ namespace JsonStreamAnalyzer {
                 element = new Element(ELEMENT_TYPE_ARRAY, (void *) array);
                 return element;
             case Token::Type::Bool:
-                // todo: implement me
-                return NULL;
+                element = new Element(ELEMENT_TYPE_BOOL, (void*) ((JsonStreamAnalyzer::Token::TokenBool*) token)->getValue());
+                return element;
             case Token::Type::Null:
                 // todo: implement me
                 return NULL;

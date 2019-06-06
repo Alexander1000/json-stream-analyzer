@@ -3,7 +3,8 @@
 
 namespace JsonStreamAnalyzer::Token
 {
-    TokenBool::TokenBool(int line, int column, IOBuffer::IOReader *reader) : Token(line, column, reader) {
+    TokenBool::TokenBool(int line, int column, bool value) : Token(line, column, NULL) {
+        this->value = value;
     }
 
     Type TokenBool::getType() {
