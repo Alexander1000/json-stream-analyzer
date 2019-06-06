@@ -166,7 +166,7 @@ namespace JsonStreamAnalyzer
 
                         if (this->prevMode == JSON_LEXER_PLAIN_MODE) {
                             int length = this->lexemeWriter->length();
-                            // true/false/null
+                            // literal: (true|null) + \x00
                             if (length == 5) {
                                 // check true
                                 char* tb = (char*) malloc(sizeof(char) * 5);
@@ -189,6 +189,7 @@ namespace JsonStreamAnalyzer
                                 free(tb);
                             } else if (length == 6) {
                                 // check false
+                                // strlen("false") + \x00
                                 char* tb = (char*) malloc(sizeof(char) * 6);
                                 memset(tb, 0, sizeof(char) * 6);
                                 this->lexemeWriter->read(tb, 5);
