@@ -24,7 +24,10 @@ namespace JsonStreamAnalyzer {
     }
 
     Element* Decoder::parse_element() {
-        Token::Token *token = this->stream->get_next_token();
+        return this->parse_element(this->stream->get_next_token());
+    }
+
+    Element* Decoder::parse_element(Token::Token *token) {
         if (token == NULL) {
             return NULL;
         }
@@ -34,6 +37,8 @@ namespace JsonStreamAnalyzer {
         std::string *text;
         std::string *digit;
         std::list<Element *> *array;
+
+        std::cout << "token: " << JsonStreamAnalyzer::Token::getTokenTypeName(token->getType()) << std::endl;
 
         switch (token->getType()) {
             case Token::Type::BracesOpen:
@@ -83,8 +88,15 @@ namespace JsonStreamAnalyzer {
 
         Token::Token *token;
 
+        bool isFirstElement = true;
+
         PARSE_OBJ_PROPERTY:
         token = this->stream->get_next_token();
+        if (isFirstElement && token->getType() == Token::Type::BracesClose) {
+            // empty object
+            return object;
+        }
+
         if (token->getType() != Token::Type::Quotes) {
             // unexpected, object property must be have quote
             // @todo: throw exception
@@ -125,6 +137,7 @@ namespace JsonStreamAnalyzer {
             case Token::Type::Comma:
                 // parse next object property key-val
                 // todo: fixme, refactor
+                isFirstElement = false;
                 goto PARSE_OBJ_PROPERTY;
             case Token::Type::BracesClose:
                 break;
@@ -177,11 +190,25 @@ namespace JsonStreamAnalyzer {
         list = new std::list<Element *>;
         Element *element;
 
+        bool isFirst = true;
+        Token::Token *token = this->stream->get_next_token();
+
+        if (token->getType() == Token::Type::ArrayClose) {
+            return list;
+        }
+
         PARSE_ARRAY:
-        element = this->parse_element();
+
+        if (isFirst) {
+            element = this->parse_element(token);
+            isFirst = false;
+        } else {
+            element = this->parse_element();
+        }
+
         list->push_back(element);
 
-        Token::Token *token = this->stream->get_next_token();
+        token = this->stream->get_next_token();
         if (token->getType() == Token::Type::Comma) {
             // repeat
             goto PARSE_ARRAY;
