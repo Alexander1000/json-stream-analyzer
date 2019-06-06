@@ -39,29 +39,29 @@ namespace JsonStreamAnalyzer {
             case Token::Type::BracesOpen:
                 // object
                 obj = this->parse_object();
-                element = new Element(ELEMENT_TYPE_OBJECT, (void *) obj);
+                element = new Element(ELEMENT_TYPE_OBJECT, (void*) obj);
                 return element;
             case Token::Type::Quotes:
                 // text
                 text = this->parse_text();
-                element = new Element(ELEMENT_TYPE_TEXT, (void *) text);
+                element = new Element(ELEMENT_TYPE_TEXT, (void*) text);
                 return element;
             case Token::Type::Numeric:
                 // numeric
                 digit = this->parse_numeric(token);
-                element = new Element(ELEMENT_TYPE_NUMERIC, (void *) digit);
+                element = new Element(ELEMENT_TYPE_NUMERIC, (void*) digit);
                 return element;
             case Token::Type::ArrayOpen:
                 // array
                 array = this->parse_array();
-                element = new Element(ELEMENT_TYPE_ARRAY, (void *) array);
+                element = new Element(ELEMENT_TYPE_ARRAY, (void*) array);
                 return element;
             case Token::Type::Bool:
                 element = new Element(ELEMENT_TYPE_BOOL, (void*) ((JsonStreamAnalyzer::Token::TokenBool*) token)->getValue());
                 return element;
             case Token::Type::Null:
-                // todo: implement me
-                return NULL;
+                element = new Element(ELEMENT_TYPE_NULL, NULL);
+                return element;
             default:
                 std::cout << "unexpected token: " << JsonStreamAnalyzer::Token::getTokenTypeName(token->getType()) << std::endl;
                 if (token->getType() == Token::Type::Text) {

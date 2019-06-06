@@ -148,7 +148,7 @@ namespace JsonStreamAnalyzer::Token {
 
     class TokenNull : public Token {
     public:
-        TokenNull(int line, int column, IOBuffer::IOReader *reader);
+        TokenNull(int line, int column);
         Type getType();
     };
 }

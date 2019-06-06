@@ -183,8 +183,7 @@ namespace JsonStreamAnalyzer
                                 } else if (sNull == tb) {
                                     token = new Token::TokenNull(
                                         this->currentLine,
-                                        this->currentColumn,
-                                        this->lexemeWriter
+                                        this->currentColumn
                                     );
                                 }
                                 free(tb);

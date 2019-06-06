@@ -3,7 +3,7 @@
 
 namespace JsonStreamAnalyzer::Token
 {
-    TokenNull::TokenNull(int line, int column, IOBuffer::IOReader *reader) : Token(line, column, reader) {
+    TokenNull::TokenNull(int line, int column) : Token(line, column, NULL) {
     }
 
     Type TokenNull::getType() {

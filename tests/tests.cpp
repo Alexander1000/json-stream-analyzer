@@ -218,6 +218,18 @@ Test::TestCase* testCase_BoolData_Positive()
     return t;
 }
 
+Test::TestCase* testCase_DataWithNull_Positive()
+{
+    Test::TestCase* t = new Test::TestCase("003-data-with-null");
+
+    IOBuffer::IOFileReader file_buffer("../fixtures/003-data-with-null.json");
+    JsonStreamAnalyzer::Stream json_stream(&file_buffer);
+    JsonStreamAnalyzer::Decoder decoder(&json_stream);
+    JsonStreamAnalyzer::Element* object = decoder.decode();
+
+    return t;
+}
+
 int main(int argc, char** argv) {
     Test::TestSuite testSuite;
 
@@ -237,6 +249,18 @@ int main(int argc, char** argv) {
     std::cout << std::endl;
 
     testSuite.addTestCase(testCase_BoolData_Positive());
+
+    std::cout << std::endl;
+
+    std::cout << "==================================" << std::endl;
+    std::cout << "= testCase_DataWithNull_Positive =" << std::endl;
+    std::cout << "==================================" << std::endl;
+
+    std::cout << std::endl;
+
+    testSuite.addTestCase(testCase_DataWithNull_Positive());
+
+    std::cout << std::endl;
 
     testSuite.print();
     return 0;

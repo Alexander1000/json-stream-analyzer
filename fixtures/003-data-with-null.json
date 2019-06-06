@@ -1,0 +1,6 @@
+{
+  "digit": 42,
+  "str": "it is text",
+  "isNullable": null,
+  "simple": false
+}
