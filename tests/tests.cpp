@@ -340,6 +340,29 @@ Test::TestCase* testCase_FixturedData004_Positive()
     assertObjectPropertyExist(t, oNestedObj, "someTest");
     assertObjectPropertyExist(t, oNestedObj, "parent");
 
+    // JsonPointer: /another/0/aarr/figator
+
+    JsonStreamAnalyzer::Element* elFigator = oNestedObj->at("figator");
+    assertType(t, elFigator, ELEMENT_TYPE_TEXT, "/another/0/aarr/figator");
+    assertEquals(t, "fas", (std::string*) elFigator->getData());
+
+    // JsonPointer: /another/0/aarr/invalid
+
+    JsonStreamAnalyzer::Element* elInvalid = oNestedObj->at("invalid");
+    assertType(t, elInvalid, ELEMENT_TYPE_BOOL, "/another/0/aarr/invalid");
+    assertTrue(t, (bool) elInvalid->getData());
+
+    // JsonPointer: /another/0/aarr/ass
+
+    JsonStreamAnalyzer::Element* elAss = oNestedObj->at("ass");
+    assertType(t, elAss, ELEMENT_TYPE_NUMERIC, "/another/0/aarr/ass");
+    assertEquals(t, "45", (std::string*) elAss->getData());
+
+    // JsonPointer: /another/0/aarr/adf
+    // JsonPointer: /another/0/aarr/gadss
+    // JsonPointer: /another/0/aarr/someTest
+    // JsonPointer: /another/0/aarr/parent
+
     ++iAnother;
 
     // JsonPointer: /another/1
