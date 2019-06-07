@@ -261,6 +261,32 @@ Test::TestCase* testCase_FixturedData004_Positive()
     JsonStreamAnalyzer::Decoder decoder(&json_stream);
     JsonStreamAnalyzer::Element* object = decoder.decode();
 
+    assertType(t, object, ELEMENT_TYPE_OBJECT);
+    JsonObject* obj = (JsonObject*) object->getData();
+    assertObjectPropertyExist(t, obj, "someObject");
+    assertObjectPropertyExist(t, obj, "test");
+    assertObjectPropertyExist(t, obj, "fifif");
+    assertObjectPropertyExist(t, obj, "another");
+
+    // JsonPointer: /someObject
+    JsonStreamAnalyzer::Element* elSomeObject = obj->at("someObject");
+    assertType(t, elSomeObject, ELEMENT_TYPE_NUMERIC);
+    assertEquals(t, "12", (std::string*) elSomeObject->getData());
+
+    // JsonPointer: /test
+    JsonStreamAnalyzer::Element* elTest = obj->at("test");
+    assertType(t, elTest, ELEMENT_TYPE_NUMERIC);
+    assertEquals(t, "43.24", (std::string*) elTest->getData());
+
+    // JsonPointer: /fifif
+    // todo: implement me
+    JsonStreamAnalyzer::Element* elFifif = obj->at("fifif");
+    assertType(t, elFifif, ELEMENT_TYPE_TEXT);
+    assertEquals(t, "fdasfd", (std::string*) elFifif->getData());
+
+    // JsonPointer: /another
+    // todo: implement me
+
     return t;
 }
 
