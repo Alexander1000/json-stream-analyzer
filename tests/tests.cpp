@@ -279,13 +279,33 @@ Test::TestCase* testCase_FixturedData004_Positive()
     assertEquals(t, "43.24", (std::string*) elTest->getData());
 
     // JsonPointer: /fifif
-    // todo: implement me
     JsonStreamAnalyzer::Element* elFifif = obj->at("fifif");
     assertType(t, elFifif, ELEMENT_TYPE_TEXT);
     assertEquals(t, "fdasfd", (std::string*) elFifif->getData());
 
     // JsonPointer: /another
-    // todo: implement me
+    JsonStreamAnalyzer::Element* elAnother = obj->at("another");
+    assertType(t, elAnother, ELEMENT_TYPE_ARRAY);
+    JsonArray* aAnother = (JsonArray*) elAnother->getData();
+
+    JsonArray::iterator iAnother = aAnother->begin();
+
+    // JsonPointer: /another/0
+
+    JsonStreamAnalyzer::Element* elAnother1 = *iAnother;
+    assertType(t, elAnother1, ELEMENT_TYPE_OBJECT);
+
+    ++iAnother;
+
+    // JsonPointer: /another/1
+    JsonStreamAnalyzer::Element* elAnother2 = *iAnother;
+    assertType(t, elAnother2, ELEMENT_TYPE_OBJECT);
+    JsonObject* obj2 = (JsonObject*) elAnother2->getData();
+    assertObjectPropertyExist(t, obj2, "tags");
+    assertObjectPropertyExist(t, obj2, "fixes");
+
+    // JsonPointer: /another/1/tags
+    // JsonPointer: /another/1/fixes
 
     return t;
 }
