@@ -33,6 +33,15 @@ void assertType(Test::TestCase* testCase, JsonStreamAnalyzer::Element* element, 
     }
 }
 
+void assertType(Test::TestCase* testCase, JsonStreamAnalyzer::Element* element, int expectedType, const char* field) {
+    testCase->increment();
+
+    if (element->getType() != expectedType) {
+        std::cout << "Expected element '" << field << "' type: " << expectedType << "; but given: " << element->getType() << std::endl;
+        throw new AssertElementTypeException;
+    }
+}
+
 void assertObjectPropertyExist(Test::TestCase* testCase, JsonObject* obj, const char* propertyName) {
     testCase->increment();
 
@@ -275,17 +284,17 @@ Test::TestCase* testCase_FixturedData004_Positive()
 
     // JsonPointer: /test
     JsonStreamAnalyzer::Element* elTest = obj->at("test");
-    assertType(t, elTest, ELEMENT_TYPE_NUMERIC);
+    assertType(t, elTest, ELEMENT_TYPE_NUMERIC, "/test");
     assertEquals(t, "43.24", (std::string*) elTest->getData());
 
     // JsonPointer: /fifif
     JsonStreamAnalyzer::Element* elFifif = obj->at("fifif");
-    assertType(t, elFifif, ELEMENT_TYPE_TEXT);
+    assertType(t, elFifif, ELEMENT_TYPE_TEXT, "/fifif");
     assertEquals(t, "fdasfd", (std::string*) elFifif->getData());
 
     // JsonPointer: /another
     JsonStreamAnalyzer::Element* elAnother = obj->at("another");
-    assertType(t, elAnother, ELEMENT_TYPE_ARRAY);
+    assertType(t, elAnother, ELEMENT_TYPE_ARRAY, "/another");
     JsonArray* aAnother = (JsonArray*) elAnother->getData();
 
     JsonArray::iterator iAnother = aAnother->begin();
@@ -294,6 +303,31 @@ Test::TestCase* testCase_FixturedData004_Positive()
 
     JsonStreamAnalyzer::Element* elAnother1 = *iAnother;
     assertType(t, elAnother1, ELEMENT_TYPE_OBJECT);
+    JsonObject* obj1 = (JsonObject*) elAnother1->getData();
+    assertObjectPropertyExist(t, obj1, "tst");
+    assertObjectPropertyExist(t, obj1, "value");
+    assertObjectPropertyExist(t, obj1, "test");
+    assertObjectPropertyExist(t, obj1, "aarr");
+
+    // JsonPointer: /another/0/tst
+
+    JsonStreamAnalyzer::Element* elTst = obj1->at("tst");
+    assertType(t, elTst, ELEMENT_TYPE_TEXT, "/another/0/tst");
+    assertEquals(t, "fsdf", (std::string*) elTst->getData());
+
+    // JsonPointer: /another/0/value
+
+    JsonStreamAnalyzer::Element* elValue = obj1->at("value");
+    assertType(t, elValue, ELEMENT_TYPE_NUMERIC, "/another/0/value"); // todo fixme must be NUMERIC
+    assertEquals(t, "342.34", (std::string*) elValue->getData());
+
+    // JsonPointer: /another/0/test
+
+    JsonStreamAnalyzer::Element* elAnother0Test = obj1->at("test");
+    assertType(t, elAnother0Test, ELEMENT_TYPE_BOOL);
+    assertFalse(t, (bool) elAnother0Test->getData());
+
+    // JsonPointer: /another/0/aarr
 
     ++iAnother;
 
