@@ -40,7 +40,7 @@ namespace Test
         }
 
         void addTestCase(TestCase* testCase) {
-            this->testCaseList.push_front(testCase);
+            this->testCaseList.push_back(testCase);
         }
 
         void print() {

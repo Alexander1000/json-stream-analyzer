@@ -318,7 +318,7 @@ Test::TestCase* testCase_FixturedData004_Positive()
     // JsonPointer: /another/0/value
 
     JsonStreamAnalyzer::Element* elValue = obj1->at("value");
-    assertType(t, elValue, ELEMENT_TYPE_NUMERIC, "/another/0/value"); // todo fixme must be NUMERIC
+    assertType(t, elValue, ELEMENT_TYPE_NUMERIC, "/another/0/value");
     assertEquals(t, "342.34", (std::string*) elValue->getData());
 
     // JsonPointer: /another/0/test
@@ -359,9 +359,42 @@ Test::TestCase* testCase_FixturedData004_Positive()
     assertEquals(t, "45", (std::string*) elAss->getData());
 
     // JsonPointer: /another/0/aarr/adf
+
+    JsonStreamAnalyzer::Element* elAdf = oNestedObj->at("adf");
+    assertType(t, elAdf, ELEMENT_TYPE_ARRAY);
+    JsonArray* aAdf = (JsonArray*) elAdf->getData();
+
+    JsonArray::iterator iAdf = aAdf->begin();
+
+    // JsonPointer: /another/0/aarr/adf/0
+
+    JsonStreamAnalyzer::Element* elAdf01 = *iAdf;
+    assertType(t, elAdf01, ELEMENT_TYPE_NUMERIC, "/another/0/aarr/adf/0");
+    assertEquals(t, "34", (std::string*) elAdf01->getData());
+
+    iAdf++;
+
+    // JsonPointer: /another/0/aarr/adf/1
+
+    JsonStreamAnalyzer::Element* elAdf02 = *iAdf;
+    assertType(t, elAdf02, ELEMENT_TYPE_NUMERIC, "/another/0/aarr/adf/1");
+    assertEquals(t, "324", (std::string*) elAdf02->getData());
+
+    iAdf++;
+
+    // JsonPointer: /another/0/aarr/adf/2
+
+    JsonStreamAnalyzer::Element* elAdf03 = *iAdf;
+    assertType(t, elAdf03, ELEMENT_TYPE_NUMERIC, "/another/0/aarr/adf/2");
+    assertEquals(t, "43543.63", (std::string*) elAdf03->getData());
+
     // JsonPointer: /another/0/aarr/gadss
     // JsonPointer: /another/0/aarr/someTest
+
     // JsonPointer: /another/0/aarr/parent
+
+    JsonStreamAnalyzer::Element* elParent = oNestedObj->at("parent");
+    assertType(t, elParent, ELEMENT_TYPE_NULL, "/another/0/aarr/parent");
 
     ++iAnother;
 
