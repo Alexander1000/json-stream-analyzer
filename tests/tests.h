@@ -36,6 +36,8 @@ namespace Test
 
         void finish() {
             std::cout << std::endl;
+            std::cout << "Total asserts: " << this->asserts << std::endl;
+            std::cout << std::endl;
         }
     private:
         char* name;
@@ -50,14 +52,6 @@ namespace Test
 
         void addTestCase(TestCase* testCase) {
             this->testCaseList.push_back(testCase);
-        }
-
-        void print() {
-            for (std::list<TestCase*>::iterator iTestCase = this->testCaseList.begin(); iTestCase != this->testCaseList.end(); ++iTestCase) {
-                std::cout << "<------>" << std::endl;
-                std::cout << "TestCase: " << (*iTestCase)->getName() << std::endl;
-                std::cout << "Asserts: " << (*iTestCase)->getAsserts() << std::endl;
-            }
         }
 
     private:
