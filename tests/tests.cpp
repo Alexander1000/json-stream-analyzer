@@ -33,6 +33,15 @@ void assertType(Test::TestCase* testCase, JsonStreamAnalyzer::Element* element, 
     }
 }
 
+void assertType(Test::TestCase* testCase, JsonStreamAnalyzer::Element* element, int expectedType, const char* field) {
+    testCase->increment();
+
+    if (element->getType() != expectedType) {
+        std::cout << "Expected element '" << field << "' type: " << expectedType << "; but given: " << element->getType() << std::endl;
+        throw new AssertElementTypeException;
+    }
+}
+
 void assertObjectPropertyExist(Test::TestCase* testCase, JsonObject* obj, const char* propertyName) {
     testCase->increment();
 
@@ -61,6 +70,14 @@ void assertEquals(Test::TestCase* testCase, std::string str1, std::string* str2)
 {
     testCase->increment();
     if (str1.compare(*str2) != 0) {
+        throw new AssertEqualsException;
+    }
+}
+
+void assertEquals(Test::TestCase* testCase, int expected, int actual)
+{
+    testCase->increment();
+    if (expected != actual) {
         throw new AssertEqualsException;
     }
 }
@@ -252,6 +269,203 @@ Test::TestCase* testCase_DataWithNull_Positive()
     return t;
 }
 
+Test::TestCase* testCase_FixturedData004_Positive()
+{
+    Test::TestCase* t = new Test::TestCase("004-fixtured-data");
+
+    IOBuffer::IOFileReader file_buffer("../fixtures/004-sample-for-test.json");
+    JsonStreamAnalyzer::Stream json_stream(&file_buffer);
+    JsonStreamAnalyzer::Decoder decoder(&json_stream);
+    JsonStreamAnalyzer::Element* object = decoder.decode();
+
+    assertType(t, object, ELEMENT_TYPE_OBJECT);
+    JsonObject* obj = (JsonObject*) object->getData();
+    assertEquals(t, 4, obj->size());
+    assertObjectPropertyExist(t, obj, "someObject");
+    assertObjectPropertyExist(t, obj, "test");
+    assertObjectPropertyExist(t, obj, "fifif");
+    assertObjectPropertyExist(t, obj, "another");
+
+    // JsonPointer: /someObject
+    JsonStreamAnalyzer::Element* elSomeObject = obj->at("someObject");
+    assertType(t, elSomeObject, ELEMENT_TYPE_NUMERIC);
+    assertEquals(t, "12", (std::string*) elSomeObject->getData());
+
+    // JsonPointer: /test
+    JsonStreamAnalyzer::Element* elTest = obj->at("test");
+    assertType(t, elTest, ELEMENT_TYPE_NUMERIC, "/test");
+    assertEquals(t, "43.24", (std::string*) elTest->getData());
+
+    // JsonPointer: /fifif
+    JsonStreamAnalyzer::Element* elFifif = obj->at("fifif");
+    assertType(t, elFifif, ELEMENT_TYPE_TEXT, "/fifif");
+    assertEquals(t, "fdasfd", (std::string*) elFifif->getData());
+
+    // JsonPointer: /another
+    JsonStreamAnalyzer::Element* elAnother = obj->at("another");
+    assertType(t, elAnother, ELEMENT_TYPE_ARRAY, "/another");
+    JsonArray* aAnother = (JsonArray*) elAnother->getData();
+
+    JsonArray::iterator iAnother = aAnother->begin();
+
+    // JsonPointer: /another/0
+
+    JsonStreamAnalyzer::Element* elAnother1 = *iAnother;
+    assertType(t, elAnother1, ELEMENT_TYPE_OBJECT);
+    JsonObject* obj1 = (JsonObject*) elAnother1->getData();
+    assertEquals(t, 4, obj1->size());
+    assertObjectPropertyExist(t, obj1, "tst");
+    assertObjectPropertyExist(t, obj1, "value");
+    assertObjectPropertyExist(t, obj1, "test");
+    assertObjectPropertyExist(t, obj1, "aarr");
+
+    // JsonPointer: /another/0/tst
+
+    JsonStreamAnalyzer::Element* elTst = obj1->at("tst");
+    assertType(t, elTst, ELEMENT_TYPE_TEXT, "/another/0/tst");
+    assertEquals(t, "fsdf", (std::string*) elTst->getData());
+
+    // JsonPointer: /another/0/value
+
+    JsonStreamAnalyzer::Element* elValue = obj1->at("value");
+    assertType(t, elValue, ELEMENT_TYPE_NUMERIC, "/another/0/value");
+    assertEquals(t, "342.34", (std::string*) elValue->getData());
+
+    // JsonPointer: /another/0/test
+
+    JsonStreamAnalyzer::Element* elAnother0Test = obj1->at("test");
+    assertType(t, elAnother0Test, ELEMENT_TYPE_BOOL);
+    assertFalse(t, (bool) elAnother0Test->getData());
+
+    // JsonPointer: /another/0/aarr
+
+    JsonStreamAnalyzer::Element* elNestedObj = obj1->at("aarr");
+    assertType(t, elNestedObj, ELEMENT_TYPE_OBJECT, "/another/0/aarr");
+    JsonObject* oNestedObj = (JsonObject*) elNestedObj->getData();
+    assertEquals(t, 7, oNestedObj->size());
+    assertObjectPropertyExist(t, oNestedObj, "figator");
+    assertObjectPropertyExist(t, oNestedObj, "invalid");
+    assertObjectPropertyExist(t, oNestedObj, "ass");
+    assertObjectPropertyExist(t, oNestedObj, "adf");
+    assertObjectPropertyExist(t, oNestedObj, "gadss");
+    assertObjectPropertyExist(t, oNestedObj, "someTest");
+    assertObjectPropertyExist(t, oNestedObj, "parent");
+
+    // JsonPointer: /another/0/aarr/figator
+
+    JsonStreamAnalyzer::Element* elFigator = oNestedObj->at("figator");
+    assertType(t, elFigator, ELEMENT_TYPE_TEXT, "/another/0/aarr/figator");
+    assertEquals(t, "fas", (std::string*) elFigator->getData());
+
+    // JsonPointer: /another/0/aarr/invalid
+
+    JsonStreamAnalyzer::Element* elInvalid = oNestedObj->at("invalid");
+    assertType(t, elInvalid, ELEMENT_TYPE_BOOL, "/another/0/aarr/invalid");
+    assertTrue(t, (bool) elInvalid->getData());
+
+    // JsonPointer: /another/0/aarr/ass
+
+    JsonStreamAnalyzer::Element* elAss = oNestedObj->at("ass");
+    assertType(t, elAss, ELEMENT_TYPE_NUMERIC, "/another/0/aarr/ass");
+    assertEquals(t, "45", (std::string*) elAss->getData());
+
+    // JsonPointer: /another/0/aarr/adf
+
+    JsonStreamAnalyzer::Element* elAdf = oNestedObj->at("adf");
+    assertType(t, elAdf, ELEMENT_TYPE_ARRAY);
+    JsonArray* aAdf = (JsonArray*) elAdf->getData();
+    assertEquals(t, 3, aAdf->size());
+
+    JsonArray::iterator iAdf = aAdf->begin();
+
+    // JsonPointer: /another/0/aarr/adf/0
+
+    JsonStreamAnalyzer::Element* elAdf01 = *iAdf;
+    assertType(t, elAdf01, ELEMENT_TYPE_NUMERIC, "/another/0/aarr/adf/0");
+    assertEquals(t, "34", (std::string*) elAdf01->getData());
+
+    iAdf++;
+
+    // JsonPointer: /another/0/aarr/adf/1
+
+    JsonStreamAnalyzer::Element* elAdf02 = *iAdf;
+    assertType(t, elAdf02, ELEMENT_TYPE_NUMERIC, "/another/0/aarr/adf/1");
+    assertEquals(t, "324", (std::string*) elAdf02->getData());
+
+    iAdf++;
+
+    // JsonPointer: /another/0/aarr/adf/2
+
+    JsonStreamAnalyzer::Element* elAdf03 = *iAdf;
+    assertType(t, elAdf03, ELEMENT_TYPE_NUMERIC, "/another/0/aarr/adf/2");
+    assertEquals(t, "43543.63", (std::string*) elAdf03->getData());
+
+    // JsonPointer: /another/0/aarr/gadss
+
+    JsonStreamAnalyzer::Element* elGadss = oNestedObj->at("gadss");
+    assertType(t, elGadss, ELEMENT_TYPE_ARRAY, "/another/0/aarr/gadss");
+    JsonArray* aGadds = (JsonArray*) elGadss->getData();
+
+    JsonArray::iterator iGadds = aGadds->begin();
+
+    // JsonPointer: /another/0/aarr/gadss/0
+
+    JsonStreamAnalyzer::Element* elGadds01 = *iGadds;
+    assertType(t, elGadds01, ELEMENT_TYPE_TEXT, "/another/0/aarr/gadss/0");
+    assertEquals(t, "tet", (std::string*) elGadds01->getData());
+
+    iGadds++;
+
+    // JsonPointer: /another/0/aarr/gadss/1
+
+    JsonStreamAnalyzer::Element* elGadds02 = *iGadds;
+    assertType(t, elGadds02, ELEMENT_TYPE_TEXT, "/another/0/aarr/gadss/1");
+    assertEquals(t, "test", (std::string*) elGadds02->getData());
+
+    iGadds++;
+
+    // JsonPointer: /another/0/aarr/gadss/2
+
+    JsonStreamAnalyzer::Element* elGadds03 = *iGadds;
+    assertType(t, elGadds03, ELEMENT_TYPE_TEXT, "/another/0/aarr/gadss/2");
+    assertEquals(t, "sdfs", (std::string*) elGadds03->getData());
+
+    // JsonPointer: /another/0/aarr/someTest
+
+    JsonStreamAnalyzer::Element* elSomeTest = oNestedObj->at("someTest");
+    assertType(t, elSomeTest, ELEMENT_TYPE_TEXT, "/another/0/aarr/someTest");
+    assertEquals(t, "fdsdfs\"fdfs", (std::string*) elSomeTest->getData());
+
+    // JsonPointer: /another/0/aarr/parent
+
+    JsonStreamAnalyzer::Element* elParent = oNestedObj->at("parent");
+    assertType(t, elParent, ELEMENT_TYPE_NULL, "/another/0/aarr/parent");
+
+    ++iAnother;
+
+    // JsonPointer: /another/1
+    JsonStreamAnalyzer::Element* elAnother2 = *iAnother;
+    assertType(t, elAnother2, ELEMENT_TYPE_OBJECT);
+    JsonObject* obj2 = (JsonObject*) elAnother2->getData();
+    assertObjectPropertyExist(t, obj2, "tags");
+    assertObjectPropertyExist(t, obj2, "fixes");
+
+    // JsonPointer: /another/1/tags
+
+    JsonStreamAnalyzer::Element* elTags = obj2->at("tags");
+    assertType(t, elTags, ELEMENT_TYPE_OBJECT, "/another/1/tags");
+    JsonObject* oTags = (JsonObject*) elTags->getData();
+    assertEquals(t, 0, oTags->size());
+
+    // JsonPointer: /another/1/fixes
+
+    JsonStreamAnalyzer::Element* elFixes = obj2->at("fixes");
+    JsonArray* aFixes = (JsonArray*) elFixes->getData();
+    assertEquals(t, 0, aFixes->size());
+
+    return t;
+}
+
 int main(int argc, char** argv) {
     Test::TestSuite testSuite;
 
@@ -281,6 +495,16 @@ int main(int argc, char** argv) {
     std::cout << std::endl;
 
     testSuite.addTestCase(testCase_DataWithNull_Positive());
+
+    std::cout << std::endl;
+
+    std::cout << "=====================================" << std::endl;
+    std::cout << "= testCase_FixturedData004_Positive =" << std::endl;
+    std::cout << "=====================================" << std::endl;
+
+    std::cout << std::endl;
+
+    testSuite.addTestCase(testCase_FixturedData004_Positive());
 
     std::cout << std::endl;
 

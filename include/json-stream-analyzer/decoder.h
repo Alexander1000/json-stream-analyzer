@@ -15,12 +15,13 @@ namespace JsonStreamAnalyzer
 
     private:
         Stream *stream;
-        Element *parse();
-        Element *parse_element();
-        std::map<std::string, Element *> *parse_object();
-        std::string *parse_text();
-        std::string *parse_numeric(Token::Token* token);
-        std::list<Element *> *parse_array();
+        Element* parse();
+        Element* parse_element();
+        Element* parse_element(Token::Token *token);
+        std::map<std::string, Element*>* parse_object();
+        std::string* parse_text();
+        std::string* parse_numeric(Token::Token* token);
+        std::list<Element*>* parse_array();
     };
 }
 
