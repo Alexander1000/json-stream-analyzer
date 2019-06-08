@@ -17,6 +17,7 @@ namespace Test
         void increment()
         {
             this->asserts++;
+            std::cout << ".";
         }
 
         char* getName()
@@ -27,6 +28,14 @@ namespace Test
         int getAsserts()
         {
             return this->asserts;
+        }
+
+        void printTitle() {
+            std::cout << "TestCase: " << this->name << std::endl;
+        }
+
+        void finish() {
+            std::cout << std::endl;
         }
     private:
         char* name;

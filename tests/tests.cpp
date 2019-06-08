@@ -100,6 +100,7 @@ void assertFalse(Test::TestCase* testCase, bool actual)
 
 Test::TestCase* testCase_SimpleExample_Positive() {
     Test::TestCase* t = new Test::TestCase("001-simple-example");
+    t->printTitle();
 
     IOBuffer::IOFileReader file_buffer("../fixtures/001-simple-example.json");
     JsonStreamAnalyzer::Stream json_stream(&file_buffer);
@@ -207,12 +208,14 @@ Test::TestCase* testCase_SimpleExample_Positive() {
     assertType(t, elCurrentValue, ELEMENT_TYPE_TEXT);
     assertEquals(t, "some-test", (std::string*) elCurrentValue->getData());
 
+    t->finish();
     return t;
 }
 
 Test::TestCase* testCase_BoolData_Positive()
 {
     Test::TestCase* t = new Test::TestCase("002-bool-data");
+    t->printTitle();
 
     IOBuffer::IOFileReader file_buffer("../fixtures/002-bool-data.json");
     JsonStreamAnalyzer::Stream json_stream(&file_buffer);
@@ -232,12 +235,14 @@ Test::TestCase* testCase_BoolData_Positive()
     assertType(t, elIsNegative, ELEMENT_TYPE_BOOL);
     assertFalse(t, (bool) elIsNegative->getData());
 
+    t->finish();
     return t;
 }
 
 Test::TestCase* testCase_DataWithNull_Positive()
 {
     Test::TestCase* t = new Test::TestCase("003-data-with-null");
+    t->printTitle();
 
     IOBuffer::IOFileReader file_buffer("../fixtures/003-data-with-null.json");
     JsonStreamAnalyzer::Stream json_stream(&file_buffer);
@@ -266,12 +271,14 @@ Test::TestCase* testCase_DataWithNull_Positive()
     assertType(t, elSimple, ELEMENT_TYPE_BOOL);
     assertFalse(t, (bool) elSimple->getData());
 
+    t->finish();
     return t;
 }
 
 Test::TestCase* testCase_FixturedData004_Positive()
 {
     Test::TestCase* t = new Test::TestCase("004-fixtured-data");
+    t->printTitle();
 
     IOBuffer::IOFileReader file_buffer("../fixtures/004-sample-for-test.json");
     JsonStreamAnalyzer::Stream json_stream(&file_buffer);
@@ -463,24 +470,16 @@ Test::TestCase* testCase_FixturedData004_Positive()
     JsonArray* aFixes = (JsonArray*) elFixes->getData();
     assertEquals(t, 0, aFixes->size());
 
+    t->finish();
     return t;
 }
 
 int main(int argc, char** argv) {
     Test::TestSuite testSuite;
 
-    std::cout << "===================================" << std::endl;
-    std::cout << "= testCase_SimpleExample_Positive =" << std::endl;
-    std::cout << "===================================" << std::endl;
     std::cout << std::endl;
 
     testSuite.addTestCase(testCase_SimpleExample_Positive());
-
-    std::cout << std::endl;
-
-    std::cout << "==============================" << std::endl;
-    std::cout << "= testCase_BoolData_Positive =" << std::endl;
-    std::cout << "==============================" << std::endl;
 
     std::cout << std::endl;
 
@@ -488,19 +487,7 @@ int main(int argc, char** argv) {
 
     std::cout << std::endl;
 
-    std::cout << "==================================" << std::endl;
-    std::cout << "= testCase_DataWithNull_Positive =" << std::endl;
-    std::cout << "==================================" << std::endl;
-
-    std::cout << std::endl;
-
     testSuite.addTestCase(testCase_DataWithNull_Positive());
-
-    std::cout << std::endl;
-
-    std::cout << "=====================================" << std::endl;
-    std::cout << "= testCase_FixturedData004_Positive =" << std::endl;
-    std::cout << "=====================================" << std::endl;
 
     std::cout << std::endl;
 
