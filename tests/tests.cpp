@@ -389,6 +389,35 @@ Test::TestCase* testCase_FixturedData004_Positive()
     assertEquals(t, "43543.63", (std::string*) elAdf03->getData());
 
     // JsonPointer: /another/0/aarr/gadss
+
+    JsonStreamAnalyzer::Element* elGadss = oNestedObj->at("gadss");
+    assertType(t, elGadss, ELEMENT_TYPE_ARRAY, "/another/0/aarr/gadss");
+    JsonArray* aGadds = (JsonArray*) elGadss->getData();
+
+    JsonArray::iterator iGadds = aGadds->begin();
+
+    // JsonPointer: /another/0/aarr/gadss/0
+
+    JsonStreamAnalyzer::Element* elGadds01 = *iGadds;
+    assertType(t, elGadds01, ELEMENT_TYPE_TEXT, "/another/0/aarr/gadss/0");
+    assertEquals(t, "tet", (std::string*) elGadds01->getData());
+
+    iGadds++;
+
+    // JsonPointer: /another/0/aarr/gadss/1
+
+    JsonStreamAnalyzer::Element* elGadds02 = *iGadds;
+    assertType(t, elGadds02, ELEMENT_TYPE_TEXT, "/another/0/aarr/gadss/1");
+    assertEquals(t, "test", (std::string*) elGadds02->getData());
+
+    iGadds++;
+
+    // JsonPointer: /another/0/aarr/gadss/2
+
+    JsonStreamAnalyzer::Element* elGadds03 = *iGadds;
+    assertType(t, elGadds03, ELEMENT_TYPE_TEXT, "/another/0/aarr/gadss/2");
+    assertEquals(t, "sdfs", (std::string*) elGadds03->getData());
+
     // JsonPointer: /another/0/aarr/someTest
 
     // JsonPointer: /another/0/aarr/parent
