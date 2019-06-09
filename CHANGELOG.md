@@ -1,5 +1,8 @@
 # Changelog json-stream-analyzer
 
+## 1.0.0
+  - add `IOBuffer::CharStream` to token stream
+
 ## 0.3.0
   - add tokens bool and null
   - add tests

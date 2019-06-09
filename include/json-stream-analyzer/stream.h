@@ -15,26 +15,10 @@ namespace JsonStreamAnalyzer
 {
     class Stream {
     public:
-        Stream(IOBuffer::IOReader *reader);
+        Stream(IOBuffer::CharStream *charStream);
         Token::Token *get_next_token();
-        ~Stream();
     private:
-        IOBuffer::IOReader *reader;
-
-        char *currentBuffer;
-        char *forwardBuffer;
-
-        // текущая позиция для чтения
-        int currentPosition;
-
-        // позиция начала текущего блока
-        int posCurrent;
-
-        // позиция начала следующего блока
-        int posForward;
-
-        // признак конца потока
-        bool eof;
+        IOBuffer::CharStream *charStream;
 
         // координаты токена в документе
         int currentLine;
@@ -44,8 +28,6 @@ namespace JsonStreamAnalyzer
 
         int mode;
         int prevMode;
-
-        bool lastFrame;
 
         bool is_digit(char symbol) {
             return symbol >= '0' && symbol <= '9';
@@ -62,8 +44,6 @@ namespace JsonStreamAnalyzer
 
             this->lexemeWriter->write(&symbol, 1);
         }
-
-        char* getNextChar();
     };
 }
 
