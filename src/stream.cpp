@@ -207,9 +207,9 @@ namespace JsonStreamAnalyzer
                 } else {
                     ++this->currentColumn;
                 }
-            }
 
-            curChar = this->charStream->getNext();
+                curChar = this->charStream->getNext();
+            }
         }
 
         return token;
