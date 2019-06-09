@@ -45,7 +45,8 @@ CppUnitTest::TestCase* testCase_SimpleExample_Positive() {
     t->printTitle();
 
     IOBuffer::IOFileReader file_buffer("../fixtures/001-simple-example.json");
-    JsonStreamAnalyzer::Stream json_stream(&file_buffer);
+    IOBuffer::CharStream charStream(&file_buffer);
+    JsonStreamAnalyzer::Stream json_stream(&charStream);
     JsonStreamAnalyzer::Decoder decoder(&json_stream);
     JsonStreamAnalyzer::Element* object = decoder.decode();
 
@@ -160,7 +161,8 @@ CppUnitTest::TestCase* testCase_BoolData_Positive()
     t->printTitle();
 
     IOBuffer::IOFileReader file_buffer("../fixtures/002-bool-data.json");
-    JsonStreamAnalyzer::Stream json_stream(&file_buffer);
+    IOBuffer::CharStream charStream(&file_buffer);
+    JsonStreamAnalyzer::Stream json_stream(&charStream);
     JsonStreamAnalyzer::Decoder decoder(&json_stream);
     JsonStreamAnalyzer::Element* object = decoder.decode();
 
@@ -187,7 +189,8 @@ CppUnitTest::TestCase* testCase_DataWithNull_Positive()
     t->printTitle();
 
     IOBuffer::IOFileReader file_buffer("../fixtures/003-data-with-null.json");
-    JsonStreamAnalyzer::Stream json_stream(&file_buffer);
+    IOBuffer::CharStream charStream(&file_buffer);
+    JsonStreamAnalyzer::Stream json_stream(&charStream);
     JsonStreamAnalyzer::Decoder decoder(&json_stream);
     JsonStreamAnalyzer::Element* object = decoder.decode();
 
@@ -223,7 +226,8 @@ CppUnitTest::TestCase* testCase_FixturedData004_Positive()
     t->printTitle();
 
     IOBuffer::IOFileReader file_buffer("../fixtures/004-sample-for-test.json");
-    JsonStreamAnalyzer::Stream json_stream(&file_buffer);
+    IOBuffer::CharStream charStream(&file_buffer);
+    JsonStreamAnalyzer::Stream json_stream(&charStream);
     JsonStreamAnalyzer::Decoder decoder(&json_stream);
     JsonStreamAnalyzer::Element* object = decoder.decode();
 

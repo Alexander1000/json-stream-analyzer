@@ -1,8 +1,6 @@
 #ifndef JSON_STREAM_INCLUDED
 #define JSON_STREAM_INCLUDED
 
-#define STREAM_BUFFER_SIZE 4096
-
 #define JSON_LEXER_PLAIN_MODE 0
 #define JSON_LEXER_TEXT_MODE 1
 #define JSON_LEXER_DIGIT_MODE 2
@@ -15,26 +13,10 @@ namespace JsonStreamAnalyzer
 {
     class Stream {
     public:
-        Stream(IOBuffer::IOReader *reader);
+        Stream(IOBuffer::CharStream *charStream);
         Token::Token *get_next_token();
-        ~Stream();
     private:
-        IOBuffer::IOReader *reader;
-
-        char *currentBuffer;
-        char *forwardBuffer;
-
-        // текущая позиция для чтения
-        int currentPosition;
-
-        // позиция начала текущего блока
-        int posCurrent;
-
-        // позиция начала следующего блока
-        int posForward;
-
-        // признак конца потока
-        bool eof;
+        IOBuffer::CharStream *charStream;
 
         // координаты токена в документе
         int currentLine;
@@ -45,7 +27,7 @@ namespace JsonStreamAnalyzer
         int mode;
         int prevMode;
 
-        bool lastFrame;
+        char* curChar;
 
         bool is_digit(char symbol) {
             return symbol >= '0' && symbol <= '9';
@@ -62,8 +44,6 @@ namespace JsonStreamAnalyzer
 
             this->lexemeWriter->write(&symbol, 1);
         }
-
-        char* getNextChar();
     };
 }
 
