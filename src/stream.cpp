@@ -3,7 +3,6 @@
 #include <io-buffer.h>
 
 #include <memory.h>
-#include <iostream>
 
 #define JSON_LEXER_PLAIN_MODE 0
 #define JSON_LEXER_TEXT_MODE 1
