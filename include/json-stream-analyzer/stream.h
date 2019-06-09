@@ -27,6 +27,8 @@ namespace JsonStreamAnalyzer
         int mode;
         int prevMode;
 
+        char* curChar;
+
         bool is_digit(char symbol) {
             return symbol >= '0' && symbol <= '9';
         }

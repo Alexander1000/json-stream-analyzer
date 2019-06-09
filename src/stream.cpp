@@ -3,6 +3,7 @@
 #include <io-buffer.h>
 
 #include <memory.h>
+#include <iostream>
 
 #define JSON_LEXER_PLAIN_MODE 0
 #define JSON_LEXER_TEXT_MODE 1
@@ -19,6 +20,8 @@ namespace JsonStreamAnalyzer
 
         this->mode = JSON_LEXER_PLAIN_MODE;
         this->prevMode = JSON_LEXER_PLAIN_MODE;
+
+        this->curChar = NULL;
     }
 
     Token::Token* Stream::get_next_token()
@@ -28,13 +31,15 @@ namespace JsonStreamAnalyzer
         bool escape = false;
         Token::Token *token = NULL;
 
-        char* curChar = this->charStream->getNext();
+        if (this->curChar == NULL) {
+            this->curChar = this->charStream->getNext();
+        }
 
-        while (!endOfToken && curChar != NULL) {
+        while (!endOfToken && this->curChar != NULL) {
             // текущий указатель находится внутри первого буфера
             bool move_position = true;
 
-            char symbol = *curChar;
+            char symbol = *this->curChar;
 
             switch (this->mode) {
                 case JSON_LEXER_PLAIN_MODE:
@@ -49,8 +54,7 @@ namespace JsonStreamAnalyzer
                             this->appendCurrentLexeme(symbol);
                             endOfToken = true;
                             this->prevMode = JSON_LEXER_PLAIN_MODE;
-                            token = new Token::TokenBracesClose(this->currentLine, this->currentColumn,
-                                                         this->lexemeWriter);
+                            token = new Token::TokenBracesClose(this->currentLine, this->currentColumn, this->lexemeWriter);
                             break;
                         case '[':
                             this->appendCurrentLexeme(symbol);
@@ -208,7 +212,7 @@ namespace JsonStreamAnalyzer
                     ++this->currentColumn;
                 }
 
-                curChar = this->charStream->getNext();
+                this->curChar = this->charStream->getNext();
             }
         }
 
