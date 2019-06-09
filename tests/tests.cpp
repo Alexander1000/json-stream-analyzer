@@ -1,10 +1,9 @@
 #include <iostream>
 #include <string>
 
-#include <tests.h>
-
 #include <json-stream-analyzer.h>
 #include <io-buffer.h>
+#include <cpp-unit-test.h>
 
 class AssertElementTypeException
 {};
@@ -12,19 +11,10 @@ class AssertElementTypeException
 class AssertObjectPropertyExist
 {};
 
-class AssertEqualsException
-{};
-
-class AssertTrueException
-{};
-
-class AssertFalseException
-{};
-
 typedef std::map<std::string, JsonStreamAnalyzer::Element*> JsonObject;
 typedef std::list<JsonStreamAnalyzer::Element*> JsonArray;
 
-void assertType(Test::TestCase* testCase, JsonStreamAnalyzer::Element* element, int expectedType) {
+void assertType(CppUnitTest::TestCase* testCase, JsonStreamAnalyzer::Element* element, int expectedType) {
     testCase->increment();
 
     if (element->getType() != expectedType) {
@@ -33,7 +23,7 @@ void assertType(Test::TestCase* testCase, JsonStreamAnalyzer::Element* element, 
     }
 }
 
-void assertType(Test::TestCase* testCase, JsonStreamAnalyzer::Element* element, int expectedType, const char* field) {
+void assertType(CppUnitTest::TestCase* testCase, JsonStreamAnalyzer::Element* element, int expectedType, const char* field) {
     testCase->increment();
 
     if (element->getType() != expectedType) {
@@ -42,7 +32,7 @@ void assertType(Test::TestCase* testCase, JsonStreamAnalyzer::Element* element, 
     }
 }
 
-void assertObjectPropertyExist(Test::TestCase* testCase, JsonObject* obj, const char* propertyName) {
+void assertObjectPropertyExist(CppUnitTest::TestCase* testCase, JsonObject* obj, const char* propertyName) {
     testCase->increment();
 
     if (obj->find(propertyName) == obj->end()) {
@@ -50,56 +40,8 @@ void assertObjectPropertyExist(Test::TestCase* testCase, JsonObject* obj, const 
     }
 }
 
-void assertEquals(Test::TestCase* testCase, std::string str1, std::string str2)
-{
-    testCase->increment();
-    if (str1.compare(str2) != 0) {
-        throw new AssertEqualsException;
-    }
-}
-
-void assertEquals(Test::TestCase* testCase, std::string* str1, std::string str2)
-{
-    testCase->increment();
-    if (str1->compare(str2) != 0) {
-        throw new AssertEqualsException;
-    }
-}
-
-void assertEquals(Test::TestCase* testCase, std::string str1, std::string* str2)
-{
-    testCase->increment();
-    if (str1.compare(*str2) != 0) {
-        throw new AssertEqualsException;
-    }
-}
-
-void assertEquals(Test::TestCase* testCase, int expected, int actual)
-{
-    testCase->increment();
-    if (expected != actual) {
-        throw new AssertEqualsException;
-    }
-}
-
-void assertTrue(Test::TestCase* testCase, bool actual)
-{
-    testCase->increment();
-    if (!actual) {
-        throw new AssertTrueException;
-    }
-}
-
-void assertFalse(Test::TestCase* testCase, bool actual)
-{
-    testCase->increment();
-    if (actual) {
-        throw new AssertFalseException;
-    }
-}
-
-Test::TestCase* testCase_SimpleExample_Positive() {
-    Test::TestCase* t = new Test::TestCase("001-simple-example");
+CppUnitTest::TestCase* testCase_SimpleExample_Positive() {
+    CppUnitTest::TestCase* t = new CppUnitTest::TestCase("001-simple-example");
     t->printTitle();
 
     IOBuffer::IOFileReader file_buffer("../fixtures/001-simple-example.json");
@@ -212,9 +154,9 @@ Test::TestCase* testCase_SimpleExample_Positive() {
     return t;
 }
 
-Test::TestCase* testCase_BoolData_Positive()
+CppUnitTest::TestCase* testCase_BoolData_Positive()
 {
-    Test::TestCase* t = new Test::TestCase("002-bool-data");
+    CppUnitTest::TestCase* t = new CppUnitTest::TestCase("002-bool-data");
     t->printTitle();
 
     IOBuffer::IOFileReader file_buffer("../fixtures/002-bool-data.json");
@@ -239,9 +181,9 @@ Test::TestCase* testCase_BoolData_Positive()
     return t;
 }
 
-Test::TestCase* testCase_DataWithNull_Positive()
+CppUnitTest::TestCase* testCase_DataWithNull_Positive()
 {
-    Test::TestCase* t = new Test::TestCase("003-data-with-null");
+    CppUnitTest::TestCase* t = new CppUnitTest::TestCase("003-data-with-null");
     t->printTitle();
 
     IOBuffer::IOFileReader file_buffer("../fixtures/003-data-with-null.json");
@@ -275,9 +217,9 @@ Test::TestCase* testCase_DataWithNull_Positive()
     return t;
 }
 
-Test::TestCase* testCase_FixturedData004_Positive()
+CppUnitTest::TestCase* testCase_FixturedData004_Positive()
 {
-    Test::TestCase* t = new Test::TestCase("004-fixtured-data");
+    CppUnitTest::TestCase* t = new CppUnitTest::TestCase("004-fixtured-data");
     t->printTitle();
 
     IOBuffer::IOFileReader file_buffer("../fixtures/004-sample-for-test.json");
@@ -475,7 +417,7 @@ Test::TestCase* testCase_FixturedData004_Positive()
 }
 
 int main(int argc, char** argv) {
-    Test::TestSuite testSuite;
+    CppUnitTest::TestSuite testSuite;
 
     std::cout << std::endl;
 
