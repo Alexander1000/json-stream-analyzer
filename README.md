@@ -2,8 +2,19 @@
 
 Project requirements (static lib):
   - [io-buffer](https://github.com/Alexander1000/io-buffer)
+  - [cpp-unit-test](https://github.com/Alexander1000/cpp-unit-test) (for tests)
   
-How use it:
+## How use it:
+
+Example input json (etc/config.json):
+```json
+{
+  "host": "127.0.0.1",
+  "port": 8080
+}
+```
+
+Example code:
 ```c++
 #include <iostream>
 #include <string>
@@ -41,13 +52,13 @@ int main(int argc, char** argv) {
 }
 ```
 
-How build:
+## How build:
 ```shell
 cmake .
 make
 ```
 
-How tests:
+## How tests:
 ```shell
 cd tests
 ./test.sh
