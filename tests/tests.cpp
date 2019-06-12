@@ -48,7 +48,14 @@ CppUnitTest::TestCase* testCase_SimpleExample_Positive() {
     IOBuffer::CharStream charStream(&file_buffer);
     JsonStreamAnalyzer::Stream json_stream(&charStream);
     JsonStreamAnalyzer::Decoder decoder(&json_stream);
-    JsonStreamAnalyzer::Element* object = decoder.decode();
+    JsonStreamAnalyzer::Element* object;
+
+    try {
+        object = decoder.decode();
+    } catch (JsonStreamAnalyzer::UnexpectedTokenException* e) {
+        std::cout << "Exception: " << e->getMessage() << std::endl;
+        return t;
+    }
 
     assertType(t, object, ELEMENT_TYPE_OBJECT);
     JsonObject* obj = (JsonObject*) object->getData();

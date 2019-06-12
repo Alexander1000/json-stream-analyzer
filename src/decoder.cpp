@@ -131,7 +131,7 @@ namespace JsonStreamAnalyzer {
     std::string* Decoder::parse_text() {
         Token::Token *token = this->stream->get_next_token();
         if (token->getType() != Token::Type::Text) {
-            return NULL;
+            throw new UnexpectedTokenException(token);
         }
 
         std::string *val;
