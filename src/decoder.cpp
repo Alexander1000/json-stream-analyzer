@@ -43,22 +43,28 @@ namespace JsonStreamAnalyzer {
                 // object
                 obj = this->parse_object();
                 element = new Element(ELEMENT_TYPE_OBJECT, (void*) obj);
+                break;
             case Token::Type::Quotes:
                 // text
                 text = this->parse_text();
                 element = new Element(ELEMENT_TYPE_TEXT, (void*) text);
+                break;
             case Token::Type::Numeric:
                 // numeric
                 digit = this->parse_numeric(token);
                 element = new Element(ELEMENT_TYPE_NUMERIC, (void*) digit);
+                break;
             case Token::Type::ArrayOpen:
                 // array
                 array = this->parse_array();
                 element = new Element(ELEMENT_TYPE_ARRAY, (void*) array);
+                break;
             case Token::Type::Bool:
                 element = new Element(ELEMENT_TYPE_BOOL, (void*) ((JsonStreamAnalyzer::Token::TokenBool*) token)->getValue());
+                break;
             case Token::Type::Null:
                 element = new Element(ELEMENT_TYPE_NULL, NULL);
+                break;
             default:
                 throw new UnexpectedTokenException(token);
         }

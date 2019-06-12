@@ -427,6 +427,27 @@ CppUnitTest::TestCase* testCase_FixturedData004_Positive()
     return t;
 }
 
+CppUnitTest::TestCase* testCase_BadPropertyObject_Exception()
+{
+    CppUnitTest::TestCase* t = new CppUnitTest::TestCase("005-bad-object");
+    t->printTitle();
+
+    IOBuffer::IOFileReader file_buffer("../fixtures/005-bad-object.json");
+    IOBuffer::CharStream charStream(&file_buffer);
+    JsonStreamAnalyzer::Stream json_stream(&charStream);
+    JsonStreamAnalyzer::Decoder decoder(&json_stream);
+    JsonStreamAnalyzer::Element* object;
+
+    try {
+        object = decoder.decode();
+    } catch (JsonStreamAnalyzer::UnexpectedTokenException* e) {
+        CppUnitTest::assertEquals(t, "unexpected token 'quotes' in 3:2", e->getMessage());
+    }
+
+    t->finish();
+    return t;
+}
+
 int main(int argc, char** argv) {
     CppUnitTest::TestSuite testSuite;
 
@@ -445,6 +466,10 @@ int main(int argc, char** argv) {
     std::cout << std::endl;
 
     testSuite.addTestCase(testCase_FixturedData004_Positive());
+
+    std::cout << std::endl;
+
+    testSuite.addTestCase(testCase_BadPropertyObject_Exception());
 
     std::cout << std::endl;
 

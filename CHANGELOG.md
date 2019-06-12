@@ -1,5 +1,8 @@
 # Changelog json-stream-analyzer
 
+## 1.1.0
+  - throw exception `JsonStreamAnalyzer::UnexpectedTokenException` where json invalid
+
 ## 1.0.0
   - add `IOBuffer::CharStream` to token stream
 
