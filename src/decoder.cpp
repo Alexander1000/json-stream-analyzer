@@ -32,7 +32,7 @@ namespace JsonStreamAnalyzer {
             return NULL;
         }
 
-        Element *element;
+        Element* element;
         std::map<std::string, Element *> *obj;
         std::string *text;
         std::string *digit;
@@ -43,41 +43,27 @@ namespace JsonStreamAnalyzer {
                 // object
                 obj = this->parse_object();
                 element = new Element(ELEMENT_TYPE_OBJECT, (void*) obj);
-                return element;
             case Token::Type::Quotes:
                 // text
                 text = this->parse_text();
                 element = new Element(ELEMENT_TYPE_TEXT, (void*) text);
-                return element;
             case Token::Type::Numeric:
                 // numeric
                 digit = this->parse_numeric(token);
                 element = new Element(ELEMENT_TYPE_NUMERIC, (void*) digit);
-                return element;
             case Token::Type::ArrayOpen:
                 // array
                 array = this->parse_array();
                 element = new Element(ELEMENT_TYPE_ARRAY, (void*) array);
-                return element;
             case Token::Type::Bool:
                 element = new Element(ELEMENT_TYPE_BOOL, (void*) ((JsonStreamAnalyzer::Token::TokenBool*) token)->getValue());
-                return element;
             case Token::Type::Null:
                 element = new Element(ELEMENT_TYPE_NULL, NULL);
-                return element;
             default:
-                std::cout << "unexpected token: " << JsonStreamAnalyzer::Token::getTokenTypeName(token->getType()) << std::endl;
-                if (token->getType() == Token::Type::Text) {
-                    char *tokenValue = (char *) malloc(sizeof(char) * 1024);
-                    memset(tokenValue, 0, sizeof(char) * 1024);
-                    token->getReader()->read(tokenValue, 1024);
-                    std::cout << "Text: " << tokenValue << std::endl;
-                }
-                // unsupporeted
-                return NULL;
+                throw new UnexpectedTokenException(token);
         }
 
-        return NULL;
+        return element;
     }
 
     std::map<std::string, Element *>* Decoder::parse_object() {
@@ -97,15 +83,12 @@ namespace JsonStreamAnalyzer {
 
         if (token->getType() != Token::Type::Quotes) {
             // unexpected, object property must be have quote
-            // @todo: throw exception
-            return NULL;
+            throw new UnexpectedTokenException(token);
         }
 
         token = this->stream->get_next_token();
         if (token->getType() != Token::Type::Text) {
-            // unexpected
-            // @todo: throw exception
-            return NULL;
+            throw new UnexpectedTokenException(token);
         }
 
         // @todo: optimize and reuse (memory managment)
@@ -115,14 +98,12 @@ namespace JsonStreamAnalyzer {
 
         token = this->stream->get_next_token();
         if (token->getType() != Token::Type::Quotes) {
-            // @todo: throw exception
-            return NULL;
+            throw new UnexpectedTokenException(token);
         }
 
         token = this->stream->get_next_token();
         if (token->getType() != Token::Type::Colon) {
-            // @todo: unexpected
-            return NULL;
+            throw new UnexpectedTokenException(token);
         }
 
         Element *property_value = this->parse_element();
@@ -140,9 +121,7 @@ namespace JsonStreamAnalyzer {
             case Token::Type::BracesClose:
                 break;
             default:
-                // @todo: throw exception
-                std::cout << "unexpected token while parse object: " << token->getType() << std::endl;
-                return NULL;
+                throw new UnexpectedTokenException(token);
         }
 
         // todo: allocate memory
@@ -168,8 +147,7 @@ namespace JsonStreamAnalyzer {
 
         token = this->stream->get_next_token();
         if (token->getType() != Token::Type::Quotes) {
-            // todo: throw exception
-            return NULL;
+            throw new UnexpectedTokenException(token);
         }
 
         return val;
@@ -213,8 +191,7 @@ namespace JsonStreamAnalyzer {
         }
 
         if (token->getType() != Token::Type::ArrayClose) {
-            // throw exception
-            return NULL;
+            throw new UnexpectedTokenException(token);
         }
 
         return list;

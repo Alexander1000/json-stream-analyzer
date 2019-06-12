@@ -4,10 +4,22 @@
 #include <map>
 #include <string>
 #include <list>
+
 #include <json-stream-analyzer/element.h>
+#include <json-stream-analyzer/token.h>
+#include <json-stream-analyzer/stream.h>
 
 namespace JsonStreamAnalyzer
 {
+    class UnexpectedTokenException
+    {
+    public:
+        UnexpectedTokenException(Token::Token* token);
+        char* getMessage();
+    private:
+        Token::Token* token;
+    };
+
     class Decoder {
     public:
         Decoder(Stream *stream);
