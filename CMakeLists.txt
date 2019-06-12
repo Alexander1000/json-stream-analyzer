@@ -17,6 +17,7 @@ set(JSON_STREAM_ANALYZER_SOURCES
     src/tokens/token_quotes.cpp
     src/tokens/token_bool.cpp
     src/tokens/token_null.cpp
+    src/exceptions.cpp
     src/decoder.cpp
     src/stream.cpp
 )

@@ -40,6 +40,9 @@ void assertObjectPropertyExist(CppUnitTest::TestCase* testCase, JsonObject* obj,
     }
 }
 
+// todo: refactor; put TestCase object in testCase_*** methods
+// todo: auto fail test-case when some uncaught exceptions happen
+
 CppUnitTest::TestCase* testCase_SimpleExample_Positive() {
     CppUnitTest::TestCase* t = new CppUnitTest::TestCase("001-simple-example");
     t->printTitle();
@@ -420,6 +423,72 @@ CppUnitTest::TestCase* testCase_FixturedData004_Positive()
     return t;
 }
 
+CppUnitTest::TestCase* testCase_BadPropertyObject_Exception()
+{
+    CppUnitTest::TestCase* t = new CppUnitTest::TestCase("005-bad-object");
+    t->printTitle();
+
+    IOBuffer::IOFileReader file_buffer("../fixtures/005-bad-object.json");
+    IOBuffer::CharStream charStream(&file_buffer);
+    JsonStreamAnalyzer::Stream json_stream(&charStream);
+    JsonStreamAnalyzer::Decoder decoder(&json_stream);
+    JsonStreamAnalyzer::Element* object;
+
+    try {
+        object = decoder.decode();
+        // todo: fail test-case if not throw exception
+    } catch (JsonStreamAnalyzer::UnexpectedTokenException* e) {
+        CppUnitTest::assertEquals(t, "unexpected token 'quotes' in 3:2", e->getMessage());
+    }
+
+    t->finish();
+    return t;
+}
+
+CppUnitTest::TestCase* testCase_BadArray_Exception()
+{
+    CppUnitTest::TestCase* t = new CppUnitTest::TestCase("006-bad-array");
+    t->printTitle();
+
+    IOBuffer::IOFileReader file_buffer("../fixtures/006-bad-array.json");
+    IOBuffer::CharStream charStream(&file_buffer);
+    JsonStreamAnalyzer::Stream json_stream(&charStream);
+    JsonStreamAnalyzer::Decoder decoder(&json_stream);
+    JsonStreamAnalyzer::Element* object;
+
+    try {
+        object = decoder.decode();
+        // todo: fail test-case if not throw exception
+    } catch (JsonStreamAnalyzer::UnexpectedTokenException* e) {
+        CppUnitTest::assertEquals(t, "unexpected token 'braces.open' in 2:15", e->getMessage());
+    }
+
+    t->finish();
+    return t;
+}
+
+CppUnitTest::TestCase* testCase_BadObjectMissedColon_Exception()
+{
+    CppUnitTest::TestCase* t = new CppUnitTest::TestCase("007-bad-object-missed-colon");
+    t->printTitle();
+
+    IOBuffer::IOFileReader file_buffer("../fixtures/007-bad-object-missed-colon.json");
+    IOBuffer::CharStream charStream(&file_buffer);
+    JsonStreamAnalyzer::Stream json_stream(&charStream);
+    JsonStreamAnalyzer::Decoder decoder(&json_stream);
+    JsonStreamAnalyzer::Element* object;
+
+    try {
+        object = decoder.decode();
+        // todo: fail test-case if not throw exception
+    } catch (JsonStreamAnalyzer::UnexpectedTokenException* e) {
+        CppUnitTest::assertEquals(t, "unexpected token 'quotes' in 2:17", e->getMessage());
+    }
+
+    t->finish();
+    return t;
+}
+
 int main(int argc, char** argv) {
     CppUnitTest::TestSuite testSuite;
 
@@ -438,6 +507,18 @@ int main(int argc, char** argv) {
     std::cout << std::endl;
 
     testSuite.addTestCase(testCase_FixturedData004_Positive());
+
+    std::cout << std::endl;
+
+    testSuite.addTestCase(testCase_BadPropertyObject_Exception());
+
+    std::cout << std::endl;
+
+    testSuite.addTestCase(testCase_BadArray_Exception());
+
+    std::cout << std::endl;
+
+    testSuite.addTestCase(testCase_BadObjectMissedColon_Exception());
 
     std::cout << std::endl;
 
