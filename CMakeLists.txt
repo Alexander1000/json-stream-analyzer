@@ -33,7 +33,7 @@ install(DIRECTORY include/json-stream-analyzer DESTINATION ${CMAKE_INSTALL_INCLU
 # Static
 #--------------
 
-project(json-stream-analyzer VERSION 0.3.0 DESCRIPTION "json stream analyzer")
+project(json-stream-analyzer VERSION 1.1.0 DESCRIPTION "json stream analyzer")
 
 add_library(${PROJECT_NAME} STATIC ${JSON_STREAM_ANALYZER_SOURCES})
 
@@ -61,7 +61,7 @@ install (TARGETS ${PROJECT_NAME}
 # Shared
 #--------------
 
-project(json-stream-analyzer-shared VERSION 0.3.0 DESCRIPTION "json stream analyzer")
+project(json-stream-analyzer-shared VERSION 1.1.0 DESCRIPTION "json stream analyzer")
 
 add_library(${PROJECT_NAME} SHARED ${JSON_STREAM_ANALYZER_SOURCES})
 
