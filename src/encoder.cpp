@@ -17,6 +17,21 @@ namespace JsonStreamAnalyzer
             case ELEMENT_TYPE_OBJECT: {
                 memBuf.write((char*) "{", 1);
                 auto obj = (JsonObject *) element->getData();
+                for (auto itObj = obj->begin(); itObj != obj->end(); itObj++) {
+                    memBuf.write((char*) "\"", 1);
+                    memBuf.write((char*) itObj->first.c_str(), itObj->first.length());
+                    memBuf.write((char*) "\"", 1);
+                    memBuf.write((char*) ":", 1);
+
+                    auto nestedResult = this->encode(itObj->second);
+                    memBuf.write((char*) nestedResult->c_str(), nestedResult->length());
+
+                    auto itNextObj = itObj;
+                    itNextObj++;
+                    if (itNextObj != obj->end()) {
+                        memBuf.write((char*) ",", 1);
+                    }
+                }
                 memBuf.write((char*) "}", 1);
                 break;
             }
