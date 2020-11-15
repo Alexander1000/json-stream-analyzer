@@ -502,9 +502,23 @@ CppUnitTest::TestCase* testCase_JsonEncode_SimpleObject()
     std::string age = "30";
     JsonStreamAnalyzer::Element elAge(ELEMENT_TYPE_NUMERIC, &age);
 
+    // some list elements
+    JsonArray arrData;
+    std::string str01 = "str01";
+    JsonStreamAnalyzer::Element el01(ELEMENT_TYPE_TEXT, &str01);
+    arrData.emplace_back(&el01);
+    std::string str02 = "str02";
+    JsonStreamAnalyzer::Element el02(ELEMENT_TYPE_TEXT, &str02);
+    arrData.emplace_back(&el02);
+    std::string str03 = "str03";
+    JsonStreamAnalyzer::Element el03(ELEMENT_TYPE_TEXT, &str03);
+    arrData.emplace_back(&el03);
+    JsonStreamAnalyzer::Element elData(ELEMENT_TYPE_ARRAY, &arrData);
+
     JsonObject obj;
     obj["name"] = &elName;
     obj["age"] = &elAge;
+    obj["list"] = &elData;
 
     JsonStreamAnalyzer::Element elObj(ELEMENT_TYPE_OBJECT, &obj);
 
