@@ -1,5 +1,8 @@
 # Changelog json-stream-analyzer
 
+## 1.2.0
+  - add json encode functional
+
 ## 1.1.0
   - throw exception `JsonStreamAnalyzer::UnexpectedTokenException` where json invalid
 

@@ -489,6 +489,59 @@ CppUnitTest::TestCase* testCase_BadObjectMissedColon_Exception()
     return t;
 }
 
+CppUnitTest::TestCase* testCase_JsonEncode_SimpleObject()
+{
+    CppUnitTest::TestCase* t = new CppUnitTest::TestCase("008-json-encode");
+    t->printTitle();
+
+    // name
+    std::string name = "Alexander";
+    JsonStreamAnalyzer::Element elName(ELEMENT_TYPE_TEXT, &name);
+
+    // age
+    std::string age = "30";
+    JsonStreamAnalyzer::Element elAge(ELEMENT_TYPE_NUMERIC, &age);
+
+    // some list elements
+    JsonArray arrData;
+    std::string str01 = "str01";
+    JsonStreamAnalyzer::Element el01(ELEMENT_TYPE_TEXT, &str01);
+    arrData.emplace_back(&el01);
+    std::string str02 = "str02";
+    JsonStreamAnalyzer::Element el02(ELEMENT_TYPE_TEXT, &str02);
+    arrData.emplace_back(&el02);
+    std::string str03 = "str03";
+    JsonStreamAnalyzer::Element el03(ELEMENT_TYPE_TEXT, &str03);
+    arrData.emplace_back(&el03);
+    JsonStreamAnalyzer::Element elData(ELEMENT_TYPE_ARRAY, &arrData);
+
+    // null object
+    JsonStreamAnalyzer::Element elNull(ELEMENT_TYPE_NULL, nullptr);
+
+    // bool value
+    JsonStreamAnalyzer::Element elBool01(ELEMENT_TYPE_BOOL, (void*) true);
+    JsonStreamAnalyzer::Element elBool02(ELEMENT_TYPE_BOOL, (void*) false);
+
+    JsonObject obj;
+    obj["name"] = &elName;
+    obj["age"] = &elAge;
+    obj["list"] = &elData;
+    obj["nullableObject"] = &elNull;
+    obj["isTest"] = &elBool01;
+    obj["isIsFalse?"] = &elBool02;
+
+    JsonStreamAnalyzer::Element elObj(ELEMENT_TYPE_OBJECT, &obj);
+
+    JsonStreamAnalyzer::Encoder encoder;
+
+    auto strResult = encoder.encode(&elObj);
+
+    std::cout << "Result: " << strResult->c_str() << std::endl;
+
+    t->finish();
+    return t;
+}
+
 int main(int argc, char** argv) {
     CppUnitTest::TestSuite testSuite;
 
@@ -519,6 +572,10 @@ int main(int argc, char** argv) {
     std::cout << std::endl;
 
     testSuite.addTestCase(testCase_BadObjectMissedColon_Exception());
+
+    std::cout << std::endl;
+
+    testSuite.addTestCase(testCase_JsonEncode_SimpleObject());
 
     std::cout << std::endl;
 
