@@ -1,0 +1,13 @@
+cmake-build-debug
+CMakeFiles
+cmake_install.cmake
+CMakeCache.txt
+install_manifests.txt
+libjson-stream-analyzer.a
+Makefile
+socketer.cbp
+tests/CMakeFies
+tests/CMakeCache.txt
+tests/Makefile
+tests/cmake_install.cmake
+tests/json-analyzer-tests
