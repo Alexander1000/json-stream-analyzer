@@ -35,12 +35,20 @@ namespace JsonStreamAnalyzer
                 memBuf.write((char*) "}", 1);
                 break;
             }
-            case ELEMENT_TYPE_TEXT:
+
+            case ELEMENT_TYPE_TEXT: {
                 auto strValue = (std::string*) element->getData();
                 memBuf.write((char*) "\"", 1);
                 memBuf.write((char*) strValue->c_str(), strValue->length());
                 memBuf.write((char*) "\"", 1);
                 break;
+            }
+
+            case ELEMENT_TYPE_NUMERIC: {
+                auto strValue = (std::string*) element->getData();
+                memBuf.write((char*) strValue->c_str(), strValue->length());
+                break;
+            }
         }
 
         char* result = new char[1024];
