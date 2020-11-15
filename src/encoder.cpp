@@ -68,6 +68,17 @@ namespace JsonStreamAnalyzer
 
             case ELEMENT_TYPE_NULL: {
                 memBuf.write((char*) "null", 4);
+                break;
+            }
+
+            case ELEMENT_TYPE_BOOL: {
+                bool value = (bool) element->getData();
+                if (value) {
+                    memBuf.write((char*) "true", 4);
+                } else {
+                    memBuf.write((char*) "false", 5);
+                }
+                break;
             }
         }
 

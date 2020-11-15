@@ -518,11 +518,17 @@ CppUnitTest::TestCase* testCase_JsonEncode_SimpleObject()
     // null object
     JsonStreamAnalyzer::Element elNull(ELEMENT_TYPE_NULL, nullptr);
 
+    // bool value
+    JsonStreamAnalyzer::Element elBool01(ELEMENT_TYPE_BOOL, (void*) true);
+    JsonStreamAnalyzer::Element elBool02(ELEMENT_TYPE_BOOL, (void*) false);
+
     JsonObject obj;
     obj["name"] = &elName;
     obj["age"] = &elAge;
     obj["list"] = &elData;
     obj["nullableObject"] = &elNull;
+    obj["isTest"] = &elBool01;
+    obj["isIsFalse?"] = &elBool02;
 
     JsonStreamAnalyzer::Element elObj(ELEMENT_TYPE_OBJECT, &obj);
 
