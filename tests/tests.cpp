@@ -515,10 +515,14 @@ CppUnitTest::TestCase* testCase_JsonEncode_SimpleObject()
     arrData.emplace_back(&el03);
     JsonStreamAnalyzer::Element elData(ELEMENT_TYPE_ARRAY, &arrData);
 
+    // null object
+    JsonStreamAnalyzer::Element elNull(ELEMENT_TYPE_NULL, nullptr);
+
     JsonObject obj;
     obj["name"] = &elName;
     obj["age"] = &elAge;
     obj["list"] = &elData;
+    obj["nullableObject"] = &elNull;
 
     JsonStreamAnalyzer::Element elObj(ELEMENT_TYPE_OBJECT, &obj);
 

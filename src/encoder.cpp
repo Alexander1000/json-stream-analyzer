@@ -52,18 +52,22 @@ namespace JsonStreamAnalyzer
 
             case ELEMENT_TYPE_ARRAY: {
                 auto elList = (JsonArray*) element->getData();
-                memBuf.write("[", 1);
+                memBuf.write((char*) "[", 1);
                 for (auto itRow = elList->begin(); itRow != elList->end(); itRow++) {
                     auto nestedResult = this->encode(*itRow);
                     memBuf.write((char*) nestedResult->c_str(), nestedResult->length());
                     auto nextRow = itRow;
                     nextRow++;
                     if (nextRow != elList->end()) {
-                        memBuf.write(",", 1);
+                        memBuf.write((char*) ",", 1);
                     }
                 }
-                memBuf.write("]", 1);
+                memBuf.write((char*) "]", 1);
                 break;
+            }
+
+            case ELEMENT_TYPE_NULL: {
+                memBuf.write((char*) "null", 4);
             }
         }
 
