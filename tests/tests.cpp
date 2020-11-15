@@ -489,6 +489,29 @@ CppUnitTest::TestCase* testCase_BadObjectMissedColon_Exception()
     return t;
 }
 
+CppUnitTest::TestCase* testCase_JsonEncode_SimpleObject()
+{
+    CppUnitTest::TestCase* t = new CppUnitTest::TestCase("008-json-encode");
+    t->printTitle();
+
+    std::string name = "Alexander";
+    JsonStreamAnalyzer::Element elName(ELEMENT_TYPE_TEXT, &name);
+
+    JsonObject obj;
+    obj["name"] = &elName;
+
+    JsonStreamAnalyzer::Element elObj(ELEMENT_TYPE_OBJECT, &obj);
+
+    JsonStreamAnalyzer::Encoder encoder;
+
+    auto strResult = encoder.encode(&elObj);
+
+    std::cout << "Result: " << strResult->c_str() << std::endl;
+
+    t->finish();
+    return t;
+}
+
 int main(int argc, char** argv) {
     CppUnitTest::TestSuite testSuite;
 
@@ -519,6 +542,10 @@ int main(int argc, char** argv) {
     std::cout << std::endl;
 
     testSuite.addTestCase(testCase_BadObjectMissedColon_Exception());
+
+    std::cout << std::endl;
+
+    testSuite.addTestCase(testCase_JsonEncode_SimpleObject());
 
     std::cout << std::endl;
 
